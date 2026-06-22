@@ -1,0 +1,68 @@
+---
+import Base from '../layouts/Base.astro';
+import jobsData from '../data/jobs.json';
+
+const jobs = jobsData.jobs;
+---
+
+<Base title="rei-job-board — 全国求人マップ">
+  <div id="map" style="height: calc(100vh - 200px); width: 100%; min-height: 480px;"></div>
+
+  <section style="padding: 16px;">
+    <h2 style="margin-top: 0;">求人一覧 ({jobs.length} 件)</h2>
+    <ul style="list-style: none; padding: 0;">
+      {jobs.map(job => (
+        <li style="border: 1px solid #ddd; border-radius: 6px; padding: 12px; margin-bottom: 10px; background: #fff;">
+          <h3 style="margin: 0 0 6px 0; font-size: 1rem;">{job.title}</h3>
+          <p style="margin: 4px 0; font-size: 0.85rem; color: #666;">
+            <span style="display: inline-block; background: #eef3f8; padding: 2px 6px; border-radius: 3px; margin-right: 8px;">
+              {job.category}
+            </span>
+            {job.location.address}
+          </p>
+          <p style="margin: 6px 0; font-size: 0.9rem;">{job.description}</p>
+          <p style="margin: 4px 0; font-size: 0.8rem;">
+            <a href={job.location.googleMapsUrl} target="_blank" rel="noopener noreferrer">📍 Google Maps で見る</a>
+            {' | '}
+            <span style="color: #888;">投稿日: {job.postedAt}</span>
+            {job.status === 'sample' && (
+              <span style="color: #c43; margin-left: 8px;">[サンプル]</span>
+            )}
+          </p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <script define:vars={{ jobs }}>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const L = (await import('https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.esm.js')).default;
+
+      const map = L.map('map').setView([36.5, 138.0], 6);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 19,
+      }).addTo(map);
+
+      jobs.forEach(job => {
+        const marker = L.marker([job.location.lat, job.location.lng]).addTo(map);
+        const popupHtml = `
+          <div style="min-width: 200px;">
+            <h3 style="margin: 0 0 6px 0; font-size: 1rem;">${job.title}</h3>
+            <p style="margin: 4px 0; font-size: 0.85rem;">
+              <strong>${job.category}</strong><br/>
+              ${job.location.address}
+            </p>
+            <p style="margin: 4px 0; font-size: 0.85rem;">${job.description}</p>
+            <p style="margin: 6px 0; font-size: 0.8rem;">
+              <a href="${job.location.googleMapsUrl}" target="_blank" rel="noopener noreferrer">📍 Google Maps</a>
+            </p>
+            ${job.status === 'sample' ? '<p style="color: #c43; font-size: 0.75rem; margin: 4px 0;">[サンプルデータ]</p>' : ''}
+          </div>
+        `;
+        marker.bindPopup(popupHtml);
+      });
+    });
+  </script>
+</Base>

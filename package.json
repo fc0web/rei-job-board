@@ -1,0 +1,27 @@
+{
+  "name": "rei-job-board",
+  "version": "0.0.0",
+  "description": "完全無料 求人マップ Platform — 雑誌型 design (求職者情報非収集ライン厳守)",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "audit": "tsx scripts/audit-jobs.ts",
+    "audit:apply": "tsx scripts/audit-jobs.ts --apply",
+    "prebuild": "npm run audit"
+  },
+  "dependencies": {
+    "astro": "^4.16.0",
+    "leaflet": "^1.9.4"
+  },
+  "devDependencies": {
+    "@astrojs/cloudflare": "^11.0.0",
+    "@types/leaflet": "^1.9.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  },
+  "license": "MIT",
+  "private": true
+}

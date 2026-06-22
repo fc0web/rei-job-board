@@ -1,0 +1,113 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="求人を投稿する — rei-job-board">
+  <article style="max-width: 720px; margin: 0 auto; padding: 16px;">
+    <h1>求人を投稿する</h1>
+
+    <div class="honest-banner">
+      <strong>投稿前にご確認ください</strong>
+      <ul style="margin: 8px 0 0 0; padding-left: 20px;">
+        <li>本サイトは <strong>求職者情報を収集しない</strong> 雑誌型 design です。 応募連絡は投稿者の連絡先へ直接届きます。</li>
+        <li>連絡先は <strong>あなたが管理する</strong> メール / 電話 / 公式 site URL 等を記載してください。</li>
+        <li>違法 / 反社 / 風俗 / 個人情報過剰収集 等の求人は掲載できません (<a href="/about">このサイトについて</a> 参照)。</li>
+        <li>セキュリティ design は <a href="/docs/SECURITY">SECURITY.md</a> の通り。 闇バイト / 詐欺求人対策のため <strong>掲載要件</strong> あり。</li>
+      </ul>
+    </div>
+
+    <section style="margin-top: 24px;">
+      <h2>掲載要件 (anti-fraud)</h2>
+      <p>以下の <strong>3 anchor 全て</strong> を満たした投稿のみ公開します:</p>
+
+      <div style="border: 1px solid #ddd; border-radius: 6px; padding: 12px; margin: 10px 0; background: #fff;">
+        <h3 style="margin-top: 0; font-size: 1rem;">① Google Maps URL (物理 anchor)</h3>
+        <p style="margin: 6px 0; font-size: 0.9rem;">
+          求人地点を Google Maps URL で投稿してください。
+          Google Business Profile に登録済の住所推奨 (実在 audit 済のため flag 通りやすい)。
+        </p>
+        <p style="margin: 6px 0; font-size: 0.85rem; color: #666;">
+          例: <code>https://maps.google.com/?q=35.6812,139.7671</code> または place_id URL
+        </p>
+      </div>
+
+      <div style="border: 1px solid #ddd; border-radius: 6px; padding: 12px; margin: 10px 0; background: #fff;">
+        <h3 style="margin-top: 0; font-size: 1rem;">② 固定電話 / 代表電話 (callback anchor)</h3>
+        <p style="margin: 6px 0; font-size: 0.9rem;">
+          掲載前に <strong>運営側から営業時間中に電話 callback</strong> し、 通じた場合のみ公開します。
+          携帯電話のみの連絡先は不可 (闇バイトは飛ばし携帯のため固定電話を持たない傾向)。
+        </p>
+        <p style="margin: 6px 0; font-size: 0.85rem; color: #666;">
+          例: 03-xxxx-xxxx / 06-xxxx-xxxx / 045-xxx-xxxx 等
+        </p>
+      </div>
+
+      <div style="border: 1px solid #ddd; border-radius: 6px; padding: 12px; margin: 10px 0; background: #fff;">
+        <h3 style="margin-top: 0; font-size: 1rem;">③ 法人番号 (法人の場合) / 開業届 (個人事業主の場合)</h3>
+        <p style="margin: 6px 0; font-size: 0.9rem;">
+          <strong>法人</strong>: 国税庁法人番号公表サイトで verify できる 13 桁の法人番号<br/>
+          <strong>個人事業主</strong>: 税務署受領印付き 開業届 PDF を community PR comment に添付
+        </p>
+        <p style="margin: 6px 0; font-size: 0.85rem; color: #666;">
+          法人番号確認: <a href="https://www.houjin-bangou.nta.go.jp/" target="_blank" rel="noopener noreferrer">国税庁法人番号公表サイト</a>
+        </p>
+      </div>
+    </section>
+
+    <section style="margin-top: 24px;">
+      <h2>投稿フォーム</h2>
+      <p>
+        <!-- TODO: Tally / Formspree / Cloudflare Forms のいずれかの form を embed -->
+        <em>投稿フォームは scaffold 段階のため未接続です。 v0.1 release 時に Tally form を embed 予定。</em>
+      </p>
+      <p>
+        当面は GitHub Pull Request で 直接 <code>src/data/jobs.json</code> に追加していただく形 (community PR model) でも受け付けています:
+      </p>
+      <pre style="background: #f4f4f4; padding: 12px; border-radius: 4px; overflow-x: auto; font-size: 0.85rem;">{`{
+  "id": "your-unique-id-001",
+  "title": "[求人タイトル]",
+  "category": "[業種カテゴリ]",
+  "location": {
+    "lat": 35.6812,
+    "lng": 139.7671,
+    "address": "[所在地住所]",
+    "googleMapsUrl": "https://maps.google.com/?q=..."
+  },
+  "description": "[求人の説明]",
+  "contact": {
+    "method": "メール / 公式 site URL のいずれか",
+    "example": "[連絡先文字列]",
+    "phoneCallback": "[固定電話 / 代表電話、 掲載前に callback verify]"
+  },
+  "verifiedAnchors": {
+    "googleBusinessProfile": "[place_id or null]",
+    "corporateNumber": "[13 桁法人番号 or null]",
+    "phoneCallbackVerifiedAt": "[ISO date / null]",
+    "domainAge": "[fresh / established / null]"
+  },
+  "postedAt": "2026-06-22",
+  "status": "pending"
+}`}</pre>
+    </section>
+
+    <section style="margin-top: 24px;">
+      <h2>NG keyword (auto-flag 対象)</h2>
+      <p>以下の keyword が含まれる投稿は <code>scripts/audit-jobs.ts</code> で自動 flag されます (公開保留)。 詳細は <a href="/docs/SECURITY">SECURITY.md</a>:</p>
+      <ul style="font-size: 0.85rem; color: #555;">
+        <li>報酬: 即日即金 / 高額 / 日給 5 万 / 報酬応相談 / バックあり 等</li>
+        <li>業務曖昧: 運ぶだけ / 受け取るだけ / 電話するだけ / 誰でも稼げる / 出し子 / 受け子 / 叩き 等</li>
+        <li>業界隠語: ホワイト案件 / タタキ / UD案件 / シノギ / 飛ばし 等</li>
+        <li>連絡: Signal / Telegram / DM のみ / Wickr 等の匿名 messenger 単独指定</li>
+        <li>急かし: 本日中 / 今すぐ / 至急 / 即日採用 / 即面接即採用 等</li>
+      </ul>
+    </section>
+
+    <section style="margin-top: 24px;">
+      <h2>掲載までの目安</h2>
+      <ul>
+        <li>community PR model: PR 受信 → 自動 audit (audit-jobs.ts) → 3 anchor 確認 → callback → merge → 数日 site 反映</li>
+        <li>Tally form (v0.1 後): 投稿 → audit → callback → 数日</li>
+      </ul>
+    </section>
+  </article>
+</Base>

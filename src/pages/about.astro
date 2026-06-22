@@ -1,0 +1,60 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="このサイトについて — rei-job-board">
+  <article style="max-width: 720px; margin: 0 auto; padding: 16px;">
+    <h1>このサイトについて</h1>
+
+    <h2>設計方針 — 雑誌型 (求職者情報非収集)</h2>
+    <p>
+      本サイトは <strong>改正職業安定法 2022-10-01 施行 の特定募集情報等提供事業者 届出制 の対象外</strong>
+      となるよう、 求職者の登録 / 経歴 / 履歴 / 閲覧履歴 等を <strong>一切収集しない</strong> 設計です。
+    </p>
+    <p>
+      求人投稿者が Google Maps URL + 求人内容 + 連絡先 (メール / 電話 / 公式 site URL 等) を投稿し、 サイトは
+      これを「雑誌のように」 表示するのみで、 応募者の情報はサイトを経由しません。 応募は各投稿者の連絡先へ直接お願いします。
+    </p>
+
+    <h2>無料 / hobby scale 運営</h2>
+    <p>
+      本サイトは個人運営の試行プロジェクトです。 完全無料で利用できますが、 大手求人サービス
+      (Indeed / タウンワーク / バイトル / Engage 等) のような充実度・サポート体制はありません。
+      規模拡大 / 機能追加に伴い設計が変わる可能性があり、 その際は法務 design を最初から行う前提です。
+    </p>
+
+    <h2>掲載できない求人</h2>
+    <ul>
+      <li>違法な業務 (受け子 / 出し子 / 闇バイト 等) を含む募集</li>
+      <li>反社会的勢力に関連する募集</li>
+      <li>18 歳未満就労が労働基準法 / 児童福祉法 に抵触する募集</li>
+      <li>性風俗 / アダルト関連 (Google Maps Platform ToS / 決済 ToS 違反のため)</li>
+      <li>マルチ商法 / ねずみ講 等の特定商取引法違反案件</li>
+      <li>個人情報を過度に収集する応募要件 (本サイト経由を装った収集を含む)</li>
+    </ul>
+
+    <h2>通報窓口</h2>
+    <p>
+      不適切な求人を発見された場合は <a href="/report">通報窓口</a> へお知らせください。
+      重大なものは速やかに削除し、 必要に応じて警察 (生活安全課) や厚生労働省 労働局 へご相談ください。
+    </p>
+
+    <h2>運営 / 連絡</h2>
+    <p>
+      GitHub: <a href="https://github.com/fc0web/rei-job-board" target="_blank" rel="noopener noreferrer">fc0web/rei-job-board</a><br/>
+      本サイトは個人運営、 完全無料、 hobby scale、 オープンソース (MIT License) です。
+    </p>
+
+    <h2>関連法令 (参考)</h2>
+    <ul>
+      <li>
+        改正職業安定法 (2022-10-01 施行) — 厚生労働省:
+        <a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000172497_00003.html" target="_blank" rel="noopener noreferrer">令和４年職業安定法の改正について</a>
+      </li>
+      <li>
+        募集情報等提供事業 — 厚生労働省:
+        <a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/boshuujouhouteikyou.html" target="_blank" rel="noopener noreferrer">募集情報等提供事業</a>
+      </li>
+    </ul>
+  </article>
+</Base>

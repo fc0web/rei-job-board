@@ -1,0 +1,80 @@
+{
+  "schema": "rei-job-board-v0.1",
+  "lastUpdated": "2026-06-22",
+  "honestScope": {
+    "design": "雑誌型 (求職者情報非収集ライン厳守)",
+    "todoCloudflareForm": "投稿フォームは Tally / Formspree 等の外部サービスへ委託、 Rei 側で求職者情報を扱わない",
+    "googleMapsToSCompliance": "URL のみ参照、 place_id 識別子保存、 30 日 cache 上限、 source 表示必須",
+    "securityModel": "docs/SECURITY.md の L0-L6 layered defense / 完全防止不可能を前提"
+  },
+  "schemaFields": {
+    "required": [
+      "id",
+      "title",
+      "category",
+      "location.googleMapsUrl",
+      "contact.phoneCallback",
+      "description",
+      "status",
+      "postedAt"
+    ],
+    "antifraud": [
+      "verifiedAnchors.googleBusinessProfile",
+      "verifiedAnchors.corporateNumber",
+      "verifiedAnchors.phoneCallbackVerifiedAt",
+      "verifiedAnchors.domainAge"
+    ]
+  },
+  "jobs": [
+    {
+      "id": "sample-001",
+      "title": "[サンプル] カフェスタッフ募集 (例)",
+      "category": "飲食・接客",
+      "location": {
+        "lat": 35.6812,
+        "lng": 139.7671,
+        "address": "東京駅周辺 (サンプル座標)",
+        "googleMapsUrl": "https://maps.google.com/?q=35.6812,139.7671"
+      },
+      "description": "これはサンプルデータです。 実データに置換してください。",
+      "contact": {
+        "method": "求人投稿者の連絡先を表示するのみ",
+        "example": "応募はメール / 電話 / 公式 site URL 等、 投稿者直接連絡 (Rei platform で transfer しない)",
+        "phoneCallback": "(投稿者の固定電話、 営業時間 callback で実在確認した番号)"
+      },
+      "verifiedAnchors": {
+        "googleBusinessProfile": null,
+        "corporateNumber": null,
+        "phoneCallbackVerifiedAt": null,
+        "domainAge": null
+      },
+      "postedAt": "2026-06-22",
+      "status": "sample"
+    },
+    {
+      "id": "sample-002",
+      "title": "[サンプル] 配達ドライバー募集 (例)",
+      "category": "物流・配送",
+      "location": {
+        "lat": 34.6937,
+        "lng": 135.5023,
+        "address": "大阪市周辺 (サンプル座標)",
+        "googleMapsUrl": "https://maps.google.com/?q=34.6937,135.5023"
+      },
+      "description": "これはサンプルデータです。 実データに置換してください。",
+      "contact": {
+        "method": "求人投稿者の連絡先を表示するのみ",
+        "example": "応募は投稿者へ直接",
+        "phoneCallback": "(投稿者の固定電話、 営業時間 callback で実在確認した番号)"
+      },
+      "verifiedAnchors": {
+        "googleBusinessProfile": null,
+        "corporateNumber": null,
+        "phoneCallbackVerifiedAt": null,
+        "domainAge": null
+      },
+      "postedAt": "2026-06-22",
+      "status": "sample"
+    }
+  ]
+}

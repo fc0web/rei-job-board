@@ -1,0 +1,55 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="通報窓口 — rei-job-board">
+  <article style="max-width: 720px; margin: 0 auto; padding: 16px;">
+    <h1>通報窓口</h1>
+
+    <div class="honest-banner" style="background: #fde6e6; border-color: #e88;">
+      <strong>緊急時は警察 (110) または 警察相談ダイヤル (#9110)</strong>
+      <p style="margin: 6px 0 0 0;">
+        闇バイト / 受け子・出し子募集 / 強盗 / 殺人 を匂わせる募集を発見した場合は、 サイトへの通報より先に
+        警察への通報を最優先してください。
+      </p>
+    </div>
+
+    <h2>本サイトへの通報</h2>
+    <p>以下のいずれかの方法で通報できます:</p>
+
+    <h3>1. GitHub Issue</h3>
+    <p>
+      <a href="https://github.com/fc0web/rei-job-board/issues/new" target="_blank" rel="noopener noreferrer">GitHub で Issue を作成</a>
+      → タイトルに <code>[通報]</code> + 該当求人 ID を記載
+    </p>
+
+    <h3>2. メール (準備中)</h3>
+    <p>
+      <em>v0.1 release 時にメール窓口を設置予定。</em>
+    </p>
+
+    <h2>通報後の流れ</h2>
+    <ol>
+      <li>Rei + 藤本さん の 目視 audit (数時間以内目標)</li>
+      <li>不適切と判断した場合: 該当求人を <code>jobs.json</code> から削除 → site 反映</li>
+      <li>悪質な場合 (闇バイト / 詐欺 / 反社 等): 厚生労働省 労働局 / 警察 へ報告</li>
+    </ol>
+
+    <h2>公的相談窓口</h2>
+    <ul>
+      <li>
+        警察総合相談電話: <strong>#9110</strong>
+      </li>
+      <li>
+        闇バイト相談 — 厚生労働省: <a href="https://www.npa.go.jp/" target="_blank" rel="noopener noreferrer">警察庁</a>
+      </li>
+      <li>
+        労働関係相談 — 厚生労働省 労働局:
+        <a href="https://www.mhlw.go.jp/kouseiroudoushou/shozaiannai/roudoukyoku/" target="_blank" rel="noopener noreferrer">各都道府県労働局</a>
+      </li>
+      <li>
+        消費者ホットライン: <strong>188 (いやや!)</strong>
+      </li>
+    </ul>
+  </article>
+</Base>
