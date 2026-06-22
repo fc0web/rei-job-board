@@ -16,7 +16,9 @@ export type FlaggedCategory =
   | 'task_vague'
   | 'underground_slang'
   | 'sketchy_contact'
-  | 'urgency_pressure';
+  | 'urgency_pressure'
+  | 'crypto_lure'
+  | 'obfuscation_attempt';
 
 export interface FlagMatch {
   category: FlaggedCategory;
@@ -98,7 +100,80 @@ const KEYWORDS: Record<FlaggedCategory, string[]> = {
     '即面接即採用',
     '今日中に振込',
   ],
+  /**
+   * v0.2 追加: 暗号資産誘導 (投資詐欺 / wallet アドレス案件 / web3 詐欺求人)
+   * 警察庁: 2024-2026 暗号資産関連詐欺 増加 trend
+   */
+  crypto_lure: [
+    'USDT',
+    'Tether',
+    'テザー',
+    '暗号資産投資',
+    '仮想通貨投資',
+    'BTC 配布',
+    'ETH 配布',
+    'wallet アドレス',
+    'ウォレット アドレス',
+    'NFT 投資',
+    'NFT 案件',
+    'web3 案件',
+    'Web3案件',
+    'メタマスク連携',
+    'バイナンス招待',
+    'Binance 招待',
+    '投資コミュニティ',
+    '投資グループ',
+  ],
+  /**
+   * v0.2 追加: keyword 検出突破試行 (記号・改行挿入で keyword を分断)
+   * 例: 「即・日・即・金」「即.日.即.金」「即／日／即／金」 等
+   *
+   * 注: normalize 段階で記号除去するため、 KEYWORDS 直接 match では検出されない。
+   * `detectObfuscation()` 関数で正規化前後の比較で検出。
+   * KEYWORDS 配列は空 (検出 logic 専用 placeholder)、
+   * 将来 NLP-based パターン辞書を追加する想定。
+   */
+  obfuscation_attempt: [],
 };
+
+/**
+ * v0.2 追加: keyword 突破試行検出
+ * 「即・日・即・金」「即.日.即.金」 のような記号挿入 pattern を検出。
+ *
+ * Logic:
+ *   1. text から全 separator (記号 / 中点 / piped 等) を strip した版を生成
+ *   2. strip 版で既存 KEYWORDS にヒットするが original では hit しない場合 = obfuscation
+ *
+ * False positive 注意: 自然な punctuation で偶然 match する可能性。
+ * v0.2 では 検出のみ flag、 manual audit で最終判断 (本 site policy)。
+ */
+const SEPARATOR_PATTERN = /[・.,。、\-_\s/／＼\\|｜<>＜＞()\[\]{}「」『』【】〔〕〈〉《》〝〟"'`~]+/g;
+
+export function detectObfuscation(
+  text: string | undefined,
+  field: 'title' | 'description' | 'contact'
+): FlagMatch[] {
+  if (!text) return [];
+  const original = normalizeForMatch(text);
+  const stripped = original.replace(SEPARATOR_PATTERN, '');
+  if (stripped === original) return []; // separator なし → obfuscation 試行なし
+  const matches: FlagMatch[] = [];
+  for (const [category, keywords] of Object.entries(KEYWORDS)) {
+    if (category === 'obfuscation_attempt') continue; // 自己再帰回避
+    for (const kw of keywords) {
+      const normalizedKw = normalizeForMatch(kw).replace(SEPARATOR_PATTERN, '');
+      if (!normalizedKw || normalizedKw.length < 3) continue; // 短すぎる kw は偽陽性多い
+      if (stripped.includes(normalizedKw) && !original.includes(normalizedKw)) {
+        matches.push({
+          category: 'obfuscation_attempt',
+          keyword: `${kw} (obfuscated)`,
+          field,
+        });
+      }
+    }
+  }
+  return matches;
+}
 
 /**
  * Text を 5 軸 keyword でスキャンし、 match を返す。
@@ -153,6 +228,10 @@ export function evaluateJob(job: {
     ...scanText(job.description, 'description'),
     ...scanText(job.contact?.method, 'contact'),
     ...scanText(job.contact?.example, 'contact'),
+    ...detectObfuscation(job.title, 'title'),
+    ...detectObfuscation(job.description, 'description'),
+    ...detectObfuscation(job.contact?.method, 'contact'),
+    ...detectObfuscation(job.contact?.example, 'contact'),
   ];
   const riskScore = matches.length;
   return {
