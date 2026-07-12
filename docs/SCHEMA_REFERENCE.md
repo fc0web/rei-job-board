@@ -207,5 +207,73 @@ Layer 3 実装 に 進む 場合 の 判断 point (弁護士 consultation 経由
 - 本 doc は **educational reference + TypeScript type 定義 の 前提 のみ**
 - Layer 3 実装 = **明示 越境**、 弁護士 consultation + 届出 + 業務体制 構築 の 前提 必須
 - 「求人 サイト は どのみち 法的 問題 が 色々 絡む」 (藤本さん 明示、 2026-07-13) = **honest 認識** で、 本 doc は その 認識 に 基づき Layer 1+2 scope に 限定
-- 特定 業界 site (yorumachi / kanto.qzin) の 直接 模倣 は Pattern 5 super-naming risk、 本 doc は **factual 素材** の articulate のみ、 「模倣 推奨」 は 行わない
+- 特定 業界 site (yorumachi / kanto.qzin / シティヘブン / 風俗じゃぱん / 駅ちか / fujoho / マンゾク / YOASOBI HEAVEN) の 直接 模倣 は Pattern 5 super-naming risk、 本 doc は **factual 素材** の articulate のみ、 「模倣 推奨」 は 行わない
 - 業種 scope (性風俗 除外 line) の 継続 は memory 系譜 遵守 で 私 side 推奨、 見直し 判断 は 藤本さん judgment + 弁護士 consultation 必須
+
+## v0.5 追加 (2026-07-13) — PR サイト 全項目 schema 取り込み
+
+藤本さん 明示 (2026-07-13): 「PR サイト の ほう の 全て の 店舗側、 ユーザー側 の 項目 を 見たかった。 此方 に 全て 取り込みたい」
+
+これを 受けて 追加 (Layer 2 data-only):
+
+### 追加 file (3 schema files)
+
+- **`src/data/schemas/pr-shop-schema.ts`** — PR サイト 店舗 側 型
+  - Section A: PR 拡張 業種 (image_club / special_shop / outcall_massage / social_dining) + isPRShopExcludedCategory
+  - Section B-E: BusinessHours / BusinessLocation / PricingSystem / DeliveryArea / ReservationConfig
+  - Section F: ShopMedia / ShopNewsEvent / ShopCoupon
+  - **Section G: PerformerProfile (在籍 スタッフ、 ★ consent-based)** + PerformerPhoto + PerformerShift + PerformerDiaryEntry + **PerformerConsent (フリーランス保護法 2026-11 対応)**
+  - Section H: ShopReviewConfig / ShopRankingParticipation / ShopVerificationBadge
+  - Section I: PRListingContract (4 tier: basic / premium / top_ranking / featured_article)
+  - Section J: PRShopListing (中核 schema)
+  - PR_SHOP_SCHEMA_IMPLEMENTATION_MARKER (10 legal review categories)
+
+- **`src/data/schemas/pr-user-schema.ts`** — PR サイト 顧客 side 型
+  - Section A: PRUserProfile (基本 会員 情報)
+  - Section B: PRUserConsent (marketing opt-in + cookie consent 別 layer)
+  - Section D: FavoriteShopList + FavoritePerformerList
+  - Section E: BrowseHistory (個情法 目的 明示 対象)
+  - Section F: Reservation (シティヘブン かんたんネット予約 model + 消費者契約法 対応)
+  - Section G: PRUserReview (fujoho 380,225 口コミ model + 誹謗中傷 対応)
+  - Section H: RankingVote (マンゾク weekly TOP30 vote)
+  - Section I: DiaryComment (シティヘブン + 駅ちか 実測)
+  - Section J: UserPointTransaction (マンゾク MC point) + UserCouponClip
+  - **Section K: AIConciergeSession + AIConciergeMessage (YOASOBI HEAVEN 実測、 ★ content moderation 必須)**
+  - Section L: PRUserDeletionRequest (GDPR-style workflow)
+  - PR_USER_SCHEMA_IMPLEMENTATION_MARKER (9 legal review categories + AI concierge monitoring 3 point)
+
+- **`src/data/schemas/pr-content-schema.ts`** — PR サイト content 系 型
+  - Section A: RankingEntry + RankingType (8 種: weekly_top30 / monthly_top_shops / area_ranking / new_arrivals / popular_by_reviews / popular_by_bookings / user_vote_ranking / featured_paid) + RankingCriteria (景表法 明示 line)
+  - Section B: MediaContent (video / voice / photo_gallery + hasR18Marking + 著作権 対応)
+  - Section C: SiteNewsPost (系 news feed)
+  - Section D: FeaturedArticle (**★ ステマ 規制 対応 = isPRLabelRequired**)
+  - Section E: SiteAnalytics (aggregated 統計、 個情法 目的 明示)
+  - Section F: PRReport (通報 category 10 種) + 警察 連絡 log
+  - **Section G: PerformerAvailabilityStatus (駅ちか 「待機中」 real-time indicator)**
+  - Section H: MultilingualContentAggregation (YOASOBI HEAVEN 5 言語 model)
+  - PR_CONTENT_SCHEMA_IMPLEMENTATION_MARKER (8 legal review categories + ranking disclosure 3 requirements)
+
+### 網羅 項目 数 (v0.5 追加後)
+
+- **店舗 側 (求人 side + PR side combined)**: 21 (v0.4 求人) + PRShopListing 主 field 22 + PerformerProfile 追加 = **60+ 項目**
+- **ユーザー 側 (求職者 side + PR 顧客 side combined)**: 15 (v0.4) + PRUserProfile 主 field 12 + Reservation/Review/RankingVote/Diary/Point/Coupon/AI/Deletion 追加 = **50+ 項目**
+- **content 系**: RankingEntry / MediaContent / SiteNewsPost / FeaturedArticle / SiteAnalytics / PRReport / PerformerAvailabilityStatus / MultilingualContentAggregation = **8 type**
+- **業種**: 8 (非 風俗 nightwork) + 9 (性風俗 明示 除外) + 4 (PR 拡張) = **21 業種 total**
+
+### Layer 3 越境 前 追加 requirement (v0.5)
+
+- **フリーランス保護法 2026-11 対応**: performer consent + 撤回 権利 説明
+- **著作権法 対応**: 動画 / 音声 / 写真 の 権利 処理
+- **ステマ 規制 2023 対応**: 「PR」 label 必須 (掲載料 有料 slot + 特集 記事)
+- **景表法 対応**: ランキング 基準 明示 + 「NO.1」 「業界最安」 の 客観的 根拠
+- **プロバイダ責任制限法 対応**: 口コミ + 通報 workflow
+- **消費者契約法 対応**: 予約 + キャンセル 料 明示
+- **AI content moderation 監視**: AIConciergeSession の output 検閲
+
+### honest scope 継承 (v0.5)
+
+- ✅ 「schema 網羅」 と 「実装 越境」 は 分離 layer
+- ✅ 業種 除外 line 判定 は **type-level で articulate 済** (isPRShopExcludedCategory)、 memory 系譜 遵守
+- ✅ performer 情報 は **consent-based schema** (顔写真 default 「masked」 選択肢 明示)
+- ⚠ 「取り込み」 = schema data structure level のみ、 実装 UI は Layer 3 越境 = 弁護士 consultation 経路 必須
+- 業種 選択 で HONEST_SCOPE 除外 line 発動 or 含める か の 判定 は 藤本さん judgment + 弁護士 consultation 必須

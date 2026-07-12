@@ -20,6 +20,21 @@
 
 藤本さん 明示: 「求人サイト は どのみち、 法的な 問題 が 色々 絡みます」 = honest 認識、 段階的 進行 に 整合。
 
+### v0.5 note (2026-07-13, 同日 追加)
+
+藤本さん 明示 (2026-07-13): 「PR サイト の ほう の 全て の 店舗側、 ユーザー側 の 項目 を 見たかった。 此方 に 全て 取り込みたい」
+
+7 site (シティヘブン / 風俗じゃぱん / 駅ちか / fujoho / マンゾク / YOASOBI HEAVEN + kanto.qzin) 実測 の 全項目 を Layer 2 で schema level 網羅:
+
+- ✅ `src/data/schemas/pr-shop-schema.ts` — PR サイト 店舗 側 型 (~350 行) — 営業/料金/送迎/予約/media/performer (consent-based)/口コミ/ランキング/契約 の 10 section
+- ✅ `src/data/schemas/pr-user-schema.ts` — PR サイト 顧客 side 型 (~300 行) — 会員 情報/consent/お気に入り/閲覧履歴/予約/口コミ/ランキング vote/写メ日記コメント/point/AI concierge/削除request の 13 section
+- ✅ `src/data/schemas/pr-content-schema.ts` — content 系 型 (~250 行) — ランキング/media/news/特集記事/統計/通報/待機中/多言語 の 9 section
+- ❌ Layer 3 実装 UI は 明示 越境 = 弁護士 consultation 経路 待ち、 本 v0.5 範囲外
+
+追加 legal review 対象: フリーランス保護法 2026-11 + 著作権法 + ステマ 規制 2023 + 景表法 + プロバイダ責任制限法 + 消費者契約法 + AI content moderation 監視。
+
+honest 継承: 「schema 網羅」 と 「実装 越境」 は 分離 layer、 業種 除外 line は type-level で articulate 済 (isPRShopExcludedCategory)。
+
 ## 設計原則 (永続)
 
 ### 求職者情報非収集ライン (=届出不要 design)
