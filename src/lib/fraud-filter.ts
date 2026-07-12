@@ -18,7 +18,8 @@ export type FlaggedCategory =
   | 'sketchy_contact'
   | 'urgency_pressure'
   | 'crypto_lure'
-  | 'obfuscation_attempt';
+  | 'obfuscation_attempt'
+  | 'ai_generated_scam';
 
 export interface FlagMatch {
   category: FlaggedCategory;
@@ -134,6 +135,52 @@ const KEYWORDS: Record<FlaggedCategory, string[]> = {
    * 将来 NLP-based パターン辞書を追加する想定。
    */
   obfuscation_attempt: [],
+  /**
+   * v0.3 追加: AI-generated fake job posting 誘導 keyword
+   *
+   * 2025-2026 emerging threat pattern: LLM (ChatGPT / Claude / Gemini 等) で
+   * mass-generate した fake 求人を Indeed / LinkedIn / mailing list に投稿する
+   * 詐欺 pattern が拡大中。 生成物自体を keyword 検出するのは 困難 (文体判別は
+   * AI 検出器でも false positive 多)、 但し 「求人 投稿者 側」 が 意図的に
+   * 「AI 変換」 「AI で自動応対」 「ChatGPT で書いた」 等を 明示している case は
+   * flag 可能 (求職者への 通知目的 or 効率誇示目的で 明示する pattern)。
+   *
+   * また AI-応対 のみ = 実質 sketchy_contact 相当だが、 categoryB として 分離し
+   * 「Rei-project 由来 の Rei-specific 8 軸目」 として articulate する。
+   *
+   * Sources (emerging threat):
+   * - Business Insider 2024-10 "AI-generated fake jobs spreading on LinkedIn"
+   * - FTC 2024 "AI-scam job posting rising"
+   * - 総務省 2025-03 「AI 生成 情報 の 悪用 事例」 white paper
+   */
+  ai_generated_scam: [
+    'AI で 変換',
+    'AI で変換',
+    'AI 生成 求人',
+    'AI 生成求人',
+    'AI 求人 テンプレ',
+    'AI 求人テンプレート',
+    'ChatGPT で 生成',
+    'ChatGPT で生成',
+    'ChatGPT で 書いた',
+    'ChatGPT で書いた',
+    'ChatGPT 求人',
+    'GPT で 書いた',
+    'GPT で書いた',
+    'GPT 求人',
+    'AI 変換 済み',
+    'AI 変換済み',
+    'AI 応対 のみ',
+    'AI応対のみ',
+    'AI 面接 即決',
+    'AI面接即決',
+    'bot 応対 のみ',
+    'ボット 応対 のみ',
+    'AI 自動 応答',
+    'AI自動応答',
+    'AI 翻訳 で 送信',
+    'AI 翻訳で送信',
+  ],
 };
 
 /**

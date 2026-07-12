@@ -103,8 +103,10 @@ assert('sketchy_contact' in kw, 'sketchy_contact category 存在');
 assert('urgency_pressure' in kw, 'urgency_pressure category 存在');
 assert('crypto_lure' in kw, 'crypto_lure category 存在 (v0.2)');
 assert('obfuscation_attempt' in kw, 'obfuscation_attempt category 存在 (v0.2)');
+assert('ai_generated_scam' in kw, 'ai_generated_scam category 存在 (v0.3)');
 assert(kw.reward_anomaly.length > 0, 'reward_anomaly に keyword あり');
 assert(kw.crypto_lure.length > 0, 'crypto_lure に keyword あり (v0.2)');
+assert(kw.ai_generated_scam.length > 0, 'ai_generated_scam に keyword あり (v0.3)');
 
 console.log('\n=== Test 7: 暗号資産誘導 (v0.2 crypto_lure) ===');
 const cryptoJob = {
@@ -144,6 +146,33 @@ const result9 = evaluateJob(normalPunctJob);
 assert(
   !result9.matches.some((m) => m.category === 'obfuscation_attempt'),
   '通常 punctuation は obfuscation flag されない'
+);
+
+console.log('\n=== Test 10: AI-generated fake job (v0.3 ai_generated_scam) ===');
+const aiScamJob = {
+  title: 'ChatGPT で 生成 した 求人 テンプレート — 高収入',
+  description: 'AI で 変換 して 全世界向けに 送信。 AI 応対 のみ。',
+  contact: { method: 'Telegram (AI 自動 応答)', example: '' },
+};
+const result10 = evaluateJob(aiScamJob);
+assert(result10.flagged, 'AI-generated fake job が flagged');
+assert(
+  result10.matches.some((m) => m.category === 'ai_generated_scam'),
+  'ai_generated_scam category 検出'
+);
+const aiMatches = result10.matches.filter((m) => m.category === 'ai_generated_scam');
+assert(aiMatches.length >= 2, `ai_generated_scam match ${aiMatches.length} >= 2`);
+
+console.log('\n=== Test 11: AI言及 でも 通常求人は AI-scam flag されない ===');
+const normalAiMention = {
+  title: 'エンジニア募集 (AI 関連 業務)',
+  description: 'AI 関連 プロダクト の 開発。 Python / TypeScript 経験者歓迎。',
+  contact: { method: '電話', example: '03-1234-5678' },
+};
+const result11 = evaluateJob(normalAiMention);
+assert(
+  !result11.matches.some((m) => m.category === 'ai_generated_scam'),
+  '通常の AI 業務言及は ai_generated_scam flag されない'
 );
 
 console.log(`\n=== 結果: ${passed} passed, ${failed} failed ===`);
