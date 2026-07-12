@@ -277,3 +277,74 @@ Layer 3 実装 に 進む 場合 の 判断 point (弁護士 consultation 経由
 - ✅ performer 情報 は **consent-based schema** (顔写真 default 「masked」 選択肢 明示)
 - ⚠ 「取り込み」 = schema data structure level のみ、 実装 UI は Layer 3 越境 = 弁護士 consultation 経路 必須
 - 業種 選択 で HONEST_SCOPE 除外 line 発動 or 含める か の 判定 は 藤本さん judgment + 弁護士 consultation 必須
+
+## v0.6 追加 (2026-07-13, 同日) — login 後 flow 補完 4 schema
+
+藤本さん 確認 (2026-07-13): 「店舗 や ユーザー が login を して、 その 後 の 項目 なども 組み込まれている でしょうか？」
+
+honest 実測 = **不足 あり** (v0.5 は 「login 前 掲載 情報 + login 後 一部 mypage」 のみ)。 認証 flow + dashboard 管理 + 相互 messaging を 補完:
+
+### v0.6 追加 file (4 schema files, ~1,230 行)
+
+- **`src/data/schemas/auth-schema.ts`** (~330 行) — 認証 系
+  - AuthUserRole (7 種: customer / shop_owner / shop_staff / performer / admin_super / admin_shop_review / admin_read_only)
+  - AuthSession (crypto-random token + IP + UA + expiry)
+  - PasswordHashRecord (bcrypt / argon2id / scrypt) + PasswordResetRequest + PasswordChangeHistory
+  - EmailVerificationToken + EmailChangeRequest
+  - MFASetup (TOTP / SMS / Passkey / email_code) + MFABackupCode
+  - LoginHistoryEntry (個情法 セキュリティ purpose 明示)
+  - FailedLoginTracking (account lockout 対応)
+  - TrustedDevice (「この device で 2FA 記憶」 機能)
+  - OAuthLink (LINE / Google / Apple / Twitter / Facebook 連携)
+  - AUTH_SCHEMA_IMPLEMENTATION_MARKER (**11 セキュリティ requirement + OWASP Top 10 全 10 項目**)
+
+- **`src/data/schemas/shop-dashboard-schema.ts`** (~320 行) — 店舗 側 dashboard 管理
+  - ShopDashboardStatistics (アクセス / 予約 / 口コミ / performer 別 集計 / 検索 hit / クーポン / 通報 受信)
+  - ShopReservationInboxItem (予約 受信 queue、 shop_staff assign)
+  - **PerformerAdditionWorkflow** (7 stage、 フリーランス保護法 2026-11 準拠 = 書面 交付 / 支払 条件 / harassment 窓口 / 撤回 policy)
+  - **PerformerDepartureWorkflow** (30 日 予告 期間、 post-departure data handling policy)
+  - ShopPaymentHistoryEntry (インボイス制度 対応)
+  - ListingRenewalRequest (契約 更新 request)
+  - ShopReceivedReportItem (お店 が 受けた 通報 の shop-side view + response position)
+  - ShopSystemNotification (10 種: contract_expiring_soon / new_review / terms_updated / etc)
+  - ShopProfileChangeLog (audit log + IP + UA)
+  - ShopStaffPermissionGrant + ShopStaffPermission (9 種 権限 委任)
+
+- **`src/data/schemas/user-mypage-schema.ts`** (~280 行) — ユーザー mypage 管理
+  - UserProfileChangeLog (audit log + email change verification 連動)
+  - ReservationModificationRequest (change_date_time / change_options / cancel / refund_request)
+  - **UserNotificationPreference** (granular opt-in / opt-out、 email 8 種 + push 3 種 + LINE 通知 + 頻度 制限 + quiet hours)
+  - MembershipTierChangeLog (upgrade / downgrade audit)
+  - PointRedemptionHistoryEntry (coupon / gift_card / content_unlock)
+  - UserSubmittedReportHistoryItem (通報 送信 履歴 user-side view)
+  - AIConciergeChatManagementView (削除 request + personal info 自動 flag)
+  - **UserSecuritySettingsView** (active sessions / trusted devices / MFA methods / recent login history)
+
+- **`src/data/schemas/messaging-schema.ts`** (~300 行) — 相互 messaging + notification
+  - DirectMessageThread + DirectMessage (店舗 ↔ ユーザー DM、 AI moderation + report tracking + soft delete)
+  - UserNotification (**20 種 notification type**: reservation_confirmed / favorite_performer_diary_update / realtime_availability_favorite_shop / security_alert_new_login / etc)
+  - NotificationDeliveryAttempt (delivery channel: in_app / email / push / line)
+  - SystemBroadcast (admin → 全 role 通知 + 5 種 broadcast type)
+  - MessageModerationQueueItem (AI flag → human review escalation)
+  - **DisclosureRequestForSenderInfo** (プロバイダ責任制限法 4 条 発信者 情報 開示 request workflow、 弁護士 request + 意見 聴取 7 日 + 判断 + 開示 実施)
+
+### 累計 網羅 (v0.4 + v0.5 + v0.6 = 10 schema files, ~2,700 行)
+
+| Layer | 網羅 内容 |
+|---|---|
+| **店舗 側 (login 前 + 後)** | 掲載 情報 21 (v0.4) + PR 拡張 22 (v0.5) + dashboard 統計 + 予約 受信 + performer flow + 決済 履歴 + 通報 受信 + system notification + audit log + shop_staff 権限 (v0.6) = **100+ 項目** |
+| **ユーザー 側 (login 前 + 後)** | 求職者 15 (v0.4) + PR 顧客 会員 (v0.5) + 予約/口コミ/point/AI (v0.5) + profile 変更 + 予約 変更 + 通知 preference + 通報 履歴 + セキュリティ settings (v0.6) = **80+ 項目** |
+| **相互 messaging** | 店舗 ↔ ユーザー DM + moderation + 発信者 情報 開示 request (v0.6) = **6 type** |
+| **content 系** | v0.5 の 8 type + admin/user notification 20 種 + broadcast (v0.6) = **拡張** |
+| **認証 系 (共通)** | Session + Password/MFA/OAuth + login history + trusted device (v0.6) = **9 section** |
+| **業種** | 21 total (非 風俗 8 + 性風俗 明示 除外 9 + PR 拡張 4) |
+
+### Layer 3 越境 前 追加 requirement (v0.6)
+
+- **OWASP Top 10 遵守** (broken auth / crypto failures / injection / etc 全 10 項目)
+- **セキュリティ requirement 11 種** (bcrypt/argon2 hash / crypto-random token / HttpOnly Secure SameSite cookie / session ID 再生成 / rate limiting / account lockout / MFA / password strength / password change notification / email verification token expiry / password reset token expiry)
+- **不正アクセス禁止法**
+- **電気通信事業法** (通信 記録 保管)
+- **労基法** (shop_staff / performer 認証 の 労働 契約 対応)
+- **プロバイダ責任制限法 4 条** (発信者 情報 開示 request workflow、 弁護士 request + 意見 聴取 7 日 + 判断 + 開示 実施)
+- **AI content moderation** (message + review + diary comment 全 layer 対応)

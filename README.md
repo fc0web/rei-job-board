@@ -35,6 +35,21 @@
 
 honest 継承: 「schema 網羅」 と 「実装 越境」 は 分離 layer、 業種 除外 line は type-level で articulate 済 (isPRShopExcludedCategory)。
 
+### v0.6 note (2026-07-13, 同日 追加) — login 後 flow 補完
+
+藤本さん 確認 (2026-07-13): 「店舗 や ユーザー が login を して、 その 後 の 項目 なども 組み込まれている でしょうか？」
+
+honest 実測 = 不足あり (v0.5 は 「login 前 掲載 情報 + login 後 一部 mypage」 のみ)。 認証 flow + dashboard 管理 + 相互 messaging を 補完:
+
+- ✅ `src/data/schemas/auth-schema.ts` — 認証 系 (~330 行) — Session/PasswordHash/PasswordReset/EmailVerification/MFA (TOTP/SMS/Passkey)/LoginHistory/FailedLoginTracking/TrustedDevice/OAuthLink の 9 section + OWASP Top 10 遵守 marker
+- ✅ `src/data/schemas/shop-dashboard-schema.ts` — 店舗 dashboard 管理 (~320 行) — 統計/予約 受信 inbox/performer 追加削除 flow (フリーランス保護法 準拠)/掲載料 決済 履歴/通報 受信/system notification/profile 変更 audit/shop_staff 権限 委任 の 9 section
+- ✅ `src/data/schemas/user-mypage-schema.ts` — ユーザー mypage (~280 行) — profile 変更 audit/予約 変更 request/通知 preference (granular)/membership tier 履歴/point 交換/通報 送信 履歴/AI concierge 管理/セキュリティ settings の 9 section
+- ✅ `src/data/schemas/messaging-schema.ts` — 相互 messaging (~300 行) — 店舗 ↔ ユーザー DM/system 通知 (20 種)/broadcast/moderation queue/**発信者 情報 開示 request (プロバイダ責任制限法 4 条 対応)** の 6 section
+
+追加 legal review 対象: 不正アクセス禁止法 + 電気通信事業法 + 労基法 (shop_staff 権限) + 電子商取引法 + プロバイダ責任制限法 4 条 (発信者 情報 開示) + OWASP Top 10 + セキュリティ requirement 11 種。
+
+累計 (v0.4 + v0.5 + v0.6): 10 schema files, ~2,700 行, 全 Layer 2 data-only。
+
 ## 設計原則 (永続)
 
 ### 求職者情報非収集ライン (=届出不要 design)
