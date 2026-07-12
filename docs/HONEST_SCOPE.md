@@ -2,6 +2,27 @@
 
 このドキュメントは scaffold 段階 (v0.0) で確定した honest discipline を、 機能拡張時に毎回 re-confirm するためのものです。
 
+## v0.4 note (2026-07-13) — Layer 1+2 schema reference 追加
+
+藤本さん 「B (Layer 1+2)」 選択 (2026-07-13):
+> 「求人サイト は どのみち、 法的な 問題 が 色々 絡みます」
+
+これを 受けて v0.4 で 追加:
+- ✅ `docs/SCHEMA_REFERENCE.md` (Layer 1 educational reference、 yorumachi.jp + kanto.qzin.jp 実測 項目群 全網羅)
+- ✅ `src/data/schemas/shop-schema.ts` (Layer 2 店舗 側 TypeScript type 定義)
+- ✅ `src/data/schemas/job-seeker-schema.ts` (Layer 2 求職者 側 TypeScript type 定義)
+- ✅ `src/data/schemas/admin-schema.ts` (Layer 2 admin 機能 TypeScript type 定義)
+- ❌ Layer 3 実装 UI (login form / registration form / admin panel / etc) は **明示 越境** で、 弁護士 consultation 経路 待ち、 本 v0.4 範囲外
+
+**Layer 3 越境 前 の requirement** (再確認):
+- 弁護士 / 行政書士 / 社労士 consultation 完了
+- 特定募集情報等提供事業者 届出 (厚労省)
+- 個情法 対応 業務体制 構築 (個人情報 取扱 責任者 + 苦情対応 責任者 選任)
+- プライバシー ポリシー + 利用規約 + 免責事項 + 特定商取引法 表記 独立 page 追加
+- 業種 除外 line 判定 (性風俗 / 反社 / マルチ案件 除外 継続 = memory 遵守 推奨)
+
+`docs/SCHEMA_REFERENCE.md` § Section 6 「Layer 3 実装 判断 素材 (藤本さん judgment 待ち 事項)」 参照。
+
 ## 0. 設計の核 (永続)
 
 本サイトは **改正職業安定法 2022-10-01 施行 の特定募集情報等提供事業者 届出制 の対象外** となるよう設計された **雑誌型 求人マップ** です。

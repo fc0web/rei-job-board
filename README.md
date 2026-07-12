@@ -4,9 +4,21 @@
 
 ## ステータス
 
-- **段階**: scaffold v0.0 (2026-06-22 着手、 hobby scale, 実装中)
+- **段階**: v0.4 Layer 1+2 schema reference 追加 (2026-07-13、 hobby scale, 実装中)
 - **配置**: standalone repo (rei-aios とは別 project)
 - **License**: MIT (予定、 確定は v0.1 release 時)
+
+### v0.4 note (2026-07-13)
+
+藤本さん 「B (Layer 1+2)」 選択 (2026-07-13) を 受けて 追加:
+
+- ✅ `docs/SCHEMA_REFERENCE.md` — yorumachi.jp + kanto.qzin.jp 実測 項目群 全網羅 (Layer 1 educational reference)
+- ✅ `src/data/schemas/shop-schema.ts` — 店舗 側 TypeScript type 定義 (Layer 2 data-only)
+- ✅ `src/data/schemas/job-seeker-schema.ts` — 求職者 側 TypeScript type 定義 (Layer 2 data-only)
+- ✅ `src/data/schemas/admin-schema.ts` — admin 機能 TypeScript type 定義 (Layer 2 data-only)
+- ❌ Layer 3 実装 UI (login form / registration form / admin panel) は **明示 越境** = 弁護士 consultation 経路 待ち、 本 v0.4 範囲外
+
+藤本さん 明示: 「求人サイト は どのみち、 法的な 問題 が 色々 絡みます」 = honest 認識、 段階的 進行 に 整合。
 
 ## 設計原則 (永続)
 
