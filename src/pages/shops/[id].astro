@@ -1,0 +1,97 @@
+---
+import Base from '../../layouts/Base.astro';
+import shopsData from '../../data/shops.json';
+import reviewsData from '../../data/reviews.json';
+
+export function getStaticPaths() {
+  return shopsData.shops.map(shop => ({
+    params: { id: shop.id },
+    props: { shop },
+  }));
+}
+
+const { shop } = Astro.props;
+const shopReviews = reviewsData.reviews.filter(r => r.shopId === shop.id);
+---
+
+<Base title={`${shop.name} — rei-job-board`} description={`${shop.categoryLabel} · ${shop.area.prefecture}`}>
+  <div style="padding: 12px 16px;">
+    <div class="honest-banner">
+      <strong>[サンプル店舗]</strong> — 本 page は Layer 3 UI v0.7 の sample data。 実店舗掲載は Layer 3 越境 (弁護士 consultation + 反社チェック + 掲載申込 form 実装) 完成後の別段階。
+    </div>
+
+    <p style="margin: 8px 0; font-size: 0.85rem;">
+      <a href="/shops">← 店舗一覧に戻る</a>
+    </p>
+
+    <h1 style="font-size: 1.4rem; margin: 12px 0 4px 0;">{shop.name}</h1>
+    <p style="margin: 4px 0; font-size: 0.9rem; color: #666;">
+      <span style="display: inline-block; background: #eef3f8; padding: 3px 8px; border-radius: 3px; margin-right: 8px;">{shop.categoryLabel}</span>
+      <span>★ {shop.averageRating} ({shop.reviewCount} 口コミ)</span>
+    </p>
+
+    <section style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 14px; margin: 12px 0;">
+      <h2 style="font-size: 1rem; margin: 0 0 8px 0;">基本情報</h2>
+      <table style="width: 100%; font-size: 0.9rem; border-collapse: collapse;">
+        <tr><td style="padding: 4px 8px; border-bottom: 1px solid #eee; width: 30%; color: #666;">住所</td><td style="padding: 4px 8px; border-bottom: 1px solid #eee;">{shop.area.prefecture} {shop.area.city}</td></tr>
+        <tr><td style="padding: 4px 8px; border-bottom: 1px solid #eee; color: #666;">最寄駅</td><td style="padding: 4px 8px; border-bottom: 1px solid #eee;">{shop.area.nearestStation} 徒歩 {shop.area.walkMinutes} 分</td></tr>
+        <tr><td style="padding: 4px 8px; border-bottom: 1px solid #eee; color: #666;">営業時間</td><td style="padding: 4px 8px; border-bottom: 1px solid #eee;">{shop.openHours}</td></tr>
+        <tr><td style="padding: 4px 8px; border-bottom: 1px solid #eee; color: #666;">定休日</td><td style="padding: 4px 8px; border-bottom: 1px solid #eee;">{shop.regularHoliday}</td></tr>
+        <tr><td style="padding: 4px 8px; border-bottom: 1px solid #eee; color: #666;">価格帯</td><td style="padding: 4px 8px; border-bottom: 1px solid #eee;">{shop.priceRange}</td></tr>
+        <tr><td style="padding: 4px 8px; border-bottom: 1px solid #eee; color: #666;">席数</td><td style="padding: 4px 8px; border-bottom: 1px solid #eee;">{shop.capacity} 席</td></tr>
+        <tr><td style="padding: 4px 8px; color: #666;">予約</td><td style="padding: 4px 8px;">{shop.reservationSupport ? '予約可' : '予約不可'}</td></tr>
+      </table>
+    </section>
+
+    <section style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 14px; margin: 12px 0;">
+      <h2 style="font-size: 1rem; margin: 0 0 8px 0;">店舗紹介</h2>
+      <p style="margin: 0; font-size: 0.9rem;">{shop.description}</p>
+    </section>
+
+    {shop.socialContact.website && (
+      <section style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 14px; margin: 12px 0;">
+        <h2 style="font-size: 1rem; margin: 0 0 8px 0;">公式サイト・SNS</h2>
+        <p style="margin: 0; font-size: 0.9rem;">
+          <a href={shop.socialContact.website} target="_blank" rel="noopener noreferrer">🌐 公式サイト</a>
+          <span style="color: var(--warn); margin-left: 8px; font-size: 0.8rem;">[サンプル URL]</span>
+        </p>
+      </section>
+    )}
+
+    <section style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 14px; margin: 12px 0;">
+      <h2 style="font-size: 1rem; margin: 0 0 8px 0;">予約 / 応募</h2>
+      <p style="margin: 4px 0; font-size: 0.9rem; color: #666;">
+        本 page は sample のため 実 予約 / 応募 は不可。 実運用時は 店舗掲載申込 form + Cloudflare Functions 経由の予約受付 (プロバイダ責任制限法 対応 workflow 完成後)。
+      </p>
+    </section>
+
+    <section style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 14px; margin: 12px 0;">
+      <h2 style="font-size: 1rem; margin: 0 0 8px 0;">口コミ ({shopReviews.length} 件)</h2>
+      {shopReviews.length === 0 ? (
+        <p style="margin: 0; font-size: 0.9rem; color: #666;">まだ口コミがありません。</p>
+      ) : (
+        <ul style="list-style: none; padding: 0; margin: 0;">
+          {shopReviews.map(rev => (
+            <li style="border-bottom: 1px solid #eee; padding: 10px 0;">
+              <p style="margin: 0 0 4px 0; font-size: 0.9rem; font-weight: 600;">
+                {'★'.repeat(rev.rating)}{'☆'.repeat(5 - rev.rating)} <span style="font-weight: normal;">{rev.title}</span>
+              </p>
+              <p style="margin: 4px 0; font-size: 0.85rem;">{rev.body}</p>
+              <p style="margin: 4px 0; font-size: 0.75rem; color: #999;">
+                {rev.userDisplayName} · {rev.postedAt.slice(0, 10)} · 参考になった {rev.helpful}
+                {rev.status === 'sample' && <span style="color: var(--warn); margin-left: 6px;">[サンプル]</span>}
+              </p>
+            </li>
+          ))}
+        </ul>
+      )}
+      <p style="margin: 8px 0 0 0; font-size: 0.85rem;">
+        <a href="/reviews">全ての口コミを見る →</a>
+      </p>
+    </section>
+
+    <section style="background: #fff8e5; border: 1px solid #f5c47a; border-radius: 6px; padding: 12px; margin: 12px 0; font-size: 0.85rem;">
+      <strong>本店舗の情報が誤っている場合</strong>: <a href="/report">通報窓口</a> へお知らせください (プロバイダ責任制限法 4 条 発信者情報開示 workflow は schema 定義済、 実装 pending)。
+    </section>
+  </div>
+</Base>

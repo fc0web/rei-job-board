@@ -1,0 +1,45 @@
+---
+import Base from '../layouts/Base.astro';
+import reviewsData from '../data/reviews.json';
+
+const reviews = reviewsData.reviews.slice().sort((a, b) => b.postedAt.localeCompare(a.postedAt));
+---
+
+<Base title="口コミ一覧 — rei-job-board" description="全店舗の口コミ一覧 (sample data のみ)">
+  <div style="padding: 12px 16px;">
+    <div class="honest-banner">
+      <strong>Layer 3 UI v0.7 — サンプル口コミのみ</strong>: 本 page の 全 口コミ は sample (dummy)。 実 user 口コミ 投稿は プロバイダ責任制限法 4 条 発信者情報開示 workflow + AI moderation (contentModerationResult 必須) の 実装 後の別段階。 誹謗中傷 / siren-claim / Pattern 5 super-naming は 投稿規約 で 禁止 (schema 定義済)。
+    </div>
+
+    <h1 style="font-size: 1.3rem; margin: 12px 0;">口コミ一覧 ({reviews.length} 件)</h1>
+
+    <ul style="list-style: none; padding: 0;">
+      {reviews.map(rev => (
+        <li style="border: 1px solid var(--border); border-radius: 6px; padding: 14px; margin-bottom: 10px; background: #fff;">
+          <p style="margin: 0 0 4px 0; font-size: 0.9rem;">
+            <a href={`/shops/${rev.shopId}`} style="text-decoration: none; color: var(--accent); font-weight: 600;">{rev.shopName}</a>
+          </p>
+          <p style="margin: 4px 0; font-size: 1rem; font-weight: 600;">
+            {'★'.repeat(rev.rating)}{'☆'.repeat(5 - rev.rating)}
+            <span style="font-weight: normal; margin-left: 6px;">{rev.title}</span>
+          </p>
+          <p style="margin: 6px 0; font-size: 0.9rem;">{rev.body}</p>
+          <p style="margin: 4px 0; font-size: 0.8rem; color: #999;">
+            <span>{rev.userDisplayName}</span>
+            <span style="margin-left: 8px;">{rev.postedAt.slice(0, 10)}</span>
+            <span style="margin-left: 8px;">👍 参考になった {rev.helpful}</span>
+            {rev.status === 'sample' && <span style="color: var(--warn); margin-left: 8px;">[サンプル]</span>}
+          </p>
+        </li>
+      ))}
+    </ul>
+
+    <section style="background: #fff8e5; border: 1px solid #f5c47a; border-radius: 6px; padding: 12px; margin: 20px 0; font-size: 0.85rem;">
+      <strong>口コミを投稿する</strong>: 本 page は sample のため 実投稿 form は未実装。 実運用時は Cloudflare Functions 経由の投稿 + AI moderation (contentModerationResult) + hidden queue → 人 review → 公開 の workflow (Layer 3 越境事項)。
+    </section>
+
+    <p style="font-size: 0.85rem; color: #666; margin-top: 20px;">
+      不適切な口コミを見つけた場合は <a href="/report">通報窓口</a> へ (プロバイダ責任制限法 4 条 発信者情報開示 対応 workflow は schema 定義済、 実装 pending)。
+    </p>
+  </div>
+</Base>

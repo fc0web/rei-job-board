@@ -1,0 +1,66 @@
+---
+import Base from '../../layouts/Base.astro';
+import shopsData from '../../data/shops.json';
+
+const shops = shopsData.shops;
+const categories = shopsData.categories;
+const areas = shopsData.areas;
+---
+
+<Base title="店舗案内 — rei-job-board" description="店舗一覧 + カテゴリ + エリア filter (Layer 3 UI v0.7, sample data のみ)">
+  <div style="padding: 12px 16px;">
+    <div class="honest-banner">
+      <strong>Layer 3 UI v0.7 — サンプルデータのみ</strong>: 本 page の 全 店舗 は sample (dummy)。 実店舗掲載は 弁護士 consultation 完成 + 反社チェック + 掲載申込 form 実装後の別段階。 業種除外 line (性風俗特殊営業 該当 category) は schema level で判定済 (isExcludedCategory 遵守)。
+    </div>
+
+    <h1 style="font-size: 1.3rem; margin: 12px 0;">店舗案内 ({shops.length} 件)</h1>
+
+    <section style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 12px; margin-bottom: 16px;">
+      <h2 style="font-size: 0.95rem; margin: 0 0 8px 0;">カテゴリ</h2>
+      <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+        <a href="/shops" style="padding: 4px 10px; border: 1px solid var(--accent); border-radius: 4px; text-decoration: none; font-size: 0.85rem; background: var(--accent); color: #fff;">全て</a>
+        {categories.map(cat => (
+          <a href={`/shops?category=${cat.value}`} style="padding: 4px 10px; border: 1px solid var(--border); border-radius: 4px; text-decoration: none; font-size: 0.85rem;">{cat.label} ({cat.count})</a>
+        ))}
+      </div>
+      <h2 style="font-size: 0.95rem; margin: 12px 0 8px 0;">エリア</h2>
+      <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+        {areas.map(area => (
+          <a href={`/shops?area=${area.value}`} style="padding: 4px 10px; border: 1px solid var(--border); border-radius: 4px; text-decoration: none; font-size: 0.85rem;">{area.label} ({area.count})</a>
+        ))}
+      </div>
+    </section>
+
+    <ul style="list-style: none; padding: 0;">
+      {shops.map(shop => (
+        <li style="border: 1px solid var(--border); border-radius: 6px; padding: 14px; margin-bottom: 10px; background: #fff;">
+          <h3 style="margin: 0 0 6px 0; font-size: 1.05rem;">
+            <a href={`/shops/${shop.id}`} style="text-decoration: none; color: var(--accent);">{shop.name}</a>
+          </h3>
+          <p style="margin: 4px 0; font-size: 0.85rem; color: #666;">
+            <span style="display: inline-block; background: #eef3f8; padding: 2px 6px; border-radius: 3px; margin-right: 8px;">
+              {shop.categoryLabel}
+            </span>
+            <span>{shop.area.prefecture} · {shop.area.nearestStation} 徒歩 {shop.area.walkMinutes} 分</span>
+          </p>
+          <p style="margin: 6px 0; font-size: 0.9rem;">{shop.description}</p>
+          <p style="margin: 4px 0; font-size: 0.85rem;">
+            <span>営業: {shop.openHours}</span>
+            <span style="margin-left: 12px;">価格: {shop.priceRange}</span>
+            <span style="margin-left: 12px;">★ {shop.averageRating} ({shop.reviewCount} 口コミ)</span>
+          </p>
+          <p style="margin: 4px 0; font-size: 0.8rem;">
+            <a href={`/shops/${shop.id}`}>詳細を見る →</a>
+            {shop.status === 'sample' && (
+              <span style="color: var(--warn); margin-left: 8px;">[サンプル]</span>
+            )}
+          </p>
+        </li>
+      ))}
+    </ul>
+
+    <p style="font-size: 0.85rem; color: #666; margin-top: 20px;">
+      本 page は sample data のみ表示。 実店舗掲載は Layer 3 越境 (弁護士 consultation 完成後) の別段階。
+    </p>
+  </div>
+</Base>

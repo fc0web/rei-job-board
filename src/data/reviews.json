@@ -1,0 +1,86 @@
+{
+  "schema": "rei-job-board-reviews-v0.7",
+  "lastUpdated": "2026-07-16",
+  "honestScope": {
+    "sampleOnly": "全 口コミ は サンプル (dummy)。 実 user 口コミ 投稿は プロバイダ責任制限法 4 条 発信者情報開示 workflow 実装 + AI moderation 導入後の別段階",
+    "moderationNote": "pr-content-schema.ts の contentModerationResult 必須 (AI 検出 → hidden queue → 人 review) は Layer 3 UI 実装 pending",
+    "excludedPatterns": "誹謗中傷 / siren-claim / 業界最強 等の Pattern 5 super-naming は 投稿規約 で 禁止 (schema 定義済)"
+  },
+  "reviews": [
+    {
+      "id": "review-001",
+      "shopId": "sample-shop-001",
+      "shopName": "[サンプル] カフェ 東京駅前",
+      "userId": "anon-user-a",
+      "userDisplayName": "匿名A",
+      "rating": 5,
+      "title": "ランチセットが美味しかった",
+      "body": "サンプル口コミ本文。 ランチセットのボリュームが良く、 スタッフ対応も丁寧でした。",
+      "postedAt": "2026-07-15T14:23:00Z",
+      "helpful": 8,
+      "reportCount": 0,
+      "moderationStatus": "approved",
+      "status": "sample"
+    },
+    {
+      "id": "review-002",
+      "shopId": "sample-shop-002",
+      "shopName": "[サンプル] ヘアサロン Rei",
+      "userId": "anon-user-b",
+      "userDisplayName": "匿名B",
+      "rating": 5,
+      "title": "スタイリストさんの提案が的確",
+      "body": "サンプル口コミ本文。 髪質に合わせた提案が的確で、 仕上がりも満足。 リピート予定。",
+      "postedAt": "2026-07-15T09:12:00Z",
+      "helpful": 12,
+      "reportCount": 0,
+      "moderationStatus": "approved",
+      "status": "sample"
+    },
+    {
+      "id": "review-003",
+      "shopId": "sample-shop-004",
+      "shopName": "[サンプル] エステ ラウンジ",
+      "userId": "anon-user-c",
+      "userDisplayName": "匿名C",
+      "rating": 4,
+      "title": "リラックスできた",
+      "body": "サンプル口コミ本文。 施術は良かったが、 予約時間より少し待たされた。 全体的には満足。",
+      "postedAt": "2026-07-14T18:45:00Z",
+      "helpful": 5,
+      "reportCount": 0,
+      "moderationStatus": "approved",
+      "status": "sample"
+    },
+    {
+      "id": "review-004",
+      "shopId": "sample-shop-001",
+      "shopName": "[サンプル] カフェ 東京駅前",
+      "userId": "anon-user-d",
+      "userDisplayName": "匿名D",
+      "rating": 4,
+      "title": "コーヒーが美味しい",
+      "body": "サンプル口コミ本文。 コーヒーの豆にこだわりを感じた。 席数は少なめなので混雑時は要注意。",
+      "postedAt": "2026-07-14T11:30:00Z",
+      "helpful": 3,
+      "reportCount": 0,
+      "moderationStatus": "approved",
+      "status": "sample"
+    },
+    {
+      "id": "review-005",
+      "shopId": "sample-shop-003",
+      "shopName": "[サンプル] スナック 銀座",
+      "userId": "anon-user-e",
+      "userDisplayName": "匿名E",
+      "rating": 4,
+      "title": "ママさんが気さくで良い",
+      "body": "サンプル口コミ本文。 常連が多い雰囲気だが、 初めてでも入りやすい。",
+      "postedAt": "2026-07-13T22:15:00Z",
+      "helpful": 2,
+      "reportCount": 0,
+      "moderationStatus": "approved",
+      "status": "sample"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "schema": "rei-job-board-rankings-v0.7",
+  "lastUpdated": "2026-07-16",
+  "honestScope": {
+    "sampleOnly": "全 ランキング は サンプル (dummy) データ。 実運用 ranking は 一定期間 実データ蓄積 + 集計 algorithm 実装 + PR slot (ステマ 規制 対応) marker 完成後の別段階",
+    "isPRSlotFlag": "pr-content-schema.ts RankingEntry の isPRSlot flag = ステマ 規制 (景表法 2023 改正) 対応 = 有料掲載枠は 明示 marker (現状 sample 全 false)",
+    "rankingTypeNote": "8 種 ranking type (人気/新着/高評価/週間トップ30/月間/エリア別/カテゴリ別/PR) の sample、 実 algorithm は Layer 3 越境後 に 実装"
+  },
+  "rankings": [
+    {
+      "type": "popular",
+      "typeLabel": "人気ランキング",
+      "description": "サンプル人気ランキング。 実際は 閲覧数 + 予約数 + 口コミ数 の 加重集計 (実 algorithm は 実装 pending)",
+      "period": "累計",
+      "entries": [
+        { "rank": 1, "shopId": "sample-shop-002", "shopName": "[サンプル] ヘアサロン Rei", "score": 92, "isPRSlot": false },
+        { "rank": 2, "shopId": "sample-shop-004", "shopName": "[サンプル] エステ ラウンジ", "score": 88, "isPRSlot": false },
+        { "rank": 3, "shopId": "sample-shop-001", "shopName": "[サンプル] カフェ 東京駅前", "score": 87, "isPRSlot": false },
+        { "rank": 4, "shopId": "sample-shop-003", "shopName": "[サンプル] スナック 銀座", "score": 75, "isPRSlot": false }
+      ]
+    },
+    {
+      "type": "new",
+      "typeLabel": "新着ランキング",
+      "description": "サンプル新着ランキング。 postedAt 降順 (実 algorithm は 実装 pending)",
+      "period": "直近 7 日",
+      "entries": [
+        { "rank": 1, "shopId": "sample-shop-001", "shopName": "[サンプル] カフェ 東京駅前", "postedAt": "2026-07-16", "isPRSlot": false },
+        { "rank": 2, "shopId": "sample-shop-002", "shopName": "[サンプル] ヘアサロン Rei", "postedAt": "2026-07-15", "isPRSlot": false },
+        { "rank": 3, "shopId": "sample-shop-003", "shopName": "[サンプル] スナック 銀座", "postedAt": "2026-07-14", "isPRSlot": false },
+        { "rank": 4, "shopId": "sample-shop-004", "shopName": "[サンプル] エステ ラウンジ", "postedAt": "2026-07-13", "isPRSlot": false }
+      ]
+    },
+    {
+      "type": "high_rating",
+      "typeLabel": "高評価ランキング",
+      "description": "サンプル高評価ランキング。 averageRating 降順 + minReviewCount 5 (実 algorithm は 実装 pending)",
+      "period": "累計",
+      "entries": [
+        { "rank": 1, "shopId": "sample-shop-002", "shopName": "[サンプル] ヘアサロン Rei", "averageRating": 4.7, "reviewCount": 34, "isPRSlot": false },
+        { "rank": 2, "shopId": "sample-shop-004", "shopName": "[サンプル] エステ ラウンジ", "averageRating": 4.5, "reviewCount": 22, "isPRSlot": false },
+        { "rank": 3, "shopId": "sample-shop-001", "shopName": "[サンプル] カフェ 東京駅前", "averageRating": 4.2, "reviewCount": 12, "isPRSlot": false }
+      ]
+    }
+  ]
+}

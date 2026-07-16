@@ -1,0 +1,54 @@
+---
+import Base from '../layouts/Base.astro';
+import rankingsData from '../data/rankings.json';
+
+const rankings = rankingsData.rankings;
+---
+
+<Base title="ランキング — rei-job-board" description="人気 / 新着 / 高評価 ランキング (sample data のみ)">
+  <div style="padding: 12px 16px;">
+    <div class="honest-banner">
+      <strong>Layer 3 UI v0.7 — サンプルランキングのみ</strong>: 本 page の 全 ランキング は sample (dummy)。 実 ranking algorithm は 一定期間 実データ蓄積 + 集計 pipeline + PR slot marker (景表法 2023 改正 対応, ステマ 規制) の実装後の別段階。 現状 全 entry <code>isPRSlot: false</code>。
+    </div>
+
+    <h1 style="font-size: 1.3rem; margin: 12px 0;">ランキング</h1>
+
+    {rankings.map(r => (
+      <section style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 14px; margin-bottom: 16px;">
+        <h2 style="font-size: 1.1rem; margin: 0 0 4px 0;">{r.typeLabel}</h2>
+        <p style="margin: 0 0 8px 0; font-size: 0.8rem; color: #666;">期間: {r.period} · {r.description}</p>
+
+        <ol style="padding: 0; margin: 8px 0; list-style: none; counter-reset: rank;">
+          {r.entries.map(entry => (
+            <li style="border-bottom: 1px solid #eee; padding: 10px 6px; display: flex; align-items: center; gap: 12px;">
+              <span style="font-size: 1.2rem; font-weight: 600; color: var(--accent); min-width: 32px; text-align: center;">
+                {entry.rank}
+              </span>
+              <div style="flex: 1;">
+                <p style="margin: 0; font-size: 0.95rem;">
+                  <a href={`/shops/${entry.shopId}`} style="text-decoration: none; color: var(--accent);">{entry.shopName}</a>
+                </p>
+                <p style="margin: 4px 0 0 0; font-size: 0.8rem; color: #666;">
+                  {r.type === 'popular' && `スコア ${entry.score}`}
+                  {r.type === 'new' && `投稿日 ${entry.postedAt}`}
+                  {r.type === 'high_rating' && `★ ${entry.averageRating} (${entry.reviewCount} 口コミ)`}
+                  {entry.isPRSlot && (
+                    <span style="color: var(--warn); margin-left: 8px; font-weight: 600;">[PR 掲載枠]</span>
+                  )}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+    ))}
+
+    <section style="background: #f5f9fc; border: 1px solid #cbd8e5; border-radius: 6px; padding: 12px; margin: 16px 0; font-size: 0.85rem;">
+      <strong>PR 掲載枠 (景表法 2023 改正対応)</strong>: 有料掲載枠は <code>isPRSlot: true</code> marker で明示。 ステルスマーケティング表示 (2023-10-01 施行 景表法改正) 対応の schema 設計。 現状 sample data は 全て <code>isPRSlot: false</code> (無料掲載のみ)。
+    </section>
+
+    <p style="font-size: 0.85rem; color: #666; margin-top: 20px;">
+      ランキング algorithm 詳細は <code>src/data/schemas/pr-content-schema.ts</code> の <code>RankingEntry</code> + <code>RankingType</code> 参照 (Layer 2 schema)。
+    </p>
+  </div>
+</Base>

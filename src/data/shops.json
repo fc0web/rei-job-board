@@ -1,0 +1,176 @@
+{
+  "schema": "rei-job-board-shops-v0.7",
+  "lastUpdated": "2026-07-16",
+  "honestScope": {
+    "sampleOnly": "全 店舗データはサンプル (dummy)。 実店舗掲載は 弁護士 consultation 完成 + 掲載申込 form 実装 + 反社チェック 完成後 の 段階",
+    "excludedCategories": "性風俗特殊営業 該当 category は 掲載しない (shop-schema.ts isExcludedCategory 遵守)",
+    "sampleCategories": "sample は 非風俗 category のみ (飲食・接客 / ヘアサロン / スナック(非風俗) / エステ)",
+    "priorArtNote": "業界 site 実測 (yorumachi / kanto.qzin / シティヘブン / 風俗じゃぱん / 駅ちか / fujoho / マンゾク / YOASOBI HEAVEN 8 site) の 共通 pattern を Layer 2 schema で 反映、 Layer 3 UI は本 file で dummy data を消費"
+  },
+  "shops": [
+    {
+      "id": "sample-shop-001",
+      "name": "[サンプル] カフェ 東京駅前",
+      "category": "food_service",
+      "categoryLabel": "飲食・接客",
+      "area": {
+        "prefecture": "東京都",
+        "city": "千代田区",
+        "nearestStation": "東京駅",
+        "walkMinutes": 3
+      },
+      "description": "サンプル店舗データ。 昼はランチカフェ、 夜は軽食バー。 スタッフ随時募集中。",
+      "openHours": "11:00 - 22:00",
+      "regularHoliday": "水曜日",
+      "priceRange": "¥800 - ¥2,500",
+      "capacity": 24,
+      "reservationSupport": true,
+      "images": {
+        "count": 3,
+        "note": "[サンプル] 実画像なし、 placeholder"
+      },
+      "socialContact": {
+        "website": "https://example.com/sample-cafe",
+        "instagram": null,
+        "twitter": null,
+        "note": "[サンプル] 実 URL ではない"
+      },
+      "reviewCount": 12,
+      "averageRating": 4.2,
+      "rankingScore": 87,
+      "postedAt": "2026-07-16",
+      "status": "sample",
+      "verifiedAnchors": {
+        "googleBusinessProfile": null,
+        "corporateNumber": null,
+        "phoneCallbackVerifiedAt": null,
+        "domainAge": null
+      }
+    },
+    {
+      "id": "sample-shop-002",
+      "name": "[サンプル] ヘアサロン Rei",
+      "category": "hair_salon",
+      "categoryLabel": "ヘアサロン",
+      "area": {
+        "prefecture": "神奈川県",
+        "city": "横浜市",
+        "nearestStation": "横浜駅",
+        "walkMinutes": 5
+      },
+      "description": "サンプル店舗データ。 カット + カラー + パーマ 対応。 スタイリスト募集中。",
+      "openHours": "10:00 - 20:00",
+      "regularHoliday": "月曜日",
+      "priceRange": "¥4,500 - ¥15,000",
+      "capacity": 8,
+      "reservationSupport": true,
+      "images": {
+        "count": 5,
+        "note": "[サンプル] 実画像なし"
+      },
+      "socialContact": {
+        "website": "https://example.com/sample-salon",
+        "instagram": null,
+        "twitter": null
+      },
+      "reviewCount": 34,
+      "averageRating": 4.7,
+      "rankingScore": 92,
+      "postedAt": "2026-07-15",
+      "status": "sample",
+      "verifiedAnchors": {
+        "googleBusinessProfile": null,
+        "corporateNumber": null,
+        "phoneCallbackVerifiedAt": null,
+        "domainAge": null
+      }
+    },
+    {
+      "id": "sample-shop-003",
+      "name": "[サンプル] スナック 銀座",
+      "category": "snack_bar",
+      "categoryLabel": "スナック (非風俗)",
+      "area": {
+        "prefecture": "東京都",
+        "city": "中央区",
+        "nearestStation": "銀座駅",
+        "walkMinutes": 2
+      },
+      "description": "サンプル店舗データ。 深夜営業 non-adult スナック。 ホール募集中 (性風俗 除外 line 遵守)。",
+      "openHours": "20:00 - 翌 2:00",
+      "regularHoliday": "日曜日",
+      "priceRange": "¥3,000 - ¥8,000",
+      "capacity": 12,
+      "reservationSupport": false,
+      "images": {
+        "count": 2,
+        "note": "[サンプル] 実画像なし"
+      },
+      "socialContact": {
+        "website": null,
+        "instagram": null,
+        "twitter": null
+      },
+      "reviewCount": 8,
+      "averageRating": 4.0,
+      "rankingScore": 75,
+      "postedAt": "2026-07-14",
+      "status": "sample",
+      "verifiedAnchors": {
+        "googleBusinessProfile": null,
+        "corporateNumber": null,
+        "phoneCallbackVerifiedAt": null,
+        "domainAge": null
+      }
+    },
+    {
+      "id": "sample-shop-004",
+      "name": "[サンプル] エステ ラウンジ",
+      "category": "esthetic",
+      "categoryLabel": "エステ・リラクゼーション",
+      "area": {
+        "prefecture": "大阪府",
+        "city": "大阪市中央区",
+        "nearestStation": "心斎橋駅",
+        "walkMinutes": 4
+      },
+      "description": "サンプル店舗データ。 フェイシャル + ボディ + リラクゼーション。 セラピスト募集。",
+      "openHours": "10:00 - 21:00",
+      "regularHoliday": "火曜日",
+      "priceRange": "¥5,500 - ¥20,000",
+      "capacity": 6,
+      "reservationSupport": true,
+      "images": {
+        "count": 8,
+        "note": "[サンプル] 実画像なし"
+      },
+      "socialContact": {
+        "website": "https://example.com/sample-esthetic",
+        "instagram": null,
+        "twitter": null
+      },
+      "reviewCount": 22,
+      "averageRating": 4.5,
+      "rankingScore": 88,
+      "postedAt": "2026-07-13",
+      "status": "sample",
+      "verifiedAnchors": {
+        "googleBusinessProfile": null,
+        "corporateNumber": null,
+        "phoneCallbackVerifiedAt": null,
+        "domainAge": null
+      }
+    }
+  ],
+  "categories": [
+    { "value": "food_service", "label": "飲食・接客", "count": 1 },
+    { "value": "hair_salon", "label": "ヘアサロン", "count": 1 },
+    { "value": "snack_bar", "label": "スナック (非風俗)", "count": 1 },
+    { "value": "esthetic", "label": "エステ・リラクゼーション", "count": 1 }
+  ],
+  "areas": [
+    { "value": "tokyo", "label": "東京都", "count": 2 },
+    { "value": "kanagawa", "label": "神奈川県", "count": 1 },
+    { "value": "osaka", "label": "大阪府", "count": 1 }
+  ]
+}
