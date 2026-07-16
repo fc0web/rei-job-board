@@ -1,0 +1,183 @@
+{
+  "schema": "rei-job-board-mypage-user-sample-v0.7-phase4",
+  "lastUpdated": "2026-07-17",
+  "honestScope": {
+    "sampleOnly": "全 mypage データは sample (dummy)。 login 本体 / real user data / DB persistence / 個情法 開示請求 flow は Phase 6 (弁護士 consultation + 反社チェック 完成後)",
+    "layerScope": "Layer 3 UI skeleton only。 求職者情報非収集 line は Rei-job-board main policy として維持、 本 mypage は お客様 (店舗利用者 = 顧客) 側の想定 skeleton",
+    "customerLineNote": "★ 重要: 本 mypage は 求職者 (job-seeker) mypage ではなく、 店舗利用者 (customer) 側の mypage skeleton。 求職者情報 (経歴 / スキル / 履歴書) は本サイトで一切収集しない (Base.astro footer 明記)",
+    "schemaReference": "src/data/schemas/user-mypage-schema.ts (Section A-H)"
+  },
+  "userContext": {
+    "userId": "sample-user-001",
+    "displayName": "[サンプル ユーザー]",
+    "email": "sample@example.com",
+    "membershipTier": "regular",
+    "pointsBalance": 1240,
+    "joinedAt": "2026-05-10",
+    "loginNote": "本 mypage は 実際には login していません。 auth 本体は Phase 6"
+  },
+  "profile": {
+    "displayName": "[サンプル ユーザー]",
+    "email": "sample@example.com",
+    "prefectureOfInterest": "東京都",
+    "nearestStation": "東京駅",
+    "language": "ja",
+    "profileImageUrl": null
+  },
+  "favorites": [
+    {
+      "shopId": "sample-shop-001",
+      "shopName": "[サンプル] カフェ 東京駅前",
+      "addedAt": "2026-07-10",
+      "notifyOnNewCoupon": true
+    },
+    {
+      "shopId": "sample-shop-002",
+      "shopName": "[サンプル] ヘアサロン Rei",
+      "addedAt": "2026-07-05",
+      "notifyOnNewCoupon": false
+    }
+  ],
+  "reservationHistory": [
+    {
+      "reservationId": "sample-res-101",
+      "shopId": "sample-shop-001",
+      "shopName": "[サンプル] カフェ 東京駅前",
+      "reservationDate": "2026-07-20",
+      "reservationStartTime": "12:00",
+      "durationMinutes": 60,
+      "status": "confirmed",
+      "totalPriceYen": 2500,
+      "canModify": true,
+      "canCancel": true
+    },
+    {
+      "reservationId": "sample-res-102",
+      "shopId": "sample-shop-002",
+      "shopName": "[サンプル] ヘアサロン Rei",
+      "reservationDate": "2026-07-08",
+      "reservationStartTime": "14:00",
+      "durationMinutes": 90,
+      "status": "completed",
+      "totalPriceYen": 8500,
+      "canModify": false,
+      "canCancel": false,
+      "hasReviewed": true
+    },
+    {
+      "reservationId": "sample-res-103",
+      "shopId": "sample-shop-004",
+      "shopName": "[サンプル] エステ ラウンジ",
+      "reservationDate": "2026-06-28",
+      "reservationStartTime": "16:00",
+      "durationMinutes": 60,
+      "status": "cancelled",
+      "totalPriceYen": 0,
+      "cancellationReason": "[サンプル] 都合により キャンセル",
+      "cancellationFeeYen": 0,
+      "canModify": false,
+      "canCancel": false
+    }
+  ],
+  "notificationPreference": {
+    "emailNewShopArrival": true,
+    "emailReservationReminder": true,
+    "emailReviewResponse": true,
+    "emailPointExpiryWarning": true,
+    "emailWeeklyRanking": false,
+    "emailFeaturedArticle": false,
+    "emailMarketingCampaign": false,
+    "emailPromotionalCoupon": true,
+    "pushEnabled": false,
+    "pushReservationReminder": false,
+    "pushFavoritePerformerDiary": false,
+    "pushRealtimeAvailability": false,
+    "lineNotifyEnabled": false,
+    "emailFrequencyLimit": "daily_digest",
+    "quietHoursStart": "22:00",
+    "quietHoursEnd": "08:00"
+  },
+  "membershipHistory": [
+    {
+      "changedAt": "2026-05-10",
+      "oldTier": null,
+      "newTier": "free",
+      "changeReason": "user_request",
+      "pointsAtChange": 0
+    },
+    {
+      "changedAt": "2026-06-20",
+      "oldTier": "free",
+      "newTier": "regular",
+      "changeReason": "point_threshold_reached",
+      "pointsAtChange": 1000
+    }
+  ],
+  "pointHistory": [
+    {
+      "id": "sample-pt-001",
+      "redemptionType": "coupon",
+      "pointsUsed": 300,
+      "redemptionValueYen": 500,
+      "redeemedAt": "2026-07-08",
+      "status": "completed",
+      "note": "[サンプル] ヘアサロン Rei 500 円 クーポン"
+    },
+    {
+      "id": "sample-pt-002",
+      "redemptionType": "gift_card",
+      "pointsUsed": 500,
+      "redemptionValueYen": 500,
+      "redeemedAt": "2026-06-15",
+      "status": "completed",
+      "note": "[サンプル] Amazon ギフト券 500 円"
+    }
+  ],
+  "reportsSubmitted": [
+    {
+      "reportId": "sample-rep-001",
+      "submittedAt": "2026-07-02",
+      "reportCategory": "misleading_pricing",
+      "targetType": "shop",
+      "targetId": "sample-shop-999",
+      "description": "[サンプル] 表示価格 と 実際 の 請求 が 異なる (景表法 二重価格 疑い)",
+      "currentStatus": "investigating",
+      "adminResponseNotes": "[サンプル] 対応中、 店舗 側 反応 待ち"
+    }
+  ],
+  "securitySettings": {
+    "activeSessions": [
+      {
+        "sessionId": "sample-sess-001",
+        "ipAddress": "***.***.***.***",
+        "userAgent": "Firefox 128 / macOS 14",
+        "lastActivityAt": "2026-07-17 09:15",
+        "isCurrent": true,
+        "geoLocationLabel": "東京都 (推定)"
+      },
+      {
+        "sessionId": "sample-sess-002",
+        "ipAddress": "***.***.***.***",
+        "userAgent": "Safari / iOS 18",
+        "lastActivityAt": "2026-07-15 22:41",
+        "isCurrent": false,
+        "geoLocationLabel": "神奈川県 (推定)"
+      }
+    ],
+    "trustedDevices": [
+      {
+        "deviceId": "sample-dev-001",
+        "deviceName": "MacBook Pro (personal)",
+        "lastSeenAt": "2026-07-17 09:15",
+        "trustedUntil": "2026-10-17"
+      }
+    ],
+    "mfaEnabled": false,
+    "mfaMethods": [],
+    "recentLoginHistory": [
+      { "attemptedAt": "2026-07-17 09:14", "ipAddress": "***.***.***.***", "success": true, "geoLocationLabel": "東京都" },
+      { "attemptedAt": "2026-07-15 22:40", "ipAddress": "***.***.***.***", "success": true, "geoLocationLabel": "神奈川県" },
+      { "attemptedAt": "2026-07-14 08:22", "ipAddress": "***.***.***.***", "success": false, "geoLocationLabel": "東京都" }
+    ]
+  }
+}

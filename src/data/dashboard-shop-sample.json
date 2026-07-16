@@ -1,0 +1,141 @@
+{
+  "schema": "rei-job-board-dashboard-shop-sample-v0.7-phase3",
+  "lastUpdated": "2026-07-17",
+  "honestScope": {
+    "sampleOnly": "全 dashboard データは sample (dummy)。 login 本体 + real data feed + shop_staff 権限 は Phase 6 (弁護士 consultation + 反社チェック 完成後)",
+    "layerScope": "Layer 3 UI skeleton only。 auth 本体 / DB persistence / Cloudflare Functions / Merkle audit log は本 phase 範囲外",
+    "schemaReference": "src/data/schemas/shop-dashboard-schema.ts (Section A-H)"
+  },
+  "shopContext": {
+    "shopId": "sample-shop-001",
+    "shopName": "[サンプル] カフェ 東京駅前",
+    "impersonatingRole": "shop_owner",
+    "loggedInStaffName": "[サンプル ログイン ユーザー]",
+    "loginNote": "本 dashboard は 実際には login していません。 auth 本体は Phase 6"
+  },
+  "statistics": {
+    "periodStart": "2026-07-01",
+    "periodEnd": "2026-07-16",
+    "pageViewCount": 428,
+    "uniqueVisitorCount": 312,
+    "averageSessionDurationSeconds": 87,
+    "reservationSubmittedCount": 12,
+    "reservationConfirmedCount": 10,
+    "reservationCancelledCount": 1,
+    "reservationNoShowCount": 0,
+    "reservationCompletedCount": 9,
+    "totalRevenueYen": 24500,
+    "newReviewsCount": 3,
+    "averageRating": 4.2,
+    "reviewSentimentSummary": {
+      "positive": 2,
+      "neutral": 1,
+      "negative": 0
+    },
+    "searchHitCount": 156,
+    "topReferralKeywords": [
+      { "keyword": "東京駅 カフェ", "count": 42 },
+      { "keyword": "ランチ 千代田区", "count": 28 },
+      { "keyword": "スタッフ募集 東京駅", "count": 15 }
+    ],
+    "couponClipCount": 34,
+    "couponUseCount": 8,
+    "reportsReceivedCount": 0
+  },
+  "reservationInbox": [
+    {
+      "reservationId": "sample-res-001",
+      "receivedAt": "2026-07-16 14:32",
+      "priority": "normal",
+      "status": "new_unread",
+      "customerNote": "[サンプル] 2 名 で 予約 希望、 18:00 頃",
+      "assignedStaffId": null
+    },
+    {
+      "reservationId": "sample-res-002",
+      "receivedAt": "2026-07-16 10:15",
+      "priority": "urgent",
+      "status": "read",
+      "customerNote": "[サンプル] 本日 13:00 に 席 空き ありますか?",
+      "assignedStaffId": "sample-staff-001",
+      "respondedAt": "2026-07-16 10:22"
+    },
+    {
+      "reservationId": "sample-res-003",
+      "receivedAt": "2026-07-15 19:44",
+      "priority": "normal",
+      "status": "action_taken",
+      "customerNote": "[サンプル] 明日 ランチ 3 名、 個室 希望",
+      "assignedStaffId": "sample-staff-001",
+      "respondedAt": "2026-07-15 20:03"
+    }
+  ],
+  "performers": [
+    {
+      "performerId": "sample-perf-001",
+      "displayName": "[サンプル] スタッフ A",
+      "role": "ホール",
+      "activeSince": "2026-05-01",
+      "bookingsThisMonth": 24,
+      "averageRating": 4.5,
+      "consentStatus": "active",
+      "photoDiaryCount": 3
+    },
+    {
+      "performerId": "sample-perf-002",
+      "displayName": "[サンプル] スタッフ B",
+      "role": "キッチン",
+      "activeSince": "2026-06-15",
+      "bookingsThisMonth": 0,
+      "averageRating": null,
+      "consentStatus": "active",
+      "photoDiaryCount": 0
+    }
+  ],
+  "paymentHistory": [
+    {
+      "paymentRecordId": "sample-pay-001",
+      "amountYen": 5500,
+      "contractManagementFeeYen": 5000,
+      "premiumMonthlyPlusYen": 500,
+      "paymentDate": "2026-07-01",
+      "paymentMethod": "bank_transfer",
+      "status": "paid",
+      "invoiceUrl": null,
+      "receiptUrl": null
+    },
+    {
+      "paymentRecordId": "sample-pay-002",
+      "amountYen": 5500,
+      "contractManagementFeeYen": 5000,
+      "premiumMonthlyPlusYen": 500,
+      "paymentDate": "2026-06-01",
+      "paymentMethod": "bank_transfer",
+      "status": "paid",
+      "invoiceUrl": null,
+      "receiptUrl": null
+    }
+  ],
+  "reportsReceived": [],
+  "notifications": [
+    {
+      "id": "sample-notif-001",
+      "notificationType": "contract_expiring_soon",
+      "title": "契約 更新 予告 (30 日前)",
+      "content": "[サンプル] 契約 は 2026-08-16 に 満了 予定です。 更新 手続き を お願いします。",
+      "publishedAt": "2026-07-16",
+      "readAt": null,
+      "actionRequired": true,
+      "actionDeadline": "2026-08-16"
+    },
+    {
+      "id": "sample-notif-002",
+      "notificationType": "law_compliance_notice",
+      "title": "フリーランス保護法 2026-11 施行 予告",
+      "content": "[サンプル] performer 追加 flow に 書面 契約 + 支払 条件 明示 + ハラスメント 相談 窓口 + 中途 解除 policy の 4 項目 が 必要 になります。",
+      "publishedAt": "2026-07-10",
+      "readAt": "2026-07-11",
+      "actionRequired": false
+    }
+  ]
+}

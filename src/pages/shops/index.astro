@@ -5,35 +5,102 @@ import shopsData from '../../data/shops.json';
 const shops = shopsData.shops;
 const categories = shopsData.categories;
 const areas = shopsData.areas;
+
+const parsePriceMin = (range: string): number => {
+  const m = range.match(/¥([\d,]+)/);
+  return m ? parseInt(m[1].replace(/,/g, ''), 10) : 0;
+};
 ---
 
-<Base title="店舗案内 — rei-job-board" description="店舗一覧 + カテゴリ + エリア filter (Layer 3 UI v0.7, sample data のみ)">
+<Base title="店舗案内 — rei-job-board" description="店舗一覧 + multi-filter + text search + sort (Layer 3 UI v0.7 Phase 2, sample data のみ)">
   <div style="padding: 12px 16px;">
     <div class="honest-banner">
-      <strong>Layer 3 UI v0.7 — サンプルデータのみ</strong>: 本 page の 全 店舗 は sample (dummy)。 実店舗掲載は 弁護士 consultation 完成 + 反社チェック + 掲載申込 form 実装後の別段階。 業種除外 line (性風俗特殊営業 該当 category) は schema level で判定済 (isExcludedCategory 遵守)。
+      <strong>Layer 3 UI v0.7 Phase 2 — サンプルデータのみ</strong>: 本 page の 全 店舗 は sample (dummy)。 実店舗掲載は 弁護士 consultation 完成 + 反社チェック + 掲載申込 form 実装後の別段階。 業種除外 line (性風俗特殊営業 該当 category) は schema level で判定済 (isExcludedCategory 遵守)。 filter/sort は client-side JS で SSR list を絞込み表示 (sample 4 件のみで動作確認 scale)。
     </div>
 
-    <h1 style="font-size: 1.3rem; margin: 12px 0;">店舗案内 ({shops.length} 件)</h1>
+    <h1 style="font-size: 1.3rem; margin: 12px 0;">店舗案内 <span id="result-count">({shops.length} 件)</span></h1>
 
     <section style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 12px; margin-bottom: 16px;">
-      <h2 style="font-size: 0.95rem; margin: 0 0 8px 0;">カテゴリ</h2>
-      <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-        <a href="/shops" style="padding: 4px 10px; border: 1px solid var(--accent); border-radius: 4px; text-decoration: none; font-size: 0.85rem; background: var(--accent); color: #fff;">全て</a>
-        {categories.map(cat => (
-          <a href={`/shops?category=${cat.value}`} style="padding: 4px 10px; border: 1px solid var(--border); border-radius: 4px; text-decoration: none; font-size: 0.85rem;">{cat.label} ({cat.count})</a>
-        ))}
+      <div style="margin-bottom: 12px;">
+        <label style="font-size: 0.85rem; display: block; margin-bottom: 4px;">
+          <strong>テキスト検索</strong> (店舗名 + 説明)
+        </label>
+        <input
+          type="search"
+          id="text-search"
+          placeholder="例: ヘアサロン, 銀座, ランチ ..."
+          style="width: 100%; max-width: 400px; padding: 6px 10px; border: 1px solid var(--border); border-radius: 4px; font-size: 0.9rem;"
+        />
       </div>
-      <h2 style="font-size: 0.95rem; margin: 12px 0 8px 0;">エリア</h2>
-      <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-        {areas.map(area => (
-          <a href={`/shops?area=${area.value}`} style="padding: 4px 10px; border: 1px solid var(--border); border-radius: 4px; text-decoration: none; font-size: 0.85rem;">{area.label} ({area.count})</a>
-        ))}
+
+      <div style="margin-bottom: 10px;">
+        <h2 style="font-size: 0.9rem; margin: 0 0 6px 0;">カテゴリ (multi-select)</h2>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          {categories.map(cat => (
+            <label style="font-size: 0.85rem; padding: 3px 8px; border: 1px solid var(--border); border-radius: 4px; cursor: pointer; background: #fff;">
+              <input type="checkbox" class="filter-category" value={cat.value} style="margin-right: 4px;" />
+              {cat.label} ({cat.count})
+            </label>
+          ))}
+        </div>
+      </div>
+
+      <div style="margin-bottom: 10px;">
+        <h2 style="font-size: 0.9rem; margin: 0 0 6px 0;">エリア (multi-select)</h2>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          {areas.map(area => (
+            <label style="font-size: 0.85rem; padding: 3px 8px; border: 1px solid var(--border); border-radius: 4px; cursor: pointer; background: #fff;">
+              <input type="checkbox" class="filter-area" value={area.label} style="margin-right: 4px;" />
+              {area.label} ({area.count})
+            </label>
+          ))}
+        </div>
+      </div>
+
+      <div style="margin-bottom: 10px;">
+        <h2 style="font-size: 0.9rem; margin: 0 0 6px 0;">価格帯 (下限)</h2>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <label style="font-size: 0.85rem;"><input type="radio" name="price-band" value="all" checked /> 指定なし</label>
+          <label style="font-size: 0.85rem;"><input type="radio" name="price-band" value="low" /> ¥3,000 未満</label>
+          <label style="font-size: 0.85rem;"><input type="radio" name="price-band" value="mid" /> ¥3,000 〜 ¥5,000</label>
+          <label style="font-size: 0.85rem;"><input type="radio" name="price-band" value="high" /> ¥5,000 以上</label>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+        <label style="font-size: 0.85rem;">
+          <strong>並び順:</strong>
+          <select id="sort-order" style="margin-left: 6px; padding: 3px 6px; font-size: 0.85rem;">
+            <option value="rating">評価 高い順</option>
+            <option value="new">新着順</option>
+            <option value="ranking">ランキング高い順</option>
+            <option value="name">店舗名 順</option>
+          </select>
+        </label>
+        <button
+          type="button"
+          id="reset-filter"
+          style="padding: 4px 12px; font-size: 0.85rem; background: #eee; border: 1px solid var(--border); border-radius: 4px; cursor: pointer;"
+        >
+          filter リセット
+        </button>
       </div>
     </section>
 
-    <ul style="list-style: none; padding: 0;">
+    <ul id="shops-list" style="list-style: none; padding: 0;">
       {shops.map(shop => (
-        <li style="border: 1px solid var(--border); border-radius: 6px; padding: 14px; margin-bottom: 10px; background: #fff;">
+        <li
+          class="shop-card"
+          data-category={shop.category}
+          data-area={shop.area.prefecture}
+          data-price-min={parsePriceMin(shop.priceRange)}
+          data-rating={shop.averageRating}
+          data-posted={shop.postedAt}
+          data-ranking={shop.rankingScore}
+          data-name={shop.name}
+          data-search={`${shop.name} ${shop.description} ${shop.area.nearestStation} ${shop.categoryLabel}`.toLowerCase()}
+          style="border: 1px solid var(--border); border-radius: 6px; padding: 14px; margin-bottom: 10px; background: #fff;"
+        >
           <h3 style="margin: 0 0 6px 0; font-size: 1.05rem;">
             <a href={`/shops/${shop.id}`} style="text-decoration: none; color: var(--accent);">{shop.name}</a>
           </h3>
@@ -59,8 +126,107 @@ const areas = shopsData.areas;
       ))}
     </ul>
 
+    <p id="no-results" style="display: none; text-align: center; padding: 24px; color: #666; font-size: 0.9rem;">
+      該当する店舗はありません。 filter を緩めてください。
+    </p>
+
     <p style="font-size: 0.85rem; color: #666; margin-top: 20px;">
       本 page は sample data のみ表示。 実店舗掲載は Layer 3 越境 (弁護士 consultation 完成後) の別段階。
     </p>
   </div>
+
+  <script is:inline>
+    (function () {
+      const list = document.getElementById('shops-list');
+      const countEl = document.getElementById('result-count');
+      const noResults = document.getElementById('no-results');
+      const searchInput = document.getElementById('text-search');
+      const sortSelect = document.getElementById('sort-order');
+      const resetBtn = document.getElementById('reset-filter');
+      if (!list || !countEl || !searchInput || !sortSelect) return;
+
+      const cards = Array.from(list.querySelectorAll('.shop-card'));
+      const totalCount = cards.length;
+
+      function getCheckedValues(cls) {
+        return Array.from(document.querySelectorAll('.' + cls + ':checked')).map(function (el) { return el.value; });
+      }
+
+      function matchPriceBand(priceMin, band) {
+        if (band === 'all') return true;
+        if (band === 'low') return priceMin < 3000;
+        if (band === 'mid') return priceMin >= 3000 && priceMin < 5000;
+        if (band === 'high') return priceMin >= 5000;
+        return true;
+      }
+
+      function apply() {
+        const query = searchInput.value.trim().toLowerCase();
+        const cats = getCheckedValues('filter-category');
+        const arez = getCheckedValues('filter-area');
+        const bandInput = document.querySelector('input[name="price-band"]:checked');
+        const band = bandInput ? bandInput.value : 'all';
+
+        let visibleCount = 0;
+        cards.forEach(function (card) {
+          const cat = card.dataset.category || '';
+          const area = card.dataset.area || '';
+          const priceMin = parseInt(card.dataset.priceMin || '0', 10);
+          const search = card.dataset.search || '';
+
+          const catOk = cats.length === 0 || cats.indexOf(cat) !== -1;
+          const areaOk = arez.length === 0 || arez.indexOf(area) !== -1;
+          const priceOk = matchPriceBand(priceMin, band);
+          const searchOk = query === '' || search.indexOf(query) !== -1;
+
+          const show = catOk && areaOk && priceOk && searchOk;
+          card.style.display = show ? '' : 'none';
+          if (show) visibleCount++;
+        });
+
+        countEl.textContent = '(' + visibleCount + ' / ' + totalCount + ' 件)';
+        noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+      }
+
+      function sortNow() {
+        const key = sortSelect.value;
+        const sorted = cards.slice().sort(function (a, b) {
+          if (key === 'rating') {
+            return parseFloat(b.dataset.rating || '0') - parseFloat(a.dataset.rating || '0');
+          }
+          if (key === 'new') {
+            return (b.dataset.posted || '').localeCompare(a.dataset.posted || '');
+          }
+          if (key === 'ranking') {
+            return parseInt(b.dataset.ranking || '0', 10) - parseInt(a.dataset.ranking || '0', 10);
+          }
+          if (key === 'name') {
+            return (a.dataset.name || '').localeCompare(b.dataset.name || '', 'ja');
+          }
+          return 0;
+        });
+        sorted.forEach(function (card) { list.appendChild(card); });
+      }
+
+      document.querySelectorAll('.filter-category, .filter-area, input[name="price-band"]').forEach(function (el) {
+        el.addEventListener('change', apply);
+      });
+      searchInput.addEventListener('input', apply);
+      sortSelect.addEventListener('change', function () { sortNow(); apply(); });
+      if (resetBtn) {
+        resetBtn.addEventListener('click', function () {
+          searchInput.value = '';
+          document.querySelectorAll('.filter-category, .filter-area').forEach(function (el) { el.checked = false; });
+          const bandAll = document.querySelector('input[name="price-band"][value="all"]');
+          if (bandAll) bandAll.checked = true;
+          sortSelect.value = 'rating';
+          sortNow();
+          apply();
+        });
+      }
+
+      sortNow();
+      apply();
+    })();
+  </script>
 </Base>

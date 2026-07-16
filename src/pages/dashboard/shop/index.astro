@@ -1,0 +1,275 @@
+---
+import Base from '../../../layouts/Base.astro';
+import dashboardData from '../../../data/dashboard-shop-sample.json';
+
+const { shopContext, statistics, reservationInbox, performers, paymentHistory, reportsReceived, notifications } = dashboardData;
+
+const priorityStyle = (p: string) =>
+  p === 'urgent' ? 'background: #ffe5e5; color: #a30;' : 'background: #eef3f8; color: #445;';
+
+const inboxStatusLabel = (s: string) => ({
+  new_unread: '未読',
+  read: '既読',
+  action_taken: '対応済'
+}[s] ?? s);
+
+const unreadNotifCount = notifications.filter(n => !n.readAt).length;
+const newInboxCount = reservationInbox.filter(r => r.status === 'new_unread').length;
+---
+
+<Base title="店舗 dashboard (skeleton) — rei-job-board" description="v0.7 Phase 3 shop dashboard skeleton — sample data + auth 本体は Phase 6">
+  <div style="padding: 12px 16px;">
+    <div class="honest-banner">
+      <strong>Layer 3 UI v0.7 Phase 3 — 店舗 dashboard SKELETON</strong>: 本 page は 未 login の 状態で 表示された sample dashboard です。 <strong>auth 本体 / real data feed / shop_staff 権限 / DB persistence / Cloudflare Functions</strong> は Phase 6 (弁護士 consultation + 反社チェック 完成後) の 別段階。 本 skeleton は Layer 2 schema (`shop-dashboard-schema.ts` Section A-H) の UI reference 実装のみ。
+    </div>
+
+    <section style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 12px; margin: 12px 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+      <div>
+        <h1 style="font-size: 1.2rem; margin: 0;">{shopContext.shopName}</h1>
+        <p style="margin: 4px 0; font-size: 0.85rem; color: #666;">
+          role: <code>{shopContext.impersonatingRole}</code> · user: {shopContext.loggedInStaffName}
+        </p>
+        <p style="margin: 4px 0; font-size: 0.8rem; color: var(--warn);">
+          ※ {shopContext.loginNote}
+        </p>
+      </div>
+      <div style="display: flex; gap: 6px;">
+        {newInboxCount > 0 && (
+          <span style="background: #ffe5e5; color: #a30; padding: 4px 8px; border-radius: 3px; font-size: 0.8rem;">
+            新着予約 {newInboxCount}
+          </span>
+        )}
+        {unreadNotifCount > 0 && (
+          <span style="background: #fff4e5; color: #a52; padding: 4px 8px; border-radius: 3px; font-size: 0.8rem;">
+            未読通知 {unreadNotifCount}
+          </span>
+        )}
+      </div>
+    </section>
+
+    <nav id="tabs" style="display: flex; gap: 4px; border-bottom: 2px solid var(--border); margin: 16px 0 0 0; overflow-x: auto;">
+      <button type="button" class="tab-btn is-active" data-tab="overview" style="padding: 8px 14px; background: none; border: none; cursor: pointer; font-size: 0.9rem; border-bottom: 2px solid transparent;">概況</button>
+      <button type="button" class="tab-btn" data-tab="reservations" style="padding: 8px 14px; background: none; border: none; cursor: pointer; font-size: 0.9rem; border-bottom: 2px solid transparent;">予約受信 ({reservationInbox.length})</button>
+      <button type="button" class="tab-btn" data-tab="performers" style="padding: 8px 14px; background: none; border: none; cursor: pointer; font-size: 0.9rem; border-bottom: 2px solid transparent;">performer ({performers.length})</button>
+      <button type="button" class="tab-btn" data-tab="payments" style="padding: 8px 14px; background: none; border: none; cursor: pointer; font-size: 0.9rem; border-bottom: 2px solid transparent;">決済履歴</button>
+      <button type="button" class="tab-btn" data-tab="reports" style="padding: 8px 14px; background: none; border: none; cursor: pointer; font-size: 0.9rem; border-bottom: 2px solid transparent;">通報受信 ({reportsReceived.length})</button>
+      <button type="button" class="tab-btn" data-tab="notifications" style="padding: 8px 14px; background: none; border: none; cursor: pointer; font-size: 0.9rem; border-bottom: 2px solid transparent;">通知 ({notifications.length})</button>
+    </nav>
+
+    <section id="tab-overview" class="tab-panel" style="padding: 16px 0;">
+      <h2 style="font-size: 1.05rem; margin: 0 0 12px 0;">概況 統計 ({statistics.periodStart} 〜 {statistics.periodEnd})</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px;">
+        <div style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 12px;">
+          <div style="font-size: 0.8rem; color: #666;">ページ view</div>
+          <div style="font-size: 1.6rem; font-weight: bold; color: var(--accent);">{statistics.pageViewCount}</div>
+          <div style="font-size: 0.75rem; color: #999;">UV: {statistics.uniqueVisitorCount}</div>
+        </div>
+        <div style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 12px;">
+          <div style="font-size: 0.8rem; color: #666;">予約 (提出→確定→完了)</div>
+          <div style="font-size: 1.3rem; font-weight: bold; color: var(--accent);">
+            {statistics.reservationSubmittedCount} → {statistics.reservationConfirmedCount} → {statistics.reservationCompletedCount}
+          </div>
+          <div style="font-size: 0.75rem; color: #999;">キャンセル {statistics.reservationCancelledCount} · no-show {statistics.reservationNoShowCount}</div>
+        </div>
+        <div style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 12px;">
+          <div style="font-size: 0.8rem; color: #666;">実収 (自己申告)</div>
+          <div style="font-size: 1.6rem; font-weight: bold; color: var(--accent);">¥{statistics.totalRevenueYen.toLocaleString()}</div>
+          <div style="font-size: 0.75rem; color: #999;">期間内 完了 分</div>
+        </div>
+        <div style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 12px;">
+          <div style="font-size: 0.8rem; color: #666;">口コミ 平均 評価</div>
+          <div style="font-size: 1.6rem; font-weight: bold; color: var(--accent);">★ {statistics.averageRating}</div>
+          <div style="font-size: 0.75rem; color: #999;">新規 {statistics.newReviewsCount} 件 (+{statistics.reviewSentimentSummary.positive} / ~{statistics.reviewSentimentSummary.neutral} / -{statistics.reviewSentimentSummary.negative})</div>
+        </div>
+        <div style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 12px;">
+          <div style="font-size: 0.8rem; color: #666;">検索 hit</div>
+          <div style="font-size: 1.6rem; font-weight: bold; color: var(--accent);">{statistics.searchHitCount}</div>
+        </div>
+        <div style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 12px;">
+          <div style="font-size: 0.8rem; color: #666;">クーポン (clip / use)</div>
+          <div style="font-size: 1.6rem; font-weight: bold; color: var(--accent);">{statistics.couponClipCount} / {statistics.couponUseCount}</div>
+        </div>
+      </div>
+
+      <h3 style="font-size: 0.95rem; margin: 16px 0 6px 0;">Top 検索 keyword</h3>
+      <ul style="list-style: none; padding: 0;">
+        {statistics.topReferralKeywords.map(k => (
+          <li style="background: #fff; border: 1px solid var(--border); border-radius: 4px; padding: 6px 12px; margin-bottom: 4px; display: flex; justify-content: space-between; font-size: 0.9rem;">
+            <span>{k.keyword}</span>
+            <span style="color: #666;">{k.count} 回</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section id="tab-reservations" class="tab-panel" style="padding: 16px 0; display: none;">
+      <h2 style="font-size: 1.05rem; margin: 0 0 12px 0;">予約 受信 inbox</h2>
+      <ul style="list-style: none; padding: 0;">
+        {reservationInbox.map(r => (
+          <li style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 12px; margin-bottom: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+              <span style={`padding: 2px 8px; border-radius: 3px; font-size: 0.75rem; ${priorityStyle(r.priority)}`}>
+                {r.priority === 'urgent' ? '緊急' : '通常'}
+              </span>
+              <span style="font-size: 0.85rem; color: #666;">{r.receivedAt} · {inboxStatusLabel(r.status)}</span>
+            </div>
+            <p style="margin: 6px 0 4px 0; font-size: 0.9rem;">{r.customerNote}</p>
+            {r.assignedStaffId && (
+              <p style="margin: 4px 0; font-size: 0.8rem; color: #666;">
+                担当: <code>{r.assignedStaffId}</code>
+                {r.respondedAt && <span> · 対応 {r.respondedAt}</span>}
+              </p>
+            )}
+            <div style="margin-top: 8px; display: flex; gap: 6px;">
+              <button type="button" disabled style="padding: 4px 10px; font-size: 0.8rem; background: #eee; border: 1px solid var(--border); border-radius: 3px; cursor: not-allowed;">対応する (Phase 6)</button>
+              <button type="button" disabled style="padding: 4px 10px; font-size: 0.8rem; background: #eee; border: 1px solid var(--border); border-radius: 3px; cursor: not-allowed;">スタッフ assign (Phase 6)</button>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <p style="font-size: 0.8rem; color: #666;">※ 実 予約 受信 / 対応 record は Phase 6 (弁護士 consultation 後 + Cloudflare Functions)。 本 skeleton は sample data 表示のみ。</p>
+    </section>
+
+    <section id="tab-performers" class="tab-panel" style="padding: 16px 0; display: none;">
+      <h2 style="font-size: 1.05rem; margin: 0 0 12px 0;">performer 一覧 (在籍 スタッフ)</h2>
+      <table style="width: 100%; border-collapse: collapse; background: #fff; font-size: 0.9rem;">
+        <thead>
+          <tr style="background: #f5f5f5; border-bottom: 1px solid var(--border);">
+            <th style="text-align: left; padding: 8px 10px;">名前</th>
+            <th style="text-align: left; padding: 8px 10px;">役割</th>
+            <th style="text-align: left; padding: 8px 10px;">在籍 開始</th>
+            <th style="text-align: right; padding: 8px 10px;">今月 予約</th>
+            <th style="text-align: right; padding: 8px 10px;">評価</th>
+            <th style="text-align: right; padding: 8px 10px;">日記</th>
+            <th style="text-align: left; padding: 8px 10px;">consent</th>
+          </tr>
+        </thead>
+        <tbody>
+          {performers.map(p => (
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 8px 10px;"><code>{p.displayName}</code></td>
+              <td style="padding: 8px 10px;">{p.role}</td>
+              <td style="padding: 8px 10px;">{p.activeSince}</td>
+              <td style="padding: 8px 10px; text-align: right;">{p.bookingsThisMonth}</td>
+              <td style="padding: 8px 10px; text-align: right;">{p.averageRating !== null ? '★ ' + p.averageRating : '-'}</td>
+              <td style="padding: 8px 10px; text-align: right;">{p.photoDiaryCount}</td>
+              <td style="padding: 8px 10px;">
+                <span style="background: #e5f3e5; color: #363; padding: 2px 6px; border-radius: 3px; font-size: 0.75rem;">{p.consentStatus}</span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div style="margin-top: 12px; display: flex; gap: 6px;">
+        <button type="button" disabled style="padding: 4px 10px; font-size: 0.85rem; background: #eee; border: 1px solid var(--border); border-radius: 3px; cursor: not-allowed;">+ performer 追加 (Phase 6: フリーランス保護法 4 項目 workflow)</button>
+      </div>
+      <p style="font-size: 0.8rem; color: #666; margin-top: 8px;">※ performer 追加 / 削除 / consent 管理 は フリーランス保護法 2026-11 施行 準拠 workflow が Phase 6 で 実装。 skeleton は 一覧 表示のみ。</p>
+    </section>
+
+    <section id="tab-payments" class="tab-panel" style="padding: 16px 0; display: none;">
+      <h2 style="font-size: 1.05rem; margin: 0 0 12px 0;">決済 履歴</h2>
+      <table style="width: 100%; border-collapse: collapse; background: #fff; font-size: 0.9rem;">
+        <thead>
+          <tr style="background: #f5f5f5; border-bottom: 1px solid var(--border);">
+            <th style="text-align: left; padding: 8px 10px;">日付</th>
+            <th style="text-align: right; padding: 8px 10px;">金額</th>
+            <th style="text-align: right; padding: 8px 10px;">内訳 (基本)</th>
+            <th style="text-align: right; padding: 8px 10px;">内訳 (premium)</th>
+            <th style="text-align: left; padding: 8px 10px;">方法</th>
+            <th style="text-align: left; padding: 8px 10px;">状態</th>
+            <th style="text-align: left; padding: 8px 10px;">領収書</th>
+          </tr>
+        </thead>
+        <tbody>
+          {paymentHistory.map(p => (
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 8px 10px;">{p.paymentDate}</td>
+              <td style="padding: 8px 10px; text-align: right;">¥{p.amountYen.toLocaleString()}</td>
+              <td style="padding: 8px 10px; text-align: right;">¥{p.contractManagementFeeYen.toLocaleString()}</td>
+              <td style="padding: 8px 10px; text-align: right;">{p.premiumMonthlyPlusYen ? '¥' + p.premiumMonthlyPlusYen.toLocaleString() : '-'}</td>
+              <td style="padding: 8px 10px;">{p.paymentMethod}</td>
+              <td style="padding: 8px 10px;">
+                <span style="background: #e5f3e5; color: #363; padding: 2px 6px; border-radius: 3px; font-size: 0.75rem;">{p.status}</span>
+              </td>
+              <td style="padding: 8px 10px;">
+                {p.receiptUrl ? <a href={p.receiptUrl}>DL</a> : <span style="color: #999;">未発行</span>}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p style="font-size: 0.8rem; color: #666; margin-top: 8px;">※ インボイス制度 対応 領収書 / 支払 flow は Phase 6 (Cloudflare Functions + 決済 provider integration)。 skeleton は 履歴 表示のみ。</p>
+    </section>
+
+    <section id="tab-reports" class="tab-panel" style="padding: 16px 0; display: none;">
+      <h2 style="font-size: 1.05rem; margin: 0 0 12px 0;">通報 受信</h2>
+      {reportsReceived.length === 0 ? (
+        <p style="background: #e5f3e5; color: #363; padding: 12px; border-radius: 4px; font-size: 0.9rem;">
+          現在 受信 中 の 通報 は ありません。 (sample data の default state)
+        </p>
+      ) : (
+        <ul style="list-style: none; padding: 0;">
+          {reportsReceived.map((r: any) => (
+            <li style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 12px; margin-bottom: 8px;">
+              <div style="font-weight: bold;">{r.reportCategory}</div>
+              <div style="font-size: 0.85rem; color: #666;">{r.submittedAt} · {r.status}</div>
+            </li>
+          ))}
+        </ul>
+      )}
+      <p style="font-size: 0.8rem; color: #666; margin-top: 8px;">※ プロバイダ責任制限法 対応 通報 review workflow は Phase 6 (admin-schema Report 連動)。 skeleton は 空 state 表示のみ。</p>
+    </section>
+
+    <section id="tab-notifications" class="tab-panel" style="padding: 16px 0; display: none;">
+      <h2 style="font-size: 1.05rem; margin: 0 0 12px 0;">system 通知</h2>
+      <ul style="list-style: none; padding: 0;">
+        {notifications.map(n => (
+          <li style={`background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 12px; margin-bottom: 8px; ${!n.readAt ? 'border-left: 4px solid var(--warn);' : ''}`}>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px;">
+              <span style="font-weight: bold; font-size: 0.95rem;">{n.title}</span>
+              <span style="font-size: 0.8rem; color: #666;">{n.publishedAt}{n.readAt ? '' : ' · 未読'}</span>
+            </div>
+            <p style="margin: 6px 0; font-size: 0.9rem;">{n.content}</p>
+            <div style="font-size: 0.8rem; color: #666;">
+              type: <code>{n.notificationType}</code>
+              {n.actionRequired && (
+                <span style="color: var(--warn); margin-left: 8px;">
+                  ※ 要 対応
+                  {n.actionDeadline && ` (期限 ${n.actionDeadline})`}
+                </span>
+              )}
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <style is:global>
+      .tab-btn.is-active {
+        color: var(--accent);
+        font-weight: bold;
+        border-bottom-color: var(--accent) !important;
+      }
+      .tab-btn:hover {
+        background: #f5f5f5;
+      }
+    </style>
+
+    <script is:inline>
+      (function () {
+        const btns = Array.from(document.querySelectorAll('.tab-btn'));
+        const panels = Array.from(document.querySelectorAll('.tab-panel'));
+        btns.forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            const tab = btn.getAttribute('data-tab');
+            btns.forEach(function (b) { b.classList.remove('is-active'); });
+            btn.classList.add('is-active');
+            panels.forEach(function (p) {
+              p.style.display = p.id === 'tab-' + tab ? '' : 'none';
+            });
+          });
+        });
+      })();
+    </script>
+  </div>
+</Base>
