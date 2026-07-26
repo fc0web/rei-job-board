@@ -1,0 +1,79 @@
+{
+  "schema": "rei-job-board-news-v0.8.1",
+  "lastUpdated": "2026-07-27",
+  "honestScope": {
+    "sampleOnly": "全 news は sample (dummy)。 実 news 掲載 + CMS 統合 + editorial workflow は Phase 6 (弁護士 consultation 後)",
+    "prLabelPolicy": "isPRLabelRequired: true の 記事 は 景表法 + ステマ 規制 2023 対応で 「PR」 label 表示必須。 sample は全て false (editorial only)",
+    "categoryTypes": "postCategory は pr-content-schema.ts SiteNewsPost 準拠 (system / campaign / featured_article / notice / legal_notice)",
+    "layerPositioning": "Layer 3 UI skeleton のみ、 schema (pr-content-schema.ts) の SiteNewsPost 一部 field を可視化"
+  },
+  "news": [
+    {
+      "id": "news-001",
+      "title": "rei-job-board サイト運用開始のお知らせ (v0.8 段階)",
+      "slug": "news-001",
+      "postCategory": "system",
+      "isPinned": true,
+      "isPRLabelRequired": false,
+      "publishedAt": "2026-07-27T09:00:00+09:00",
+      "authorName": "編集部",
+      "language": "ja",
+      "excerpt": "rei-job-board は 完全無料 の 求人マップ platform です。 求職者情報非収集 line を厳守し、 応募連絡は 各求人投稿者の連絡先へ 直接お願いする 雑誌型 設計です。",
+      "content": "本サイトは Astro static + Cloudflare Pages で運用予定の 個人 hobby scale プロジェクトです。 改正職業安定法 (2022-10-01 施行) の 「特定募集情報等提供事業者 届出制」 の対象外となる 「求職者情報非収集」 設計を 永続原則として厳守します。\n\n現在の実装段階は v0.8 Phase 5 (messages DM UI skeleton まで) で、 認証 / DB persistence / 実 messaging backend は Phase 6 (弁護士 consultation 後) の別段階です。 hobby scale の試行プロジェクト として、 Indeed / タウンワーク / バイトル 等の既存大手と直接競合する設計ではありません。"
+    },
+    {
+      "id": "news-002",
+      "title": "フリーランス保護法 (2026-11 施行予定) — 求人投稿者への影響",
+      "slug": "news-002",
+      "postCategory": "legal_notice",
+      "isPinned": true,
+      "isPRLabelRequired": false,
+      "publishedAt": "2026-07-25T10:30:00+09:00",
+      "authorName": "編集部",
+      "language": "ja",
+      "excerpt": "「特定受託事業者に係る取引の適正化等に関する法律」 (2026-11-01 施行予定) の 主要要求と、 業務委託ベースで 人材を募集する 求人投稿者への影響を まとめます。",
+      "content": "フリーランス保護法 (正式名称: 特定受託事業者に係る取引の適正化等に関する法律) は 2026 年 11 月 1 日 施行予定です (変更可能性あり — 最新情報は 内閣官房 / 中小企業庁 で verify)。\n\n業務委託ベースで 人材を募集する 求人投稿者側には 以下の義務が発生する見込みです — (1) 書面交付義務 (契約条件の明示)、(2) 報酬支払期日 60 日以内、(3) ハラスメント対策窓口の設置、(4) 中途解除の 30 日以上事前予告、(5) 一定期間以上の継続委託における育児/介護配慮。\n\n本サイトは 求人 「情報提供」 のみで 契約主体ではないため 直接の義務主体ではありませんが、 掲載求人が これらの法定義務を満たさない場合の 通報窓口 (footer 参照) を設置しています。"
+    },
+    {
+      "id": "news-003",
+      "title": "[サンプル特集] 東京駅前エリアの 飲食・接客 求人 3 店まとめ",
+      "slug": "news-003",
+      "postCategory": "featured_article",
+      "isPinned": false,
+      "isPRLabelRequired": false,
+      "publishedAt": "2026-07-20T14:00:00+09:00",
+      "authorName": "編集部",
+      "language": "ja",
+      "featuredShopIds": ["sample-shop-001"],
+      "excerpt": "[サンプル editorial] 東京駅前 3 分圏内の 飲食・接客 求人を editorial pick で紹介。 sample dummy data のため 実店舗ではありません。",
+      "content": "★ 本記事は sample editorial です。 掲載店舗は dummy sample であり 実店舗ではありません。 実運用時は 有料掲載の場合 isPRLabelRequired: true として 「PR」 label 表示が景表法 + ステマ 規制 2023 対応で必須です。\n\n[サンプル] カフェ 東京駅前 (sample-shop-001) は 昼はランチカフェ、 夜は軽食バーの 2 形態運営。 スタッフ随時募集中とのこと。 徒歩 3 分と アクセス良好で 通勤利便性も高い立地。"
+    },
+    {
+      "id": "news-004",
+      "title": "夏休み期間 短期スタッフ募集 特集 (2026-08)",
+      "slug": "news-004",
+      "postCategory": "campaign",
+      "isPinned": false,
+      "isPRLabelRequired": false,
+      "publishedAt": "2026-07-18T11:00:00+09:00",
+      "expiresAt": "2026-08-31T23:59:59+09:00",
+      "authorName": "編集部",
+      "language": "ja",
+      "excerpt": "夏休み期間 (8 月) の 短期スタッフ募集を まとめて紹介する 期間限定 特集ページ (sample)。",
+      "content": "夏休み期間 の 短期スタッフ募集を editorial pick で 集約する 想定 campaign 特集です。 期間終了後 (expiresAt) は 自動で archive される 想定 (Phase 6 実装時 CMS 側で lifecycle 管理)。\n\n短期・繁忙期対応の 求人は 労働時間・報酬・雇用形態 (雇用契約 or 業務委託) の 明示が特に重要です。 応募前に 各求人投稿者へ 直接確認してください。"
+    },
+    {
+      "id": "news-005",
+      "title": "通報窓口の使い方 — 詐欺求人・闇バイト等を見かけた場合",
+      "slug": "news-005",
+      "postCategory": "notice",
+      "isPinned": true,
+      "isPRLabelRequired": false,
+      "publishedAt": "2026-07-15T09:00:00+09:00",
+      "authorName": "編集部",
+      "language": "ja",
+      "excerpt": "詐欺求人・闇バイト募集・受け子・出し子募集 等を見かけた場合の 通報窓口の使い方を まとめます。 警察相談 #9110 も併せて案内。",
+      "content": "本サイトの /report 通報窓口では 以下の 通報を受け付けています — (1) 詐欺求人 (実在しない求人 / 応募後の高額商材販売等)、(2) 闇バイト募集 (受け子・出し子・特殊詐欺関連)、(3) 反社会的勢力関連の疑いのある求人、(4) 労働条件の 過度な虚偽表示、(5) 個人情報の 不当収集を意図する求人。\n\n緊急性が高い場合 (実害発生時 / 加害の疑い) は 警察相談電話 #9110 (全国共通) を 優先してください。 労働条件トラブルは 厚生労働省 労働相談窓口 も 選択肢です。 本サイトは プロバイダ責任制限法 4 条 対応の 発信者情報開示 request workflow を Phase 6 で実装予定です。"
+    }
+  ]
+}

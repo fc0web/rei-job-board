@@ -1,0 +1,110 @@
+---
+import Base from '../../layouts/Base.astro';
+import newsData from '../../data/news-sample.json';
+import shopsData from '../../data/shops.json';
+
+export function getStaticPaths() {
+  return newsData.news.map(n => ({
+    params: { id: n.slug },
+    props: { news: n }
+  }));
+}
+
+const { news } = Astro.props;
+
+const categoryLabel = (c: string) => ({
+  system: 'システム',
+  campaign: 'キャンペーン',
+  featured_article: '特集',
+  notice: 'お知らせ',
+  legal_notice: '法令 notice'
+}[c] ?? c);
+
+const categoryStyle = (c: string) => ({
+  system: 'background: #eef3f8; color: #245;',
+  campaign: 'background: #fff4e5; color: #a52;',
+  featured_article: 'background: #f3e8ed; color: #7a3f5a;',
+  notice: 'background: #e5f3e5; color: #363;',
+  legal_notice: 'background: #fff5f5; color: #c43;'
+}[c] ?? 'background: #f5f5f5; color: #666;');
+
+const featuredShops = (news.featuredShopIds || [])
+  .map(id => shopsData.shops.find(s => s.id === id))
+  .filter(Boolean);
+---
+
+<Base title={`${news.title} — 特集・お知らせ — rei-job-board`} description={news.excerpt}>
+  <div style="padding: 12px 16px;">
+    {news.isPRLabelRequired && (
+      <div style="background: var(--warn); color: #fff; padding: 6px 12px; border-radius: 4px; margin: 8px 0; font-size: 0.85rem; font-weight: bold;">
+        PR — 本記事は 有料掲載 (paid_feature) に該当します。 景表法 + ステマ 規制 2023 対応の 明示表示です。
+      </div>
+    )}
+
+    <div class="honest-banner">
+      <strong>Layer 3 UI v0.8.1 — news detail SKELETON</strong>: 本 page は sample news の detail 表示です。 コメント / いいね / 共有 button は Phase 6 (弁護士 consultation 後)。
+    </div>
+
+    <div style="margin: 12px 0; font-size: 0.85rem;">
+      <a href="/news" style="color: var(--accent); text-decoration: none;">&larr; 特集・お知らせ一覧に戻る</a>
+    </div>
+
+    <article style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 20px; margin: 12px 0;">
+      <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;">
+        <span style={`padding: 3px 10px; border-radius: 3px; font-size: 0.8rem; ${categoryStyle(news.postCategory)}`}>
+          {categoryLabel(news.postCategory)}
+        </span>
+        {news.isPinned && (
+          <span style="background: var(--accent); color: #fff; padding: 2px 10px; border-radius: 3px; font-size: 0.75rem; font-weight: bold;">
+            📌 pinned
+          </span>
+        )}
+        <span style="font-size: 0.85rem; color: #666;">
+          {news.publishedAt.slice(0, 10)}
+          {news.authorName && <span> · {news.authorName}</span>}
+          {news.language && news.language !== 'ja' && <span> · 🌐 {news.language}</span>}
+        </span>
+      </div>
+
+      <h1 style="font-size: 1.5rem; margin: 0 0 8px 0; color: var(--accent); line-height: 1.4;">
+        {news.title}
+      </h1>
+
+      <p style="font-size: 0.95rem; color: #555; margin: 8px 0 20px 0; padding: 10px 12px; background: #f8f8f8; border-radius: 4px;">
+        {news.excerpt}
+      </p>
+
+      <div style="font-size: 0.98rem; line-height: 1.8; color: #222; white-space: pre-wrap;">
+        {news.content}
+      </div>
+
+      {news.expiresAt && (
+        <p style="margin-top: 16px; padding: 8px 12px; background: #fff4e5; border-left: 3px solid #f5c47a; font-size: 0.85rem; color: #555;">
+          ⏰ 公開期限: {news.expiresAt.slice(0, 10)} (この日付以降は 一覧から自動 archive される想定 — Phase 6 実装)
+        </p>
+      )}
+
+      {featuredShops.length > 0 && (
+        <section style="margin-top: 20px; padding: 14px; background: #f8f8f8; border-radius: 6px;">
+          <h2 style="font-size: 1rem; margin: 0 0 8px 0;">関連掲載店舗 ({featuredShops.length})</h2>
+          <ul style="list-style: none; padding: 0; margin: 0;">
+            {featuredShops.map(s => (
+              <li style="padding: 8px 12px; background: #fff; border: 1px solid var(--border); border-radius: 4px; margin-bottom: 6px;">
+                <a href={`/shops/${s.id}`} style="color: var(--accent); text-decoration: none; font-weight: bold;">
+                  {s.name}
+                </a>
+                <span style="font-size: 0.85rem; color: #666; margin-left: 8px;">
+                  {s.categoryLabel} · {s.area.prefecture}{s.area.city}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+    </article>
+
+    <div style="margin-top: 16px; padding: 10px 12px; background: #fff4e5; border: 1px solid #f5c47a; border-radius: 4px; font-size: 0.8rem; color: #555;">
+      <strong style="color: var(--warn);">honest scope:</strong> 本 news は sample dummy content です。 実 news 配信時は 著作権法 + 景表法 + プロバイダ責任制限法 (誤情報訂正 workflow) + 個情法 (掲載関係者の同意管理) 対応が必要 = Phase 6。
+    </div>
+  </div>
+</Base>

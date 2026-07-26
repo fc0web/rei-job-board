@@ -1,0 +1,92 @@
+---
+import Base from '../../layouts/Base.astro';
+import newsData from '../../data/news-sample.json';
+
+const { news } = newsData;
+
+const categoryLabel = (c: string) => ({
+  system: 'システム',
+  campaign: 'キャンペーン',
+  featured_article: '特集',
+  notice: 'お知らせ',
+  legal_notice: '法令 notice'
+}[c] ?? c);
+
+const categoryStyle = (c: string) => ({
+  system: 'background: #eef3f8; color: #245;',
+  campaign: 'background: #fff4e5; color: #a52;',
+  featured_article: 'background: #f3e8ed; color: #7a3f5a;',
+  notice: 'background: #e5f3e5; color: #363;',
+  legal_notice: 'background: #fff5f5; color: #c43;'
+}[c] ?? 'background: #f5f5f5; color: #666;');
+
+const now = new Date('2026-07-27T15:00:00+09:00');
+const active = news
+  .filter(n => !n.expiresAt || new Date(n.expiresAt).getTime() > now.getTime())
+  .sort((a, b) => {
+    // pinned 優先 → 最新順
+    if (a.isPinned && !b.isPinned) return -1;
+    if (!a.isPinned && b.isPinned) return 1;
+    return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
+  });
+---
+
+<Base title="特集・お知らせ — rei-job-board" description="v0.8.1 news UI skeleton — サイト運用のお知らせ / 法令 notice / editorial 特集 sample">
+  <div style="padding: 12px 16px;">
+    <div class="honest-banner">
+      <strong>Layer 3 UI v0.8.1 — news SKELETON</strong>: 本 page は sample news の 一覧表示です。 <strong>実 CMS 統合 / editorial workflow / 有料掲載の PR label 検証 / 多言語配信</strong> は Phase 6 (弁護士 consultation 後)。 sample 全件 <code>isPRLabelRequired: false</code> = editorial only。 実運用で 有料掲載 (paid_feature) を扱う場合 は 景表法 + ステマ 規制 2023 対応で 「PR」 label 表示必須。
+    </div>
+
+    <section style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 12px; margin: 12px 0;">
+      <h1 style="font-size: 1.3rem; margin: 0;">特集・お知らせ</h1>
+      <p style="margin: 4px 0 0 0; font-size: 0.85rem; color: #666;">
+        表示中: {active.length} 件 · 全 {news.length} 件 · pinned: {active.filter(n => n.isPinned).length}
+      </p>
+    </section>
+
+    <ul style="list-style: none; padding: 0; margin: 0;">
+      {active.map(n => (
+        <li style={`background: #fff; border: 1px solid var(--border); border-left: ${n.isPinned ? '4px solid var(--accent)' : '1px solid var(--border)'}; border-radius: 6px; padding: 12px 14px; margin-bottom: 8px;`}>
+          <a href={`/news/${n.slug}`} style="text-decoration: none; color: inherit; display: block;">
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px;">
+              <span style={`padding: 2px 8px; border-radius: 3px; font-size: 0.75rem; ${categoryStyle(n.postCategory)}`}>
+                {categoryLabel(n.postCategory)}
+              </span>
+              {n.isPinned && (
+                <span style="background: var(--accent); color: #fff; padding: 1px 8px; border-radius: 3px; font-size: 0.7rem; font-weight: bold;">
+                  📌 pinned
+                </span>
+              )}
+              {n.isPRLabelRequired && (
+                <span style="background: var(--warn); color: #fff; padding: 1px 8px; border-radius: 3px; font-size: 0.7rem; font-weight: bold;">
+                  PR
+                </span>
+              )}
+              {n.expiresAt && (
+                <span style="font-size: 0.75rem; color: #888;">
+                  期限: {n.expiresAt.slice(0, 10)}
+                </span>
+              )}
+              <span style="font-size: 0.75rem; color: #888; margin-left: auto;">
+                {n.publishedAt.slice(0, 10)}
+              </span>
+            </div>
+            <h2 style="font-size: 1.05rem; margin: 0 0 6px 0; color: var(--accent);">{n.title}</h2>
+            <p style="margin: 0; font-size: 0.9rem; color: #444;">{n.excerpt}</p>
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <div style="margin-top: 16px; padding: 12px; background: #f8f8f8; border-radius: 6px; font-size: 0.85rem; color: #555;">
+      <strong style="color: var(--warn);">Phase 6 実装予定:</strong>
+      <ul style="margin: 6px 0 0 0; padding-left: 20px;">
+        <li>editorial CMS 統合 (news 投稿・更新・削除 workflow、 admin 権限管理)</li>
+        <li>有料掲載 (paid_feature) の PR label 自動検証 (景表法 + ステマ 規制 2023)</li>
+        <li>expiresAt 自動 archive lifecycle (lifecycle cron)</li>
+        <li>多言語配信 (ja / en / zh-Hans / zh-Hant / ko、 pr-content-schema.ts 準拠)</li>
+        <li>news 通知配信 (mypage 通知設定 / email / push 連動)</li>
+      </ul>
+    </div>
+  </div>
+</Base>
