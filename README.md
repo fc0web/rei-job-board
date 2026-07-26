@@ -16,8 +16,9 @@
 - v0.7 Phase 1 (2026-07-16): Layer 3 UI `/shops` + `/reviews` + `/ranking` + shop detail
 - v0.7 Phase 2+3+4 (2026-07-17): 検索 multi-filter + `/dashboard/shop` skeleton + `/mypage` skeleton
 - v0.8 Phase 5 (2026-07-27): `/messages` DM skeleton (thread 一覧 + [thread] detail)
-- v0.8.1 (2026-07-27): `/news` 特集・お知らせ UI skeleton (list + [id] detail、 5 sample news、 pr-content-schema.ts SiteNewsPost 準拠) — 本 phase
-- Phase 6: 認証 / DB persistence / message 送信 / editorial CMS 統合 / 発信者情報開示 workflow (弁護士 consultation 後)
+- v0.8.1 (2026-07-27): `/news` 特集・お知らせ UI skeleton (list + [id] detail、 5 sample news、 pr-content-schema.ts SiteNewsPost 準拠)
+- v0.8.2 (2026-07-27): `/ranking-criteria` ランキング基準 透明化 page (RankingType 8 種 × 4 field + 景表法 3 原則) — 本 phase
+- Phase 6: 認証 / DB persistence / message 送信 / editorial CMS 統合 / 発信者情報開示 workflow / weightings 数値公開 (弁護士 consultation 後)
 
 ### v0.8 note (2026-07-27) — Phase 5 messaging DM UI skeleton
 
