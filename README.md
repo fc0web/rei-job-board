@@ -18,8 +18,9 @@
 - v0.8 Phase 5 (2026-07-27): `/messages` DM skeleton (thread 一覧 + [thread] detail)
 - v0.8.1 (2026-07-27): `/news` 特集・お知らせ UI skeleton (list + [id] detail、 5 sample news、 pr-content-schema.ts SiteNewsPost 準拠)
 - v0.8.2 (2026-07-27): `/ranking-criteria` ランキング基準 透明化 page (RankingType 8 種 × 4 field + 景表法 3 原則)
-- v0.8.3 (2026-07-27): `/apply-flow` 応募 flow 説明 page (6 step × 3 field + 収集しない/aggregated 集計項目 tabular + 3 法令根拠) — 本 phase
-- Phase 6: 認証 / DB persistence / message 送信 / editorial CMS 統合 / 発信者情報開示 workflow / weightings 数値公開 (弁護士 consultation 後)
+- v0.8.3 (2026-07-27): `/apply-flow` 応募 flow 説明 page (6 step × 3 field + 収集しない/aggregated 集計項目 tabular + 3 法令根拠)
+- v0.8.4 (2026-07-27): `/privacy` プライバシーポリシー (12 section legal document 化、 apply-flow の legal 化) — 本 phase
+- Phase 6: 認証 / DB persistence / message 送信 / editorial CMS 統合 / 発信者情報開示 workflow / weightings 数値公開 / privacy 弁護士 final review (弁護士 consultation 後)
 
 ### v0.8 note (2026-07-27) — Phase 5 messaging DM UI skeleton
 

@@ -1,0 +1,130 @@
+---
+import Base from '../layouts/Base.astro';
+
+const sections = [
+  {
+    id: 's1-scope',
+    number: '第1条',
+    title: '本ポリシーの対象範囲',
+    body: '本プライバシーポリシー (以下「本ポリシー」) は、 rei-job-board (以下「本サイト」) が 提供する 全 page および endpoint (地図 / 店舗案内 / 口コミ / ランキング / 特集 / 応募 flow 説明 / mypage skeleton / メッセージ skeleton / dashboard skeleton 等) を対象とする。 Phase 6 (弁護士 consultation 後) の 新機能追加時は 該当機能を 別途 addendum として articulate する。'
+  },
+  {
+    id: 's2-design-principle',
+    number: '第2条',
+    title: '設計原則 (求職者情報非収集ライン)',
+    body: '本サイトは 改正職業安定法 (2022-10-01 施行) の 「特定募集情報等提供事業者 届出制」 の 対象外となる 設計を 永続原則として厳守する。 具体的には、 求職者の 登録機能 / 個人情報収集 / 応募内容の 中継・保存 を 一切行わない。 応募は 全て サイト外で 求人投稿者と求職者が 直接やり取りする 雑誌型設計である (詳細: /apply-flow)。'
+  },
+  {
+    id: 's3-collected',
+    number: '第3条',
+    title: '収集する情報 (aggregated のみ)',
+    body: '本サイトは 以下の 情報を aggregated 形式 (個人特定不能) で 収集する: (1) ページ アクセス数、 (2) 求人 pin click 数 (per pin, 誰が click したかは不明)、 (3) 検索クエリ (aggregated, 個人紐付けなし)、 (4) 通報投稿件数 (通報者 IP は 悪用防止のため rate limit 判定に短期利用、 個人特定 store しない)。'
+  },
+  {
+    id: 's4-not-collected',
+    number: '第4条',
+    title: '収集しない情報',
+    body: '本サイトは 以下の 情報を 一切収集しない: (1) 求職者の 氏名 / メールアドレス / 電話番号、 (2) 求職者の 経歴 / 学歴 / 資格情報、 (3) 求職者の 閲覧履歴 / お気に入り (個人紐付け形)、 (4) 求職者の 応募文 / 履歴書、 (5) サイト内での 求人投稿者への メッセージ / DM (messaging 機能は 店舗利用者 mypage 用で 求職者側は対象外)、 (6) 求職者と 求人投稿者 の 連絡 / 選考 / 契約成立 の 情報、 (7) 個人特定可能な cookie / device fingerprint。'
+  },
+  {
+    id: 's5-purpose',
+    number: '第5条',
+    title: '利用目的',
+    body: '前条 (第3条) で 収集する aggregated 情報は、 以下の目的にのみ利用する: (1) サイト運営改善 (人気エリア把握 / UI 改善)、 (2) 集計統計の 事業者向け情報開示 (アクセス数レポート等、 個人特定不能形)、 (3) 悪用防止 (rate limit / 通報濫用検出)。 前記以外の目的での利用は行わない。'
+  },
+  {
+    id: 's6-third-party',
+    number: '第6条',
+    title: '第三者提供',
+    body: '本サイトは 個人情報を 第三者に 販売・提供・共有しない (そもそも収集していないため)。 aggregated 統計についても、 個別事業者への 有償提供は Phase 6 以降の 判断事項であり、 現時点では 行わない。 Google Maps Platform の 参照 URL 表示は 「URL の 表示」 に留まり、 API 経由取得 data の 永久 DB 保存はしない (Google Maps ToS §3.2.3(b) 遵守)。'
+  },
+  {
+    id: 's7-cookie',
+    number: '第7条',
+    title: 'Cookie 使用',
+    body: '本サイトは 現時点 (v0.8.4) では 認証系 cookie を使用しない (ログイン機能未実装のため)。 一部の UI 状態 (通知設定 の 表示 tab 等) は localStorage で クライアント側にのみ保存する。 これらは サーバーへ送信されず、 個人特定にも利用されない。 サードパーティ広告 cookie は 使用しない (v0.8.4 段階で 広告掲載なし)。'
+  },
+  {
+    id: 's8-retention',
+    number: '第8条',
+    title: '保存期間',
+    body: 'aggregated 統計 (第3条) は 最大 24 か月保存し、 それ以降は 総計値のみ残して 詳細を削除する。 通報者 IP (rate limit 用) は 24 時間で 自動削除する。 その他 個人特定可能な情報は そもそも収集しない (第4条)。'
+  },
+  {
+    id: 's9-disclosure',
+    number: '第9条',
+    title: '開示・訂正・削除請求への対応',
+    body: '本サイトは 個人情報を 収集しないため、 通常の意味での 開示・訂正・削除請求は 該当対象がない。 ただし、 「aggregated 統計に 自身の情報が含まれているか」 等の 一般問い合わせは 第12条 の 連絡先で受け付ける。 個人情報保護法 上の 開示請求手続き相当が Phase 6 以降で 必要となる場合は 弁護士 consultation 後に workflow を整備する。'
+  },
+  {
+    id: 's10-entity',
+    number: '第10条',
+    title: '事業者情報',
+    body: '本サイトは 個人 hobby scale の 試行プロジェクトとして 運営されている。 商業的な事業体としての運営は行っていない。 具体的な運営者は GitHub リポジトリ (https://github.com/fc0web/rei-job-board) の contributor 履歴で公開している。'
+  },
+  {
+    id: 's11-changes',
+    number: '第11条',
+    title: '変更履歴と告知',
+    body: '本ポリシーの 変更は GitHub リポジトリの commit 履歴で 追跡可能とする。 実質的な変更 (収集情報の追加 / 利用目的の拡張 / 第三者提供の開始等) は Phase 6 (弁護士 consultation 後) の 実装時に 事前告知する。 施行日は 各版 末尾で明示する。'
+  },
+  {
+    id: 's12-contact',
+    number: '第12条',
+    title: '連絡先 と 準拠法',
+    body: '本ポリシーに関する問い合わせは GitHub Issues (https://github.com/fc0web/rei-job-board/issues) 経由で受け付ける。 本サイトおよび 本ポリシーは 日本国の法令 (改正職業安定法 / 個人情報保護法 / 消費者契約法 / プロバイダ責任制限法 等) に準拠する。 準拠地・裁判管轄は 日本国東京とする。'
+  }
+];
+---
+
+<Base title="プライバシーポリシー — rei-job-board" description="v0.8.4 プライバシーポリシー (求職者情報非収集 line の legal 文書化, 12 section)">
+  <div style="padding: 12px 16px;">
+    <div class="honest-banner">
+      <strong>Layer 3 legal v0.8.4 — プライバシーポリシー</strong>: 応募 flow 説明 (v0.8.3 <a href="/apply-flow">/apply-flow</a>) の operational 内容を legal document 形式で articulate。 本 site の 「求職者情報非収集ライン」 設計を 12 section で明示。 実運用開始 (Phase 6) 前に 弁護士 consultation で final review 想定。
+    </div>
+
+    <section style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 14px; margin: 12px 0;">
+      <h1 style="font-size: 1.4rem; margin: 0 0 6px 0;">プライバシーポリシー</h1>
+      <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: #555;">
+        制定: 2026-07-27 · 版: v0.8.4 · 対象: rei-job-board (全 page + endpoint)
+      </p>
+    </section>
+
+    <nav style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; margin: 12px 0;">
+      <div style="font-size: 0.85rem; color: #666; margin-bottom: 6px;">目次 ({sections.length} section):</div>
+      <ol style="margin: 0; padding-left: 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 4px; list-style-position: inside;">
+        {sections.map(s => (
+          <li>
+            <a href={`#${s.id}`} style="font-size: 0.85rem; text-decoration: none;">
+              {s.number}: {s.title}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+
+    <section style="display: flex; flex-direction: column; gap: 12px;">
+      {sections.map(s => (
+        <section id={s.id} style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px;">
+          <div style="font-size: 0.8rem; color: #666; margin-bottom: 4px;">{s.number}</div>
+          <h2 style="font-size: 1.05rem; margin: 0 0 8px 0; color: var(--accent);">{s.title}</h2>
+          <p style="font-size: 0.92rem; color: #333; line-height: 1.85; margin: 0;">{s.body}</p>
+        </section>
+      ))}
+    </section>
+
+    <section style="margin-top: 24px; padding: 14px 16px; background: #f8f8f8; border-radius: 6px; font-size: 0.88rem; color: #444; line-height: 1.7;">
+      <h2 style="font-size: 1rem; margin: 0 0 8px 0;">関連 page</h2>
+      <ul style="margin: 0; padding-left: 20px;">
+        <li><a href="/apply-flow">応募 flow 説明</a> — 求職者情報非収集 line の operational 具体化 (6 step)</li>
+        <li><a href="/ranking-criteria">ランキング基準 透明化</a> — 景表法 + ステマ 規制 2023 対応</li>
+        <li><a href="/about">このサイトについて</a> — サイト全体の設計 stance</li>
+        <li><a href="/report">通報窓口</a> — 詐欺求人 / 闇バイト等の 通報</li>
+      </ul>
+    </section>
+
+    <p style="margin-top: 24px; font-size: 0.8rem; color: #888; text-align: center;">
+      本ポリシー v0.8.4 · 施行日: 2026-07-27 · 準拠法: 日本国法令
+    </p>
+  </div>
+</Base>
