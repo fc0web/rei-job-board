@@ -1,0 +1,131 @@
+---
+import Base from '../../layouts/Base.astro';
+import messagesData from '../../data/messages-sample.json';
+
+export function getStaticPaths() {
+  return messagesData.threads.map(t => ({
+    params: { thread: t.id },
+    props: { thread: t }
+  }));
+}
+
+const { thread } = Astro.props;
+const { currentUser } = messagesData;
+
+const statusLabel = (s: string) => ({
+  active: '進行中',
+  archived: 'アーカイブ',
+  blocked_by_shop: '店舗ブロック',
+  blocked_by_user: 'ユーザーブロック',
+  moderator_locked: 'モデレーター停止'
+}[s] ?? s);
+
+const statusStyle = (s: string) => ({
+  active: 'background: #e5f3e5; color: #363;',
+  archived: 'background: #f5f5f5; color: #888;',
+  blocked_by_shop: 'background: #fff4e5; color: #a52;',
+  blocked_by_user: 'background: #fff4e5; color: #a52;',
+  moderator_locked: 'background: #fff5f5; color: #c43;'
+}[s] ?? 'background: #f5f5f5; color: #666;');
+
+const senderLabel = (t: string) => ({
+  user: '(自分)',
+  shop_owner: '店舗',
+  shop_staff: '店舗スタッフ',
+  admin_intervention: 'admin 介入'
+}[t] ?? t);
+
+const formatDateTime = (iso: string) => {
+  const d = new Date(iso);
+  const date = iso.slice(0, 10);
+  const time = d.toTimeString().slice(0, 5);
+  return `${date} ${time}`;
+};
+---
+
+<Base title={`${thread.topic} — メッセージ — rei-job-board`} description={`v0.8 Phase 5 messaging thread skeleton — ${thread.participantShopName} との DM sample`}>
+  <div style="padding: 12px 16px;">
+    <div class="honest-banner">
+      <strong>Layer 3 UI v0.8 Phase 5 — thread SKELETON</strong>: 本 page は 未 login sample DM detail です。 message 送信 / 削除 / 通報 / archive 等 は Phase 6 (弁護士 consultation 後)。 実 messaging では <strong>プロバイダ責任制限法 4 条 (発信者情報開示 request)</strong> 対応 workflow が必要。
+    </div>
+
+    <div style="margin: 12px 0; font-size: 0.85rem;">
+      <a href="/messages" style="color: var(--accent); text-decoration: none;">&larr; メッセージ一覧に戻る</a>
+    </div>
+
+    <section style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 14px; margin: 12px 0;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px;">
+        <div>
+          <h1 style="font-size: 1.15rem; margin: 0;">
+            <a href={`/shops/${thread.participantShopId}`} style="color: var(--accent); text-decoration: none;">
+              {thread.participantShopName}
+            </a>
+          </h1>
+          <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: #555;">{thread.topic}</p>
+        </div>
+        <span style={`padding: 3px 10px; border-radius: 3px; font-size: 0.8rem; ${statusStyle(thread.status)}`}>
+          {statusLabel(thread.status)}
+        </span>
+      </div>
+      <div style="margin-top: 8px; font-size: 0.8rem; color: #666;">
+        thread id: <code>{thread.id}</code> · 開始: {thread.createdAt.slice(0, 10)} · {thread.messages.length} メッセージ
+        {thread.relatedReservationId && (
+          <span> · 関連予約: <code>{thread.relatedReservationId}</code></span>
+        )}
+      </div>
+    </section>
+
+    <section style="margin: 12px 0;">
+      <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px;">
+        {thread.messages.map(m => {
+          const isSelf = m.senderType === 'user';
+          return (
+            <li style={`display: flex; ${isSelf ? 'justify-content: flex-end;' : 'justify-content: flex-start;'}`}>
+              <div style={`max-width: 78%; background: ${isSelf ? '#eef3f8' : '#fff'}; border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px;`}>
+                <div style="font-size: 0.75rem; color: #666; margin-bottom: 4px;">
+                  <strong style={isSelf ? '' : 'color: var(--accent);'}>{senderLabel(m.senderType)}</strong>
+                  {!isSelf && m.senderName && <span style="color: #888;"> · {m.senderName}</span>}
+                  <span style="color: #999;"> · {formatDateTime(m.sentAt)}</span>
+                </div>
+                <p style="margin: 0; font-size: 0.92rem; line-height: 1.55; white-space: pre-wrap;">{m.content}</p>
+                {m.readByRecipientAt && isSelf && (
+                  <div style="text-align: right; margin-top: 4px; font-size: 0.7rem; color: #999;">
+                    既読 {formatDateTime(m.readByRecipientAt)}
+                  </div>
+                )}
+                {m.aiModerationResult && m.aiModerationResult.flagged && (
+                  <div style="margin-top: 6px; padding: 4px 8px; background: #fff5f5; border-left: 3px solid var(--warn); font-size: 0.75rem; color: var(--warn);">
+                    AI moderation flagged: {(m.aiModerationResult.categories || []).join(', ')}
+                  </div>
+                )}
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+
+    <section style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 12px; margin: 16px 0;">
+      <label for="reply-body" style="display: block; font-size: 0.85rem; color: #666; margin-bottom: 6px;">返信 (Phase 6 で送信可能):</label>
+      <textarea id="reply-body" rows="3" disabled placeholder="Phase 6 実装時に有効化。 送信ボタンで Cloudflare Workers 経由 で messages-schema DirectMessage に append。 AI moderation → 自動承認/pending → 相手 inbox 反映 の flow。" style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px; font-family: inherit; font-size: 0.9rem; resize: vertical; background: #f8f8f8; color: #888;"></textarea>
+      <div style="margin-top: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+        <div style="display: flex; gap: 6px;">
+          <button type="button" disabled style="padding: 6px 14px; font-size: 0.9rem; background: #eee; border: 1px solid var(--border); border-radius: 3px; cursor: not-allowed;">送信 (Phase 6)</button>
+          <button type="button" disabled style="padding: 6px 12px; font-size: 0.85rem; background: #eee; border: 1px solid var(--border); border-radius: 3px; cursor: not-allowed;">画像添付 (Phase 6)</button>
+        </div>
+        <div style="display: flex; gap: 6px;">
+          <button type="button" disabled style="padding: 4px 10px; font-size: 0.8rem; background: #eee; border: 1px solid var(--border); border-radius: 3px; cursor: not-allowed;">通報 (Phase 6)</button>
+          {thread.status === 'active' && (
+            <button type="button" disabled style="padding: 4px 10px; font-size: 0.8rem; background: #eee; border: 1px solid var(--border); border-radius: 3px; cursor: not-allowed;">アーカイブ (Phase 6)</button>
+          )}
+          <button type="button" disabled style="padding: 4px 10px; font-size: 0.8rem; background: #fff5f5; color: var(--warn); border: 1px solid var(--warn); border-radius: 3px; cursor: not-allowed;">ブロック (Phase 6)</button>
+        </div>
+      </div>
+      <p style="font-size: 0.75rem; color: #666; margin: 8px 0 0 0;">※ 送信内容は プロバイダ責任制限法 4 条 対応で 90 日以上保持される予定 (Phase 6 実装時 に 明示 同意)。</p>
+    </section>
+
+    <div style="margin-top: 16px; padding: 10px 12px; background: #fff4e5; border: 1px solid #f5c47a; border-radius: 4px; font-size: 0.8rem; color: #555;">
+      <strong style="color: var(--warn);">honest scope:</strong> 本 skeleton の message text は sample dummy です。 実 message は 個人情報 / 医療情報 / 機微情報 を含む可能性があり、 Phase 6 実装時 は 個情法 + 個情法 センシティブ情報 対応 + AI moderation + 削除 request workflow が prerequisite。
+    </div>
+  </div>
+</Base>

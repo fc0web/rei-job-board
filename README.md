@@ -4,9 +4,29 @@
 
 ## ステータス
 
-- **段階**: v0.4 Layer 1+2 schema reference 追加 (2026-07-13、 hobby scale, 実装中)
+- **段階**: v0.8 Phase 5 messaging DM UI skeleton (2026-07-27、 hobby scale, 実装中)
 - **配置**: standalone repo (rei-aios とは別 project)
 - **License**: MIT (予定、 確定は v0.1 release 時)
+
+### 実装 phase 概要 (v0.7 Layer 3 UI 進行 record)
+
+- v0.4 (2026-07-13): Layer 1 (SCHEMA_REFERENCE.md) + Layer 2 (shop/job-seeker/admin schema)
+- v0.5 (2026-07-13): Layer 2 PR schema 3 file (pr-shop / pr-user / pr-content)
+- v0.6 (2026-07-13): Layer 2 login 後系 4 file (auth / shop-dashboard / user-mypage / messaging)
+- v0.7 Phase 1 (2026-07-16): Layer 3 UI `/shops` + `/reviews` + `/ranking` + shop detail
+- v0.7 Phase 2+3+4 (2026-07-17): 検索 multi-filter + `/dashboard/shop` skeleton + `/mypage` skeleton
+- v0.8 Phase 5 (2026-07-27): `/messages` DM skeleton (thread 一覧 + [thread] detail) — 本 phase
+- Phase 6: 認証 / DB persistence / message 送信 / 発信者情報開示 workflow (弁護士 consultation 後)
+
+### v0.8 note (2026-07-27) — Phase 5 messaging DM UI skeleton
+
+- ✅ `src/pages/messages/index.astro` — thread 一覧 (未読 badge / status label / 最終 msg preview / 3 sample thread 表示)
+- ✅ `src/pages/messages/[thread].astro` — thread detail (getStaticPaths で 3 thread 生成、 chat-bubble layout、 自分/相手 左右振り分け、 既読 marker、 AI moderation flagged 表示)
+- ✅ `src/data/messages-sample.json` — 3 sample thread (ヘアサロン予約変更 5 msg / エステ問い合わせ 3 msg / カフェアレルギー相談 archived 3 msg)
+- ✅ `src/layouts/Base.astro` nav に `/messages` 追加 (title="Phase 5 skeleton (未 login sample)")
+- ❌ Layer 3 越境事項 = Phase 6 (弁護士 consultation 後): 実 message 送信 (textarea disabled) / 認証連動 / DB persistence / AI content moderation 実運用 / 削除 request workflow (プロバイダ責任制限法 4 条) / 通報 button / archive/block button / notification 実配信
+
+**honest scope**: 本 messaging は 店舗利用者 (customer) ↔ 店舗 の 想定 skeleton。 求職者 (job-seeker) ↔ 店舗 の DM ではない (求職者情報 非収集 line は main policy として維持、 footer + 各 page で明記)。 実運用時 は プロバイダ責任制限法 + 名誉毀損 + 個情法 + 電気通信事業法 + AI content moderation の 5 系統 全て弁護士 consultation 対象。
 
 ### v0.4 note (2026-07-13)
 

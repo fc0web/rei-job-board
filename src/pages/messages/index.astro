@@ -1,0 +1,119 @@
+---
+import Base from '../../layouts/Base.astro';
+import messagesData from '../../data/messages-sample.json';
+
+const { currentUser, threads } = messagesData;
+
+const statusLabel = (s: string) => ({
+  active: '進行中',
+  archived: 'アーカイブ',
+  blocked_by_shop: '店舗ブロック',
+  blocked_by_user: 'ユーザーブロック',
+  moderator_locked: 'モデレーター停止'
+}[s] ?? s);
+
+const statusStyle = (s: string) => ({
+  active: 'background: #e5f3e5; color: #363;',
+  archived: 'background: #f5f5f5; color: #888;',
+  blocked_by_shop: 'background: #fff4e5; color: #a52;',
+  blocked_by_user: 'background: #fff4e5; color: #a52;',
+  moderator_locked: 'background: #fff5f5; color: #c43;'
+}[s] ?? 'background: #f5f5f5; color: #666;');
+
+const formatDateTime = (iso: string) => {
+  const d = new Date(iso);
+  const now = new Date('2026-07-27T15:00:00+09:00');
+  const diffMs = now.getTime() - d.getTime();
+  const diffHours = diffMs / (1000 * 60 * 60);
+  if (diffHours < 24) return d.toTimeString().slice(0, 5);
+  if (diffHours < 24 * 7) return `${Math.floor(diffHours / 24)}日前`;
+  return iso.slice(0, 10);
+};
+
+const sortedThreads = [...threads].sort(
+  (a, b) => new Date(b.lastMessageAt).getTime() - new Date(a.lastMessageAt).getTime()
+);
+---
+
+<Base title="メッセージ (skeleton) — rei-job-board" description="v0.8 Phase 5 messaging DM skeleton — 店舗 ↔ 店舗利用者 の相互DM sample、 実 backend は Phase 6">
+  <div style="padding: 12px 16px;">
+    <div class="honest-banner">
+      <strong>Layer 3 UI v0.8 Phase 5 — messaging SKELETON</strong>: 本 page は 未 login の 状態で 表示された sample DM 一覧です。 <strong>実 messaging backend / auth 連動 / 送受信ログ 90 日以上保持 / 発信者情報開示 request (プロバイダ責任制限法 4 条) 対応</strong> は Phase 6 (弁護士 consultation 後) の 別段階。 本 messaging は <strong>店舗利用者 (customer) ↔ 店舗</strong> の 想定 skeleton = <strong>求職者 (job-seeker) 側 DM ではない</strong> (求職者情報 非収集 line は main policy として維持、 footer 明記)。
+    </div>
+
+    <section style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 12px; margin: 12px 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+      <div>
+        <h1 style="font-size: 1.2rem; margin: 0;">メッセージ</h1>
+        <p style="margin: 4px 0; font-size: 0.85rem; color: #666;">
+          user: <code>{currentUser.displayName}</code> · 表示中: {sortedThreads.length} thread
+        </p>
+        <p style="margin: 4px 0; font-size: 0.8rem; color: var(--warn);">
+          ※ 未 login sample (Phase 6 で auth-schema.ts Session 連動)
+        </p>
+      </div>
+      <div style="text-align: right;">
+        <div style="font-size: 0.85rem; color: #666;">未読 thread</div>
+        <div style="font-size: 1.4rem; font-weight: bold; color: var(--accent);">
+          {sortedThreads.filter(t => t.unreadCountForUser > 0).length}
+        </div>
+      </div>
+    </section>
+
+    <ul style="list-style: none; padding: 0; margin: 0;">
+      {sortedThreads.map(t => (
+        <li style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; margin-bottom: 8px;">
+          <a href={`/messages/${t.id}`} style="text-decoration: none; color: inherit; display: block;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px;">
+              <div style="flex: 1; min-width: 200px;">
+                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                  <strong style="font-size: 1rem; color: var(--accent);">{t.participantShopName}</strong>
+                  <span style={`padding: 2px 8px; border-radius: 3px; font-size: 0.75rem; ${statusStyle(t.status)}`}>
+                    {statusLabel(t.status)}
+                  </span>
+                  {t.unreadCountForUser > 0 && (
+                    <span style="background: var(--warn); color: #fff; padding: 1px 8px; border-radius: 10px; font-size: 0.75rem; font-weight: bold;">
+                      未読 {t.unreadCountForUser}
+                    </span>
+                  )}
+                </div>
+                <p style="margin: 4px 0 6px 0; font-size: 0.9rem; color: #333;">{t.topic}</p>
+                {(() => {
+                  const last = t.messages[t.messages.length - 1];
+                  return (
+                    <p style="margin: 4px 0 0 0; font-size: 0.85rem; color: #666; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%;">
+                      <span style={`font-weight: ${last.senderType === 'user' ? 'normal' : 'bold'};`}>
+                        {last.senderType === 'user' ? '(自分)' : last.senderName}:
+                      </span>{' '}
+                      {last.content}
+                    </p>
+                  );
+                })()}
+              </div>
+              <div style="text-align: right; min-width: 80px;">
+                <div style="font-size: 0.8rem; color: #666;">{formatDateTime(t.lastMessageAt)}</div>
+                <div style="font-size: 0.75rem; color: #999; margin-top: 4px;">{t.messages.length} msg</div>
+              </div>
+            </div>
+            {t.relatedReservationId && (
+              <div style="margin-top: 6px; font-size: 0.75rem; color: #666;">
+                関連予約: <code>{t.relatedReservationId}</code>
+              </div>
+            )}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <div style="margin-top: 16px; padding: 12px; background: #f8f8f8; border-radius: 6px; font-size: 0.85rem; color: #555;">
+      <strong style="color: var(--warn);">Phase 6 実装予定:</strong>
+      <ul style="margin: 6px 0 0 0; padding-left: 20px;">
+        <li>新規 thread 作成 (店舗 profile → 「問い合わせ」 button)</li>
+        <li>message 送受信 (Cloudflare Workers + D1 / KV)</li>
+        <li>AI content moderation (誹謗中傷 / 個情法違反 auto 検知)</li>
+        <li>削除 request (プロバイダ責任制限法 4 条 発信者情報開示 workflow)</li>
+        <li>thread archive / block / 通報 button</li>
+        <li>notification (email / push / LINE Notify、 mypage 通知設定 連動)</li>
+      </ul>
+    </div>
+  </div>
+</Base>

@@ -1,0 +1,163 @@
+{
+  "schema": "rei-job-board-messages-v0.8",
+  "lastUpdated": "2026-07-27",
+  "honestScope": {
+    "sampleOnly": "全 thread / message は sample (dummy)。 実 messaging backend + auth 連動 + 送受信ログ 90 日以上保持 + 発信者情報開示 request (プロバイダ責任制限法 4 条) 実運用は Phase 6 (弁護士 consultation 後)",
+    "layerPositioning": "Layer 3 UI skeleton のみ、 schema (messaging-schema.ts) の 一部 field を可視化",
+    "legalReviewRequired": "プロバイダ責任制限法 + 名誉毀損 + 個情法 + 電気通信事業法 + AI content moderation の 5 系統 全て Phase 6 対象",
+    "jobSeekerLine": "本 DM は 店舗利用者 (customer) ↔ 店舗 の想定 skeleton = 求職者 (job-seeker) 側 DM ではない (求職者情報 非収集 main policy 維持)"
+  },
+  "currentUser": {
+    "id": "sample-user-001",
+    "displayName": "サンプル ユーザー"
+  },
+  "threads": [
+    {
+      "id": "thread-001",
+      "participantShopId": "sample-shop-002",
+      "participantShopName": "[サンプル] ヘアサロン Rei",
+      "status": "active",
+      "createdAt": "2026-07-24T10:30:00+09:00",
+      "lastMessageAt": "2026-07-27T14:22:00+09:00",
+      "unreadCountForUser": 1,
+      "unreadCountForShop": 0,
+      "relatedReservationId": "res-2026-07-30-01",
+      "topic": "7/30 予約時間の調整",
+      "messages": [
+        {
+          "id": "msg-001-1",
+          "senderType": "user",
+          "senderId": "sample-user-001",
+          "senderName": "サンプル ユーザー",
+          "content": "7/30 14:00 の カット + カラー 予約 の件、 少し 遅れる可能性があります。 14:15 開始 で 対応いただけますか?",
+          "contentType": "text",
+          "sentAt": "2026-07-24T10:30:00+09:00",
+          "readByRecipientAt": "2026-07-24T10:45:00+09:00",
+          "aiModerationResult": { "flagged": false }
+        },
+        {
+          "id": "msg-001-2",
+          "senderType": "shop_owner",
+          "senderId": "sample-shop-002",
+          "senderName": "[サンプル] ヘアサロン Rei",
+          "content": "ご連絡ありがとうございます。 14:15 開始 で 承知しました。 施術時間 は 通常通り 90 分で ご案内 可能です。 なお、 15:45 に 次の 予約 が 入っております ので、 万一 さらに 遅れる 場合 は 早めに ご連絡いただけると 助かります。",
+          "contentType": "text",
+          "sentAt": "2026-07-24T10:52:00+09:00",
+          "readByRecipientAt": "2026-07-24T11:05:00+09:00",
+          "aiModerationResult": { "flagged": false }
+        },
+        {
+          "id": "msg-001-3",
+          "senderType": "user",
+          "senderId": "sample-user-001",
+          "senderName": "サンプル ユーザー",
+          "content": "承知しました。 遅くとも 14:15 には 到着します。",
+          "contentType": "text",
+          "sentAt": "2026-07-24T11:10:00+09:00",
+          "readByRecipientAt": "2026-07-24T11:20:00+09:00",
+          "aiModerationResult": { "flagged": false }
+        },
+        {
+          "id": "msg-001-4",
+          "senderType": "shop_owner",
+          "senderId": "sample-shop-002",
+          "senderName": "[サンプル] ヘアサロン Rei",
+          "content": "念のため 前日 リマインド を お送りします。 7/30 14:15 開始 の カット + カラー、 担当 は 山田 スタイリスト (仮) です。 お気をつけて お越しください。",
+          "contentType": "text",
+          "sentAt": "2026-07-27T14:22:00+09:00",
+          "aiModerationResult": { "flagged": false }
+        }
+      ]
+    },
+    {
+      "id": "thread-002",
+      "participantShopId": "sample-shop-004",
+      "participantShopName": "[サンプル] エステ ラウンジ",
+      "status": "active",
+      "createdAt": "2026-07-26T18:12:00+09:00",
+      "lastMessageAt": "2026-07-27T09:03:00+09:00",
+      "unreadCountForUser": 0,
+      "unreadCountForShop": 0,
+      "topic": "施術メニューの相談",
+      "messages": [
+        {
+          "id": "msg-002-1",
+          "senderType": "user",
+          "senderId": "sample-user-001",
+          "senderName": "サンプル ユーザー",
+          "content": "フェイシャル 60 分 と ボディ 60 分 を 同日 に 続けて 予約 は 可能でしょうか? また、 その 場合 の 割引 は ありますか?",
+          "contentType": "text",
+          "sentAt": "2026-07-26T18:12:00+09:00",
+          "readByRecipientAt": "2026-07-26T19:30:00+09:00",
+          "aiModerationResult": { "flagged": false }
+        },
+        {
+          "id": "msg-002-2",
+          "senderType": "shop_staff",
+          "senderId": "sample-shop-004",
+          "senderName": "[サンプル] エステ ラウンジ (受付)",
+          "content": "お問い合わせ ありがとうございます。 同日 連続 予約 可能です。 セット料金 として ¥18,000 (通常 ¥20,000 相当) で ご案内 しております。 詳細 は 予約 ページ の 「セットプラン」 タブ を ご参照ください。",
+          "contentType": "text",
+          "sentAt": "2026-07-27T09:03:00+09:00",
+          "readByRecipientAt": "2026-07-27T09:15:00+09:00",
+          "aiModerationResult": { "flagged": false }
+        },
+        {
+          "id": "msg-002-3",
+          "senderType": "user",
+          "senderId": "sample-user-001",
+          "senderName": "サンプル ユーザー",
+          "content": "ありがとうございます。 予約 ページ から 申し込みます。",
+          "contentType": "text",
+          "sentAt": "2026-07-27T09:20:00+09:00",
+          "aiModerationResult": { "flagged": false }
+        }
+      ]
+    },
+    {
+      "id": "thread-003",
+      "participantShopId": "sample-shop-001",
+      "participantShopName": "[サンプル] カフェ 東京駅前",
+      "status": "archived",
+      "createdAt": "2026-07-10T12:00:00+09:00",
+      "lastMessageAt": "2026-07-11T15:40:00+09:00",
+      "unreadCountForUser": 0,
+      "unreadCountForShop": 0,
+      "topic": "アレルギー対応の確認",
+      "messages": [
+        {
+          "id": "msg-003-1",
+          "senderType": "user",
+          "senderId": "sample-user-001",
+          "senderName": "サンプル ユーザー",
+          "content": "小麦アレルギー が あるのですが、 グルテンフリー メニュー は ありますか?",
+          "contentType": "text",
+          "sentAt": "2026-07-10T12:00:00+09:00",
+          "readByRecipientAt": "2026-07-10T13:10:00+09:00",
+          "aiModerationResult": { "flagged": false }
+        },
+        {
+          "id": "msg-003-2",
+          "senderType": "shop_owner",
+          "senderId": "sample-shop-001",
+          "senderName": "[サンプル] カフェ 東京駅前",
+          "content": "お問い合わせ ありがとうございます。 グルテンフリー メニュー は 現状 なし ですが、 サラダ プレート や スープ 単品 (製造ライン は 小麦製品 と 共通) は ご用意 できます。 完全 除去 は 保証 できかねますので、 症状 の 重い 方 は ご来店 を お控えください。",
+          "contentType": "text",
+          "sentAt": "2026-07-10T13:25:00+09:00",
+          "readByRecipientAt": "2026-07-10T13:40:00+09:00",
+          "aiModerationResult": { "flagged": false }
+        },
+        {
+          "id": "msg-003-3",
+          "senderType": "user",
+          "senderId": "sample-user-001",
+          "senderName": "サンプル ユーザー",
+          "content": "承知しました。 別 の 機会 に 検討 させていただきます。 ご対応 ありがとうございました。",
+          "contentType": "text",
+          "sentAt": "2026-07-11T15:40:00+09:00",
+          "aiModerationResult": { "flagged": false }
+        }
+      ]
+    }
+  ]
+}
