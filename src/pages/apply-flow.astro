@@ -7,42 +7,42 @@ const flowSteps = [
     label: '求人閲覧',
     actor: '求職者',
     reiDoes: '静的 HTML の求人 pin / list を表示する (Google Maps URL 参照、 store は jobs.json 手動編集)',
-    reiDoesNot: 'アクセスした IP / device / 閲覧履歴を 個人特定形で 収集・保存しない (アクセス数集計 aggregated は可)'
+    reiDoesNot: 'アクセスした IP / device / 閲覧履歴を個人特定形で収集・保存しない (アクセス数集計 aggregated は可)'
   },
   {
     step: 2,
     label: '求人詳細確認',
     actor: '求職者',
     reiDoes: '求人 pin click で popup 表示 (求人タイトル / 業種 / 投稿者連絡先 / Google Maps URL)',
-    reiDoesNot: 'popup 表示ログを 個人紐付けで 保存しない、 「この求職者が この求人を N 回見た」 型の追跡なし'
+    reiDoesNot: 'popup 表示ログを個人紐付けで保存しない、 「この求職者がこの求人を N 回見た」 型の追跡なし'
   },
   {
     step: 3,
     label: '投稿者連絡先の確認',
     actor: '求職者',
-    reiDoes: '求人投稿者が 掲載時に 提供した連絡先 (Google Maps URL / メール / 電話番号 / 公式 site URL) を そのまま表示',
-    reiDoesNot: 'サイト側で 連絡先を transform / masking / 匿名化しない (投稿者の意図通りの連絡先を そのまま提示)'
+    reiDoes: '求人投稿者が掲載時に提供した連絡先 (Google Maps URL / メール / 電話番号 / 公式 site URL) をそのまま表示',
+    reiDoesNot: 'サイト側で連絡先を transform / masking / 匿名化しない (投稿者の意図通りの連絡先をそのまま提示)'
   },
   {
     step: 4,
     label: 'サイト外で直接連絡',
     actor: '求職者 → 求人投稿者',
-    reiDoes: '(何もしない — このステップは 100% サイト外の 求職者・求人投稿者 間の やり取り)',
-    reiDoesNot: 'メール送信の 中継 / 転送 / 保存を 一切しない。 電話番号への発信ログも 収集しない。 サイト側は この応募通信を 認知しない'
+    reiDoes: '(何もしない — このステップは 100% サイト外の求職者・求人投稿者間のやり取り)',
+    reiDoesNot: 'メール送信の中継 / 転送 / 保存を一切しない。 電話番号への発信ログも収集しない。 サイト側はこの応募通信を認知しない'
   },
   {
     step: 5,
     label: '応募内容の送付',
     actor: '求職者 → 求人投稿者',
-    reiDoes: '(何もしない — 応募文 / 履歴書 / 個人情報 は 求職者と求人投稿者の 二者間で directly やり取り)',
-    reiDoesNot: '応募文 / 履歴書 / 経歴 / メールアドレス を Rei 側で 受信・保存・処理しない。 「サイト経由の応募 form」 は提供しない'
+    reiDoes: '(何もしない — 応募文 / 履歴書 / 個人情報は求職者と求人投稿者の二者間で directly やり取り)',
+    reiDoesNot: '応募文 / 履歴書 / 経歴 / メールアドレスを Rei 側で受信・保存・処理しない。 「サイト経由の応募 form」 は提供しない'
   },
   {
     step: 6,
     label: '選考',
     actor: '求人投稿者',
     reiDoes: '(何もしない — 選考は 100% 求人投稿者の裁量)',
-    reiDoesNot: '選考結果を Rei 側で 記録・仲介・調停しない。 求人投稿者と求職者の間のトラブルに 事業者として関与しない (公的相談窓口 = 労働相談コーナー等 を案内するのみ)'
+    reiDoesNot: '選考結果を Rei 側で記録・仲介・調停しない。 求人投稿者と求職者の間のトラブルに事業者として関与しない (公的相談窓口 = 労働相談コーナー等を案内するのみ)'
   }
 ];
 
@@ -51,29 +51,29 @@ const notCollectedItems = [
   '求職者の経歴 / 学歴 / 資格情報',
   '求職者の閲覧履歴 / お気に入り (個人紐付け形)',
   '求職者の応募文 / 履歴書',
-  'サイト内での 求人投稿者への メッセージ / DM (そもそも messaging 機能は 店舗利用者 mypage 用で 求職者側は対象外)',
-  '求職者と 求人投稿者 の 連絡 / 選考 / 契約成立 の 情報',
+  'サイト内での求人投稿者へのメッセージ / DM (そもそも messaging 機能は店舗利用者 mypage 用で求職者側は対象外)',
+  '求職者と求人投稿者の連絡 / 選考 / 契約成立の情報',
   '個人特定可能な cookie / device fingerprint'
 ];
 
 const collectedItemsAggregated = [
-  'ページ アクセス数 (aggregated, 個人特定不能)',
+  'ページアクセス数 (aggregated, 個人特定不能)',
   '求人 pin click 数 (aggregated per pin, 誰がclick したかは不明)',
   '検索クエリ (aggregated, 個人紐付けなし)',
-  '通報投稿件数 (通報者 IP は 悪用防止のため rate limit 判定に短期利用、 個人特定 store しない)'
+  '通報投稿件数 (通報者 IP は悪用防止のため rate limit 判定に短期利用、 個人特定 store しない)'
 ];
 ---
 
-<Base title="応募 flow 説明 — rei-job-board" description="v0.8.3 求職者情報非収集 line の operational 説明: 6 step で 本サイトが行う/行わないことを具体化">
+<Base title="応募 flow 説明 — rei-job-board" description="v0.8.3 求職者情報非収集 line の operational 説明: 6 step で本サイトが行う/行わないことを具体化">
   <div style="padding: 12px 16px;">
     <div class="honest-banner">
-      <strong>Layer 3 UI v0.8.3 — 応募 flow 説明</strong>: 本サイトの load-bearing 設計原則 「求職者情報非収集」 (改正職業安定法 2022-10-01 施行対応) を 6 step の operational 具体化で 明示。 応募は 全て サイト外で 求人投稿者と求職者が 直接やり取りする 雑誌型設計です。
+      <strong>Layer 3 UI v0.8.3 — 応募 flow 説明</strong>: 本サイトの load-bearing 設計原則 「求職者情報非収集」 (改正職業安定法 2022-10-01 施行対応) を 6 step の operational 具体化で明示。 応募は全てサイト外で求人投稿者と求職者が直接やり取りする雑誌型設計です。
     </div>
 
     <section style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 14px; margin: 12px 0;">
       <h1 style="font-size: 1.3rem; margin: 0 0 6px 0;">応募 flow — 6 step</h1>
       <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: #555;">
-        求人閲覧から選考まで、 各ステップで 本サイトが 「行うこと」 「行わないこと」 を articulate します。 応募本体 (step 4-6) は 100% サイト外の 二者間通信で、 Rei は認知しません。
+        求人閲覧から選考まで、 各ステップで本サイトが 「行うこと」 「行わないこと」 を articulate します。 応募本体 (step 4-6) は 100% サイト外の二者間通信で、 Rei は認知しません。
       </p>
     </section>
 
@@ -107,7 +107,7 @@ const collectedItemsAggregated = [
     </section>
 
     <section style="margin: 24px 0 16px 0;">
-      <h2 style="font-size: 1.1rem; margin: 0 0 10px 0;">サイトで 収集しない情報 (求職者関連)</h2>
+      <h2 style="font-size: 1.1rem; margin: 0 0 10px 0;">サイトで収集しない情報 (求職者関連)</h2>
       <ul style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 12px 24px; list-style: '✗  ';">
         {notCollectedItems.map(item => (
           <li style="font-size: 0.9rem; padding: 3px 0;">{item}</li>
@@ -116,33 +116,33 @@ const collectedItemsAggregated = [
     </section>
 
     <section style="margin: 16px 0;">
-      <h2 style="font-size: 1.1rem; margin: 0 0 10px 0;">サイトで 収集する情報 (aggregated のみ、 個人特定不能)</h2>
+      <h2 style="font-size: 1.1rem; margin: 0 0 10px 0;">サイトで収集する情報 (aggregated のみ、 個人特定不能)</h2>
       <ul style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 12px 24px; list-style: '•  ';">
         {collectedItemsAggregated.map(item => (
           <li style="font-size: 0.9rem; padding: 3px 0;">{item}</li>
         ))}
       </ul>
       <p style="font-size: 0.8rem; color: #666; margin-top: 6px;">
-        ※ aggregated 統計は 個人特定できない形で サイト運営改善 (人気エリア把握 / UI 改善) のみに利用。 第三者への 販売 / 提供 は行いません。
+        ※ aggregated 統計は個人特定できない形でサイト運営改善 (人気エリア把握 / UI 改善) のみに利用。 第三者への販売 / 提供は行いません。
       </p>
     </section>
 
     <section style="margin-top: 24px; padding: 14px 16px; background: #f8f8f8; border-radius: 6px; font-size: 0.9rem; color: #444; line-height: 1.75;">
-      <h2 style="font-size: 1rem; margin: 0 0 8px 0;">この設計の 根拠 (法令)</h2>
+      <h2 style="font-size: 1rem; margin: 0 0 8px 0;">この設計の根拠 (法令)</h2>
       <ol style="margin: 0; padding-left: 20px;">
-        <li><strong>改正職業安定法 (2022-10-01 施行)</strong> — 「特定募集情報等提供事業者 届出制」 の 対象外になる 設計 line。 求職者情報を扱わない = 届出義務 + 苦情対応体制 + 個情法対応 + 業務体制構築 の 各種義務が発生しない。</li>
-        <li><strong>個人情報保護法</strong> — そもそも 個人情報を収集しないので 「利用目的明示」 「第三者提供制限」 「開示・訂正・削除請求対応」 の 各義務が実質的に発生しない (完全な 0 ではないが aggregated only の line)。</li>
-        <li><strong>Google Maps Platform ToS §3.2.3(b)</strong> — API 経由取得 data の 永久 DB 保存禁止 に整合。 URL 参照 のみで 保存しない設計。</li>
+        <li><strong>改正職業安定法 (2022-10-01 施行)</strong> — 「特定募集情報等提供事業者届出制」 の対象外になる設計 line。 求職者情報を扱わない = 届出義務 + 苦情対応体制 + 個情法対応 + 業務体制構築の各種義務が発生しない。</li>
+        <li><strong>個人情報保護法</strong> — そもそも個人情報を収集しないので 「利用目的明示」 「第三者提供制限」 「開示・訂正・削除請求対応」 の各義務が実質的に発生しない (完全な 0 ではないが aggregated only の line)。</li>
+        <li><strong>Google Maps Platform ToS §3.2.3(b)</strong> — API 経由取得 data の永久 DB 保存禁止に整合。 URL 参照のみで保存しない設計。</li>
       </ol>
       <p style="margin-top: 12px;">
         参考 (厚生労働省一次源):
         <a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/boshuujouhouteikyou.html" target="_blank" rel="noopener">募集情報等提供事業</a>
-        · <a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000172497_00003.html" target="_blank" rel="noopener">職業安定法 一次源</a>
+        · <a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000172497_00003.html" target="_blank" rel="noopener">職業安定法一次源</a>
       </p>
     </section>
 
     <div style="margin-top: 16px; padding: 10px 12px; background: #fff4e5; border: 1px solid #f5c47a; border-radius: 4px; font-size: 0.8rem; color: #555;">
-      <strong style="color: var(--warn);">honest scope:</strong> 本 flow は v0.8.3 段階の 設計 stance を articulate したもの。 Phase 6 で 認証 / DB / message 送信 等が追加された段階では、 各 phase で この 「非収集 line」 に該当するかを 弁護士 consultation で 個別 verify し、 該当する変更があれば 本 page を更新します。
+      <strong style="color: var(--warn);">honest scope:</strong> 本 flow は v0.8.3 段階の設計 stance を articulate したもの。 Phase 6 で認証 / DB / message 送信等が追加された段階では、 各 phase でこの 「非収集 line」 に該当するかを弁護士 consultation で個別 verify し、 該当する変更があれば本 page を更新します。
     </div>
   </div>
 </Base>

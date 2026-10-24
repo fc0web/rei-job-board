@@ -46,7 +46,7 @@ const formatDateTime = (iso: string) => {
 <Base title={`${thread.topic} — メッセージ — rei-job-board`} description={`v0.8 Phase 5 messaging thread skeleton — ${thread.participantShopName} との DM sample`}>
   <div style="padding: 12px 16px;">
     <div class="honest-banner">
-      <strong>Layer 3 UI v0.8 Phase 5 — thread SKELETON</strong>: 本 page は 未 login sample DM detail です。 message 送信 / 削除 / 通報 / archive 等 は Phase 6 (弁護士 consultation 後)。 実 messaging では <strong>プロバイダ責任制限法 4 条 (発信者情報開示 request)</strong> 対応 workflow が必要。
+      <strong>Layer 3 UI v0.8 Phase 5 — thread SKELETON</strong>: 本 page は未 login sample DM detail です。 message 送信 / 削除 / 通報 / archive 等は Phase 6 (弁護士 consultation 後)。 実 messaging では <strong>プロバイダ責任制限法 4 条 (発信者情報開示 request)</strong> 対応 workflow が必要。
     </div>
 
     <div style="margin: 12px 0; font-size: 0.85rem;">
@@ -107,7 +107,7 @@ const formatDateTime = (iso: string) => {
 
     <section style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 12px; margin: 16px 0;">
       <label for="reply-body" style="display: block; font-size: 0.85rem; color: #666; margin-bottom: 6px;">返信 (Phase 6 で送信可能):</label>
-      <textarea id="reply-body" rows="3" disabled placeholder="Phase 6 実装時に有効化。 送信ボタンで Cloudflare Workers 経由 で messages-schema DirectMessage に append。 AI moderation → 自動承認/pending → 相手 inbox 反映 の flow。" style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px; font-family: inherit; font-size: 0.9rem; resize: vertical; background: #f8f8f8; color: #888;"></textarea>
+      <textarea id="reply-body" rows="3" disabled placeholder="Phase 6 実装時に有効化。 送信ボタンで Cloudflare Workers 経由で messages-schema DirectMessage に append。 AI moderation → 自動承認/pending → 相手 inbox 反映の flow。" style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px; font-family: inherit; font-size: 0.9rem; resize: vertical; background: #f8f8f8; color: #888;"></textarea>
       <div style="margin-top: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
         <div style="display: flex; gap: 6px;">
           <button type="button" disabled style="padding: 6px 14px; font-size: 0.9rem; background: #eee; border: 1px solid var(--border); border-radius: 3px; cursor: not-allowed;">送信 (Phase 6)</button>
@@ -121,11 +121,11 @@ const formatDateTime = (iso: string) => {
           <button type="button" disabled style="padding: 4px 10px; font-size: 0.8rem; background: #fff5f5; color: var(--warn); border: 1px solid var(--warn); border-radius: 3px; cursor: not-allowed;">ブロック (Phase 6)</button>
         </div>
       </div>
-      <p style="font-size: 0.75rem; color: #666; margin: 8px 0 0 0;">※ 送信内容は プロバイダ責任制限法 4 条 対応で 90 日以上保持される予定 (Phase 6 実装時 に 明示 同意)。</p>
+      <p style="font-size: 0.75rem; color: #666; margin: 8px 0 0 0;">※ 送信内容はプロバイダ責任制限法 4 条対応で 90 日以上保持される予定 (Phase 6 実装時に明示同意)。</p>
     </section>
 
     <div style="margin-top: 16px; padding: 10px 12px; background: #fff4e5; border: 1px solid #f5c47a; border-radius: 4px; font-size: 0.8rem; color: #555;">
-      <strong style="color: var(--warn);">honest scope:</strong> 本 skeleton の message text は sample dummy です。 実 message は 個人情報 / 医療情報 / 機微情報 を含む可能性があり、 Phase 6 実装時 は 個情法 + 個情法 センシティブ情報 対応 + AI moderation + 削除 request workflow が prerequisite。
+      <strong style="color: var(--warn);">honest scope:</strong> 本 skeleton の message text は sample dummy です。 実 message は個人情報 / 医療情報 / 機微情報を含む可能性があり、 Phase 6 実装時は個情法 + 個情法センシティブ情報対応 + AI moderation + 削除 request workflow が prerequisite。
     </div>
   </div>
 </Base>

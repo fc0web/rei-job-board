@@ -37,7 +37,7 @@ const featuredShops = (news.featuredShopIds || [])
   <div style="padding: 12px 16px;">
     {news.isPRLabelRequired && (
       <div style="background: var(--warn); color: #fff; padding: 6px 12px; border-radius: 4px; margin: 8px 0; font-size: 0.85rem; font-weight: bold;">
-        PR — 本記事は 有料掲載 (paid_feature) に該当します。 景表法 + ステマ 規制 2023 対応の 明示表示です。
+        PR — 本記事は有料掲載 (paid_feature) に該当します。 景表法 + ステマ規制 2023 対応の明示表示です。
       </div>
     )}
 
@@ -80,7 +80,7 @@ const featuredShops = (news.featuredShopIds || [])
 
       {news.expiresAt && (
         <p style="margin-top: 16px; padding: 8px 12px; background: #fff4e5; border-left: 3px solid #f5c47a; font-size: 0.85rem; color: #555;">
-          ⏰ 公開期限: {news.expiresAt.slice(0, 10)} (この日付以降は 一覧から自動 archive される想定 — Phase 6 実装)
+          ⏰ 公開期限: {news.expiresAt.slice(0, 10)} (この日付以降は一覧から自動 archive される想定 — Phase 6 実装)
         </p>
       )}
 
@@ -104,7 +104,7 @@ const featuredShops = (news.featuredShopIds || [])
     </article>
 
     <div style="margin-top: 16px; padding: 10px 12px; background: #fff4e5; border: 1px solid #f5c47a; border-radius: 4px; font-size: 0.8rem; color: #555;">
-      <strong style="color: var(--warn);">honest scope:</strong> 本 news は sample dummy content です。 実 news 配信時は 著作権法 + 景表法 + プロバイダ責任制限法 (誤情報訂正 workflow) + 個情法 (掲載関係者の同意管理) 対応が必要 = Phase 6。
+      <strong style="color: var(--warn);">honest scope:</strong> 本 news は sample dummy content です。 実 news 配信時は著作権法 + 景表法 + プロバイダ責任制限法 (誤情報訂正 workflow) + 個情法 (掲載関係者の同意管理) 対応が必要 = Phase 6。
     </div>
   </div>
 </Base>

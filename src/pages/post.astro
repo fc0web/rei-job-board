@@ -11,7 +11,7 @@ import Base from '../layouts/Base.astro';
       <ul style="margin: 8px 0 0 0; padding-left: 20px;">
         <li>本サイトは <strong>求職者情報を収集しない</strong> 雑誌型 design です。 応募連絡は投稿者の連絡先へ直接届きます。</li>
         <li>連絡先は <strong>あなたが管理する</strong> メール / 電話 / 公式 site URL 等を記載してください。</li>
-        <li>違法 / 反社 / 風俗 / 個人情報過剰収集 等の求人は掲載できません (<a href="/about">このサイトについて</a> 参照)。</li>
+        <li>違法 / 反社 / 風俗 / 個人情報過剰収集等の求人は掲載できません (<a href="/about">このサイトについて</a> 参照)。</li>
         <li>セキュリティ design は <a href="/docs/SECURITY">SECURITY.md</a> の通り。 闇バイト / 詐欺求人対策のため <strong>掲載要件</strong> あり。</li>
       </ul>
     </div>
@@ -46,7 +46,7 @@ import Base from '../layouts/Base.astro';
         <h3 style="margin-top: 0; font-size: 1rem;">③ 法人番号 (法人の場合) / 開業届 (個人事業主の場合)</h3>
         <p style="margin: 6px 0; font-size: 0.9rem;">
           <strong>法人</strong>: 国税庁法人番号公表サイトで verify できる 13 桁の法人番号<br/>
-          <strong>個人事業主</strong>: 税務署受領印付き 開業届 PDF を community PR comment に添付
+          <strong>個人事業主</strong>: 税務署受領印付き開業届 PDF を community PR comment に添付
         </p>
         <p style="margin: 6px 0; font-size: 0.85rem; color: #666;">
           法人番号確認: <a href="https://www.houjin-bangou.nta.go.jp/" target="_blank" rel="noopener noreferrer">国税庁法人番号公表サイト</a>
@@ -61,7 +61,7 @@ import Base from '../layouts/Base.astro';
         <em>投稿フォームは scaffold 段階のため未接続です。 v0.1 release 時に Tally form を embed 予定。</em>
       </p>
       <p>
-        当面は GitHub Pull Request で 直接 <code>src/data/jobs.json</code> に追加していただく形 (community PR model) でも受け付けています:
+        当面は GitHub Pull Request で直接 <code>src/data/jobs.json</code> に追加していただく形 (community PR model) でも受け付けています:
       </p>
       <pre style="background: #f4f4f4; padding: 12px; border-radius: 4px; overflow-x: auto; font-size: 0.85rem;">{`{
   "id": "your-unique-id-001",
@@ -94,11 +94,11 @@ import Base from '../layouts/Base.astro';
       <h2>NG keyword (auto-flag 対象)</h2>
       <p>以下の keyword が含まれる投稿は <code>scripts/audit-jobs.ts</code> で自動 flag されます (公開保留)。 詳細は <a href="/docs/SECURITY">SECURITY.md</a>:</p>
       <ul style="font-size: 0.85rem; color: #555;">
-        <li>報酬: 即日即金 / 高額 / 日給 5 万 / 報酬応相談 / バックあり 等</li>
-        <li>業務曖昧: 運ぶだけ / 受け取るだけ / 電話するだけ / 誰でも稼げる / 出し子 / 受け子 / 叩き 等</li>
-        <li>業界隠語: ホワイト案件 / タタキ / UD案件 / シノギ / 飛ばし 等</li>
+        <li>報酬: 即日即金 / 高額 / 日給 5 万 / 報酬応相談 / バックあり等</li>
+        <li>業務曖昧: 運ぶだけ / 受け取るだけ / 電話するだけ / 誰でも稼げる / 出し子 / 受け子 / 叩き等</li>
+        <li>業界隠語: ホワイト案件 / タタキ / UD案件 / シノギ / 飛ばし等</li>
         <li>連絡: Signal / Telegram / DM のみ / Wickr 等の匿名 messenger 単独指定</li>
-        <li>急かし: 本日中 / 今すぐ / 至急 / 即日採用 / 即面接即採用 等</li>
+        <li>急かし: 本日中 / 今すぐ / 至急 / 即日採用 / 即面接即採用等</li>
       </ul>
     </section>
 

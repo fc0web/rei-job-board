@@ -22,7 +22,7 @@ const statusColor = (s: string) => ({
 <Base title="mypage (skeleton) — rei-job-board" description="v0.7 Phase 4 user mypage skeleton — 店舗利用者側 sample data + auth 本体は Phase 6">
   <div style="padding: 12px 16px;">
     <div class="honest-banner">
-      <strong>Layer 3 UI v0.7 Phase 4 — mypage SKELETON</strong>: 本 page は 未 login の 状態で 表示された sample mypage です。 <strong>auth 本体 / real user data / DB persistence / 個情法 開示請求 flow</strong> は Phase 6 (弁護士 consultation 後) の 別段階。 本 mypage は <strong>店舗利用者 (customer) 側</strong> の想定 skeleton = <strong>求職者 (job-seeker) mypage ではない</strong> (求職者情報 非収集 line は 本サイト main policy として維持、 footer 明記)。
+      <strong>Layer 3 UI v0.7 Phase 4 — mypage SKELETON</strong>: 本 page は未 login の状態で表示された sample mypage です。 <strong>auth 本体 / real user data / DB persistence / 個情法開示請求 flow</strong> は Phase 6 (弁護士 consultation 後) の別段階。 本 mypage は <strong>店舗利用者 (customer) 側</strong> の想定 skeleton = <strong>求職者 (job-seeker) mypage ではない</strong> (求職者情報非収集 line は本サイト main policy として維持、 footer 明記)。
     </div>
 
     <section style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 12px; margin: 12px 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
@@ -75,7 +75,7 @@ const statusColor = (s: string) => ({
             <th style="text-align: left; padding: 10px 14px; background: #f8f8f8;">tier</th>
             <td style="padding: 10px 14px;">
               <span style="background: #eef3f8; color: #245; padding: 2px 8px; border-radius: 3px; font-size: 0.85rem;">{userContext.membershipTier}</span>
-              <span style="margin-left: 8px; font-size: 0.8rem; color: #666;">(内訳は 履歴 tab)</span>
+              <span style="margin-left: 8px; font-size: 0.8rem; color: #666;">(内訳は履歴 tab)</span>
             </td>
           </tr>
         </tbody>
@@ -83,13 +83,13 @@ const statusColor = (s: string) => ({
       <div style="margin-top: 12px; display: flex; gap: 6px;">
         <button type="button" disabled style="padding: 4px 12px; font-size: 0.85rem; background: #eee; border: 1px solid var(--border); border-radius: 3px; cursor: not-allowed;">プロフィール編集 (Phase 6)</button>
         <button type="button" disabled style="padding: 4px 12px; font-size: 0.85rem; background: #eee; border: 1px solid var(--border); border-radius: 3px; cursor: not-allowed;">password 変更 (Phase 6)</button>
-        <button type="button" disabled style="padding: 4px 12px; font-size: 0.85rem; background: #fff5f5; color: var(--warn); border: 1px solid var(--warn); border-radius: 3px; cursor: not-allowed;">退会 (Phase 6, 個情法 削除請求)</button>
+        <button type="button" disabled style="padding: 4px 12px; font-size: 0.85rem; background: #fff5f5; color: var(--warn); border: 1px solid var(--warn); border-radius: 3px; cursor: not-allowed;">退会 (Phase 6, 個情法削除請求)</button>
       </div>
-      <p style="font-size: 0.8rem; color: #666; margin-top: 8px;">※ profile 変更は 個情法 audit log 記録が Phase 6 で 必須。 skeleton は 表示のみ。</p>
+      <p style="font-size: 0.8rem; color: #666; margin-top: 8px;">※ profile 変更は個情法 audit log 記録が Phase 6 で必須。 skeleton は表示のみ。</p>
     </section>
 
     <section id="tab-favorites" class="tab-panel" style="padding: 16px 0; display: none;">
-      <h2 style="font-size: 1.05rem; margin: 0 0 12px 0;">お気に入り 店舗</h2>
+      <h2 style="font-size: 1.05rem; margin: 0 0 12px 0;">お気に入り店舗</h2>
       <ul style="list-style: none; padding: 0;">
         {favorites.map(f => (
           <li style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
@@ -108,11 +108,11 @@ const statusColor = (s: string) => ({
           </li>
         ))}
       </ul>
-      <p style="font-size: 0.8rem; color: #666;">※ お気に入り 追加/解除 の persistence は Phase 6。 skeleton は sample 表示のみ。</p>
+      <p style="font-size: 0.8rem; color: #666;">※ お気に入り追加/解除の persistence は Phase 6。 skeleton は sample 表示のみ。</p>
     </section>
 
     <section id="tab-reservations" class="tab-panel" style="padding: 16px 0; display: none;">
-      <h2 style="font-size: 1.05rem; margin: 0 0 12px 0;">予約 履歴</h2>
+      <h2 style="font-size: 1.05rem; margin: 0 0 12px 0;">予約履歴</h2>
       <ul style="list-style: none; padding: 0;">
         {reservationHistory.map(r => (
           <li style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 12px; margin-bottom: 8px;">
@@ -131,7 +131,7 @@ const statusColor = (s: string) => ({
               <span style="font-size: 0.85rem;">
                 {r.totalPriceYen > 0 ? '¥' + r.totalPriceYen.toLocaleString() : '-'}
                 {'cancellationFeeYen' in r && r.cancellationFeeYen === 0 && r.status === 'cancelled' && (
-                  <span style="color: #666; margin-left: 8px; font-size: 0.8rem;">(キャンセル料 なし)</span>
+                  <span style="color: #666; margin-left: 8px; font-size: 0.8rem;">(キャンセル料なし)</span>
                 )}
               </span>
               <div style="display: flex; gap: 6px;">
@@ -152,7 +152,7 @@ const statusColor = (s: string) => ({
           </li>
         ))}
       </ul>
-      <p style="font-size: 0.8rem; color: #666;">※ 予約 変更/キャンセル workflow は 消費者契約法 対応 で Phase 6 実装 (キャンセル料 事前明示 前提)。 skeleton は 履歴 表示のみ。</p>
+      <p style="font-size: 0.8rem; color: #666;">※ 予約変更/キャンセル workflow は消費者契約法対応で Phase 6 実装 (キャンセル料事前明示前提)。 skeleton は履歴表示のみ。</p>
     </section>
 
     <section id="tab-notifications" class="tab-panel" style="padding: 16px 0; display: none;">
@@ -160,12 +160,12 @@ const statusColor = (s: string) => ({
       <div style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 14px;">
         <h3 style="font-size: 0.95rem; margin: 0 0 8px 0;">Email 通知</h3>
         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 4px;">
-          <label style="font-size: 0.85rem;"><input type="checkbox" checked={notificationPreference.emailNewShopArrival} disabled /> 新店舗 通知</label>
+          <label style="font-size: 0.85rem;"><input type="checkbox" checked={notificationPreference.emailNewShopArrival} disabled /> 新店舗通知</label>
           <label style="font-size: 0.85rem;"><input type="checkbox" checked={notificationPreference.emailReservationReminder} disabled /> 予約リマインダ</label>
           <label style="font-size: 0.85rem;"><input type="checkbox" checked={notificationPreference.emailReviewResponse} disabled /> 口コミ返信</label>
           <label style="font-size: 0.85rem;"><input type="checkbox" checked={notificationPreference.emailPointExpiryWarning} disabled /> point 期限</label>
-          <label style="font-size: 0.85rem;"><input type="checkbox" checked={notificationPreference.emailWeeklyRanking} disabled /> 週間 ランキング</label>
-          <label style="font-size: 0.85rem;"><input type="checkbox" checked={notificationPreference.emailFeaturedArticle} disabled /> 特集 記事</label>
+          <label style="font-size: 0.85rem;"><input type="checkbox" checked={notificationPreference.emailWeeklyRanking} disabled /> 週間ランキング</label>
+          <label style="font-size: 0.85rem;"><input type="checkbox" checked={notificationPreference.emailFeaturedArticle} disabled /> 特集記事</label>
           <label style="font-size: 0.85rem;"><input type="checkbox" checked={notificationPreference.emailMarketingCampaign} disabled /> マーケティング campaign</label>
           <label style="font-size: 0.85rem;"><input type="checkbox" checked={notificationPreference.emailPromotionalCoupon} disabled /> クーポン</label>
         </div>
@@ -174,7 +174,7 @@ const statusColor = (s: string) => ({
         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 4px;">
           <label style="font-size: 0.85rem;"><input type="checkbox" checked={notificationPreference.pushEnabled} disabled /> Push 全般</label>
           <label style="font-size: 0.85rem;"><input type="checkbox" checked={notificationPreference.pushReservationReminder} disabled /> 予約リマインダ (push)</label>
-          <label style="font-size: 0.85rem;"><input type="checkbox" checked={notificationPreference.pushFavoritePerformerDiary} disabled /> お気に入り 日記 (push)</label>
+          <label style="font-size: 0.85rem;"><input type="checkbox" checked={notificationPreference.pushFavoritePerformerDiary} disabled /> お気に入り日記 (push)</label>
           <label style="font-size: 0.85rem;"><input type="checkbox" checked={notificationPreference.lineNotifyEnabled} disabled /> LINE Notify</label>
         </div>
 
@@ -184,7 +184,7 @@ const statusColor = (s: string) => ({
           · quiet hours: {notificationPreference.quietHoursStart} 〜 {notificationPreference.quietHoursEnd}
         </p>
       </div>
-      <p style="font-size: 0.8rem; color: #666; margin-top: 8px;">※ granular opt-in/opt-out は 個情法 「利用目的変更の同意撤回権利」 対応で Phase 6 実装。 skeleton は 現在設定 表示のみ (checkbox 全 disabled)。</p>
+      <p style="font-size: 0.8rem; color: #666; margin-top: 8px;">※ granular opt-in/opt-out は個情法 「利用目的変更の同意撤回権利」 対応で Phase 6 実装。 skeleton は現在設定表示のみ (checkbox 全 disabled)。</p>
     </section>
 
     <section id="tab-points" class="tab-panel" style="padding: 16px 0; display: none;">
@@ -211,7 +211,7 @@ const statusColor = (s: string) => ({
         ))}
       </ul>
 
-      <h3 style="font-size: 0.95rem; margin: 12px 0 6px 0;">point 交換 履歴</h3>
+      <h3 style="font-size: 0.95rem; margin: 12px 0 6px 0;">point 交換履歴</h3>
       <ul style="list-style: none; padding: 0;">
         {pointHistory.map(p => (
           <li style="background: #fff; border: 1px solid var(--border); border-radius: 4px; padding: 8px 12px; margin-bottom: 4px; font-size: 0.9rem;">
@@ -220,14 +220,14 @@ const statusColor = (s: string) => ({
           </li>
         ))}
       </ul>
-      <p style="font-size: 0.8rem; color: #666; margin-top: 8px;">※ point 交換 flow は 特定商取引法 該当性検討 (Phase 6, 弁護士 consultation)。 skeleton は 履歴 表示のみ。</p>
+      <p style="font-size: 0.8rem; color: #666; margin-top: 8px;">※ point 交換 flow は特定商取引法該当性検討 (Phase 6, 弁護士 consultation)。 skeleton は履歴表示のみ。</p>
     </section>
 
     <section id="tab-reports" class="tab-panel" style="padding: 16px 0; display: none;">
-      <h2 style="font-size: 1.05rem; margin: 0 0 12px 0;">通報 送信 履歴</h2>
+      <h2 style="font-size: 1.05rem; margin: 0 0 12px 0;">通報送信履歴</h2>
       {reportsSubmitted.length === 0 ? (
         <p style="background: #e5f3e5; color: #363; padding: 12px; border-radius: 4px; font-size: 0.9rem;">
-          送信 履歴 は ありません。
+          送信履歴はありません。
         </p>
       ) : (
         <ul style="list-style: none; padding: 0;">
@@ -250,7 +250,7 @@ const statusColor = (s: string) => ({
           ))}
         </ul>
       )}
-      <p style="font-size: 0.8rem; color: #666; margin-top: 8px;">※ プロバイダ責任制限法 対応 通報 workflow は Phase 6 実装 (admin-schema Report と連動)。 skeleton は 履歴 表示のみ。</p>
+      <p style="font-size: 0.8rem; color: #666; margin-top: 8px;">※ プロバイダ責任制限法対応通報 workflow は Phase 6 実装 (admin-schema Report と連動)。 skeleton は履歴表示のみ。</p>
     </section>
 
     <section id="tab-security" class="tab-panel" style="padding: 16px 0; display: none;">
@@ -306,7 +306,7 @@ const statusColor = (s: string) => ({
         </ul>
       </div>
 
-      <p style="font-size: 0.8rem; color: #666; margin-top: 8px;">※ session revoke / device removal / MFA setup は auth-schema.ts 連動で Phase 6 実装。 skeleton は 現状 表示のみ。 IP address は sample masked。</p>
+      <p style="font-size: 0.8rem; color: #666; margin-top: 8px;">※ session revoke / device removal / MFA setup は auth-schema.ts 連動で Phase 6 実装。 skeleton は現状表示のみ。 IP address は sample masked。</p>
     </section>
 
     <style is:global>

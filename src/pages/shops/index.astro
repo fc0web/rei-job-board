@@ -15,7 +15,7 @@ const parsePriceMin = (range: string): number => {
 <Base title="店舗案内 — rei-job-board" description="店舗一覧 + multi-filter + text search + sort (Layer 3 UI v0.7 Phase 2, sample data のみ)">
   <div style="padding: 12px 16px;">
     <div class="honest-banner">
-      <strong>Layer 3 UI v0.7 Phase 2 — サンプルデータのみ</strong>: 本 page の 全 店舗 は sample (dummy)。 実店舗掲載は 弁護士 consultation 完成 + 反社チェック + 掲載申込 form 実装後の別段階。 業種除外 line (性風俗特殊営業 該当 category) は schema level で判定済 (isExcludedCategory 遵守)。 filter/sort は client-side JS で SSR list を絞込み表示 (sample 4 件のみで動作確認 scale)。
+      <strong>Layer 3 UI v0.7 Phase 2 — サンプルデータのみ</strong>: 本 page の全店舗は sample (dummy)。 実店舗掲載は弁護士 consultation 完成 + 反社チェック + 掲載申込 form 実装後の別段階。 業種除外 line (性風俗特殊営業該当 category) は schema level で判定済 (isExcludedCategory 遵守)。 filter/sort は client-side JS で SSR list を絞込み表示 (sample 4 件のみで動作確認 scale)。
     </div>
 
     <h1 style="font-size: 1.3rem; margin: 12px 0;">店舗案内 <span id="result-count">({shops.length} 件)</span></h1>
@@ -71,10 +71,10 @@ const parsePriceMin = (range: string): number => {
         <label style="font-size: 0.85rem;">
           <strong>並び順:</strong>
           <select id="sort-order" style="margin-left: 6px; padding: 3px 6px; font-size: 0.85rem;">
-            <option value="rating">評価 高い順</option>
+            <option value="rating">評価高い順</option>
             <option value="new">新着順</option>
             <option value="ranking">ランキング高い順</option>
-            <option value="name">店舗名 順</option>
+            <option value="name">店舗名順</option>
           </select>
         </label>
         <button

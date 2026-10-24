@@ -35,10 +35,10 @@ const sortedThreads = [...threads].sort(
 );
 ---
 
-<Base title="メッセージ (skeleton) — rei-job-board" description="v0.8 Phase 5 messaging DM skeleton — 店舗 ↔ 店舗利用者 の相互DM sample、 実 backend は Phase 6">
+<Base title="メッセージ (skeleton) — rei-job-board" description="v0.8 Phase 5 messaging DM skeleton — 店舗 ↔ 店舗利用者の相互DM sample、 実 backend は Phase 6">
   <div style="padding: 12px 16px;">
     <div class="honest-banner">
-      <strong>Layer 3 UI v0.8 Phase 5 — messaging SKELETON</strong>: 本 page は 未 login の 状態で 表示された sample DM 一覧です。 <strong>実 messaging backend / auth 連動 / 送受信ログ 90 日以上保持 / 発信者情報開示 request (プロバイダ責任制限法 4 条) 対応</strong> は Phase 6 (弁護士 consultation 後) の 別段階。 本 messaging は <strong>店舗利用者 (customer) ↔ 店舗</strong> の 想定 skeleton = <strong>求職者 (job-seeker) 側 DM ではない</strong> (求職者情報 非収集 line は main policy として維持、 footer 明記)。
+      <strong>Layer 3 UI v0.8 Phase 5 — messaging SKELETON</strong>: 本 page は未 login の状態で表示された sample DM 一覧です。 <strong>実 messaging backend / auth 連動 / 送受信ログ 90 日以上保持 / 発信者情報開示 request (プロバイダ責任制限法 4 条) 対応</strong> は Phase 6 (弁護士 consultation 後) の別段階。 本 messaging は <strong>店舗利用者 (customer) ↔ 店舗</strong> の想定 skeleton = <strong>求職者 (job-seeker) 側 DM ではない</strong> (求職者情報非収集 line は main policy として維持、 footer 明記)。
     </div>
 
     <section style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 12px; margin: 12px 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
@@ -110,9 +110,9 @@ const sortedThreads = [...threads].sort(
         <li>新規 thread 作成 (店舗 profile → 「問い合わせ」 button)</li>
         <li>message 送受信 (Cloudflare Workers + D1 / KV)</li>
         <li>AI content moderation (誹謗中傷 / 個情法違反 auto 検知)</li>
-        <li>削除 request (プロバイダ責任制限法 4 条 発信者情報開示 workflow)</li>
+        <li>削除 request (プロバイダ責任制限法 4 条発信者情報開示 workflow)</li>
         <li>thread archive / block / 通報 button</li>
-        <li>notification (email / push / LINE Notify、 mypage 通知設定 連動)</li>
+        <li>notification (email / push / LINE Notify、 mypage 通知設定連動)</li>
       </ul>
     </div>
   </div>

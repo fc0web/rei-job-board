@@ -6,14 +6,14 @@ const rankingTypes = [
     id: 'weekly_top30',
     label: '週間 TOP30',
     japaneseName: '週間ランキング',
-    criteria: 'アクセス数 + 予約数 + 口コミ投稿数 の複合スコア (weightings 公開予定 Phase 6)',
+    criteria: 'アクセス数 + 予約数 + 口コミ投稿数の複合スコア (weightings 公開予定 Phase 6)',
     updateFrequency: '毎週火曜 00:00 更新',
     prLabelRequired: false,
     keiheiNote: '実測 rank に基づく表示、 掲載料の影響を受けない設計 line。 有料掲載枠は featured_paid 側で分離。'
   },
   {
     id: 'monthly_top_shops',
-    label: '月間 総合ランキング',
+    label: '月間総合ランキング',
     japaneseName: '月間ランキング',
     criteria: '週間 TOP30 の月間集計 + 継続性 boost + 新規流入割合',
     updateFrequency: '毎月 1 日 00:00 更新',
@@ -24,10 +24,10 @@ const rankingTypes = [
     id: 'area_ranking',
     label: 'エリア別ランキング',
     japaneseName: 'エリアランキング',
-    criteria: 'エリア (都道府県 + 最寄駅) 内での 相対比較、 全国スコアを エリア内で正規化',
+    criteria: 'エリア (都道府県 + 最寄駅) 内での相対比較、 全国スコアをエリア内で正規化',
     updateFrequency: '週次 (weekly_top30 と同期)',
     prLabelRequired: false,
-    keiheiNote: '「エリア NO.1」 表示時は必ず 「YYYY年M月 週間エリアランキング調べ」 の 根拠明示必須。'
+    keiheiNote: '「エリア NO.1」 表示時は必ず 「YYYY年M月週間エリアランキング調べ」 の根拠明示必須。'
   },
   {
     id: 'new_arrivals',
@@ -42,16 +42,16 @@ const rankingTypes = [
     id: 'popular_by_reviews',
     label: '口コミ評価順',
     japaneseName: '口コミ人気',
-    criteria: '平均評価 (averageRating) × 口コミ数 (reviewCount) の 加重平均 (Bayesian smoothing 適用予定)',
+    criteria: '平均評価 (averageRating) × 口コミ数 (reviewCount) の加重平均 (Bayesian smoothing 適用予定)',
     updateFrequency: 'リアルタイム (口コミ承認直後)',
     prLabelRequired: false,
-    keiheiNote: '口コミ数が少ない店舗の 極端評価を smoothing で緩和、 「星 5 だが 1 件のみ」 の過大表示を防止。'
+    keiheiNote: '口コミ数が少ない店舗の極端評価を smoothing で緩和、 「星 5 だが 1 件のみ」 の過大表示を防止。'
   },
   {
     id: 'popular_by_bookings',
     label: '予約数順',
     japaneseName: '予約人気',
-    criteria: '直近 30 日の 予約成立数 (完了/キャンセルは別集計)',
+    criteria: '直近 30 日の予約成立数 (完了/キャンセルは別集計)',
     updateFrequency: '毎日 03:00 更新',
     prLabelRequired: false,
     keiheiNote: 'キャンセル・no-show は除外、 実利用に基づく human-verified 指標。'
@@ -63,7 +63,7 @@ const rankingTypes = [
     criteria: '会員による直接投票 (Phase 6: 1 会員 1 週 1 票、 IP + auth 二重確認)',
     updateFrequency: '毎週火曜 00:00 (weekly_top30 と同期)',
     prLabelRequired: false,
-    keiheiNote: '投票操作を防ぐため 認証必須。 現在 Phase 5 では sample dummy 表示のみ。'
+    keiheiNote: '投票操作を防ぐため認証必須。 現在 Phase 5 では sample dummy 表示のみ。'
   },
   {
     id: 'featured_paid',
@@ -72,35 +72,35 @@ const rankingTypes = [
     criteria: '掲載料に基づく編集部選抜 (paid_feature)',
     updateFrequency: '契約単位 (月次 / 週次 / スポット)',
     prLabelRequired: true,
-    keiheiNote: '★ ステマ 規制 2023 (景表法 施行規則 改正) 対応で 「PR」 label 表示必須。 実測 rank との 分離表示、 混在時は 該当行に PR marker。'
+    keiheiNote: '★ ステマ規制 2023 (景表法施行規則改正) 対応で 「PR」 label 表示必須。 実測 rank との分離表示、 混在時は該当行に PR marker。'
   }
 ];
 ---
 
-<Base title="ランキング基準 透明化 — rei-job-board" description="v0.8.2 ランキング基準 8 種の editorial 化 (景表法 + ステマ 規制 2023 対応)">
+<Base title="ランキング基準透明化 — rei-job-board" description="v0.8.2 ランキング基準 8 種の editorial 化 (景表法 + ステマ規制 2023 対応)">
   <div style="padding: 12px 16px;">
     <div class="honest-banner">
-      <strong>Layer 3 UI v0.8.2 — ランキング基準 透明化</strong>: 本 page は 景表法 + ステマ 規制 2023 (2023-10-01 施行) 対応の 一環として、 pr-content-schema.ts で定義された RankingType 8 種の 基準・更新頻度・PR label 該当性を editorial 化したものです。 実 ranking 表示は Phase 6 (弁護士 consultation + 実データ流入後) で 段階的に運用開始予定。
+      <strong>Layer 3 UI v0.8.2 — ランキング基準透明化</strong>: 本 page は景表法 + ステマ規制 2023 (2023-10-01 施行) 対応の一環として、 pr-content-schema.ts で定義された RankingType 8 種の基準・更新頻度・PR label 該当性を editorial 化したものです。 実 ranking 表示は Phase 6 (弁護士 consultation + 実データ流入後) で段階的に運用開始予定。
     </div>
 
     <section style="background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 14px; margin: 12px 0;">
-      <h1 style="font-size: 1.3rem; margin: 0 0 6px 0;">ランキング基準 透明化</h1>
+      <h1 style="font-size: 1.3rem; margin: 0 0 6px 0;">ランキング基準透明化</h1>
       <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: #555;">
-        本サイトが 提供予定の ranking 8 種類について、 それぞれの 基準・更新頻度・「PR」 label 該当性を明示します。 掲載料に基づく順位表示は 全て 「PR」 label と分離表示することを 設計原則としています。
+        本サイトが提供予定の ranking 8 種類について、 それぞれの基準・更新頻度・「PR」 label 該当性を明示します。 掲載料に基づく順位表示は全て 「PR」 label と分離表示することを設計原則としています。
       </p>
     </section>
 
     <section style="margin: 16px 0;">
       <h2 style="font-size: 1.1rem; margin: 0 0 10px 0;">遵守する 3 原則</h2>
       <ol style="padding-left: 22px; margin: 0; font-size: 0.9rem; line-height: 1.75;">
-        <li><strong>景表法 (優良誤認・有利誤認の禁止)</strong>: 「NO.1」「業界最安」等の 順位表示は 客観的根拠 (実測 rank + 集計期間) を必ず明示。 根拠なしの absolute 主張 (「絶対人気」「最強」等) は 使用禁止 word 集に記載。</li>
-        <li><strong>ステマ 規制 2023 (景表法 施行規則改正、 2023-10-01 施行)</strong>: 掲載料に基づく 順位・特集記事には 「PR」 label 表示必須。 sponsored content の 中立性偽装は 違反として扱う。</li>
-        <li><strong>実測 rank と PR rank の 分離表示</strong>: 一覧画面で 両者が混在する場合、 該当行に PR marker を付与し、 「実測順位」と「有料掲載」を UI 上で 明確に区別。</li>
+        <li><strong>景表法 (優良誤認・有利誤認の禁止)</strong>: 「NO.1」「業界最安」等の順位表示は客観的根拠 (実測 rank + 集計期間) を必ず明示。 根拠なしの absolute 主張 (「絶対人気」「最強」等) は使用禁止 word 集に記載。</li>
+        <li><strong>ステマ規制 2023 (景表法施行規則改正、 2023-10-01 施行)</strong>: 掲載料に基づく順位・特集記事には 「PR」 label 表示必須。 sponsored content の中立性偽装は違反として扱う。</li>
+        <li><strong>実測 rank と PR rank の分離表示</strong>: 一覧画面で両者が混在する場合、 該当行に PR marker を付与し、 「実測順位」と「有料掲載」を UI 上で明確に区別。</li>
       </ol>
     </section>
 
     <section style="margin: 16px 0;">
-      <h2 style="font-size: 1.1rem; margin: 0 0 10px 0;">ranking 種類別 基準 (8 種)</h2>
+      <h2 style="font-size: 1.1rem; margin: 0 0 10px 0;">ranking 種類別基準 (8 種)</h2>
 
       <div style="display: flex; flex-direction: column; gap: 12px;">
         {rankingTypes.map(r => (
@@ -145,14 +145,14 @@ const rankingTypes = [
     <section style="margin-top: 24px; padding: 14px 16px; background: #f8f8f8; border-radius: 6px; font-size: 0.9rem; color: #444; line-height: 1.75;">
       <h2 style="font-size: 1rem; margin: 0 0 8px 0;">参考 (一次源)</h2>
       <ul style="margin: 0; padding-left: 20px;">
-        <li>景品表示法 (不当景品類及び不当表示防止法): <a href="https://www.caa.go.jp/policies/policy/representation/fair_labeling/">消費者庁 表示対策課</a></li>
-        <li>ステマ 規制 2023 (「一般消費者が事業者の表示であることを判別することが困難である表示」): <a href="https://www.caa.go.jp/policies/policy/representation/fair_labeling/stealth_marketing/">消費者庁 ステマ規制ページ</a></li>
+        <li>景品表示法 (不当景品類及び不当表示防止法): <a href="https://www.caa.go.jp/policies/policy/representation/fair_labeling/">消費者庁表示対策課</a></li>
+        <li>ステマ規制 2023 (「一般消費者が事業者の表示であることを判別することが困難である表示」): <a href="https://www.caa.go.jp/policies/policy/representation/fair_labeling/stealth_marketing/">消費者庁ステマ規制ページ</a></li>
         <li>不当な顧客誘引 (優良誤認・有利誤認) 一次資料: <a href="https://www.caa.go.jp/policies/policy/representation/fair_labeling/misleading_representation/">消費者庁</a></li>
       </ul>
     </section>
 
     <div style="margin-top: 16px; padding: 10px 12px; background: #fff4e5; border: 1px solid #f5c47a; border-radius: 4px; font-size: 0.8rem; color: #555;">
-      <strong style="color: var(--warn);">honest scope:</strong> 現在 (v0.8.2) は Layer 3 UI skeleton 段階。 実 ranking の 集計・表示・PR label 自動検証は Phase 6 (弁護士 consultation + 実データ流入後) で 段階的運用。 weightings の 数値公開時期は Phase 6 の 一部として調整予定。
+      <strong style="color: var(--warn);">honest scope:</strong> 現在 (v0.8.2) は Layer 3 UI skeleton 段階。 実 ranking の集計・表示・PR label 自動検証は Phase 6 (弁護士 consultation + 実データ流入後) で段階的運用。 weightings の数値公開時期は Phase 6 の一部として調整予定。
     </div>
   </div>
 </Base>

@@ -5,10 +5,10 @@ import rankingsData from '../data/rankings.json';
 const rankings = rankingsData.rankings;
 ---
 
-<Base title="ランキング — rei-job-board" description="人気 / 新着 / 高評価 ランキング (sample data のみ)">
+<Base title="ランキング — rei-job-board" description="人気 / 新着 / 高評価ランキング (sample data のみ)">
   <div style="padding: 12px 16px;">
     <div class="honest-banner">
-      <strong>Layer 3 UI v0.7 — サンプルランキングのみ</strong>: 本 page の 全 ランキング は sample (dummy)。 実 ranking algorithm は 一定期間 実データ蓄積 + 集計 pipeline + PR slot marker (景表法 2023 改正 対応, ステマ 規制) の実装後の別段階。 現状 全 entry <code>isPRSlot: false</code>。
+      <strong>Layer 3 UI v0.7 — サンプルランキングのみ</strong>: 本 page の全ランキングは sample (dummy)。 実 ranking algorithm は一定期間実データ蓄積 + 集計 pipeline + PR slot marker (景表法 2023 改正対応, ステマ規制) の実装後の別段階。 現状全 entry <code>isPRSlot: false</code>。
     </div>
 
     <h1 style="font-size: 1.3rem; margin: 12px 0;">ランキング</h1>
@@ -44,7 +44,7 @@ const rankings = rankingsData.rankings;
     ))}
 
     <section style="background: #f5f9fc; border: 1px solid #cbd8e5; border-radius: 6px; padding: 12px; margin: 16px 0; font-size: 0.85rem;">
-      <strong>PR 掲載枠 (景表法 2023 改正対応)</strong>: 有料掲載枠は <code>isPRSlot: true</code> marker で明示。 ステルスマーケティング表示 (2023-10-01 施行 景表法改正) 対応の schema 設計。 現状 sample data は 全て <code>isPRSlot: false</code> (無料掲載のみ)。
+      <strong>PR 掲載枠 (景表法 2023 改正対応)</strong>: 有料掲載枠は <code>isPRSlot: true</code> marker で明示。 ステルスマーケティング表示 (2023-10-01 施行景表法改正) 対応の schema 設計。 現状 sample data は全て <code>isPRSlot: false</code> (無料掲載のみ)。
     </section>
 
     <p style="font-size: 0.85rem; color: #666; margin-top: 20px;">
